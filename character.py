@@ -2,7 +2,7 @@ from manim import *
 
 class StudentChar(VGroup):
     """
-        This creates a little character that is a place holder for the student figure
+        This creates a little character that is a placeholder for the student figure
         height and width measure the bottom rectangular body part
     """
 
@@ -122,7 +122,9 @@ class StudentChar(VGroup):
 
 class MyChar(Scene):
     """
-    A place holder character for the student
+    A placeholder character for the student
+
+    Example how to use the above class
     """
     def construct(self):
 
@@ -134,7 +136,7 @@ class MyChar(Scene):
 
         # blink left eye
         student.half_close_left_eye()
-        self.wait(.2)
+        self.wait(1)
         student.open_left_eye()
         self.wait(.2)
 
@@ -149,7 +151,9 @@ class MyChar(Scene):
         st3.dull()
         st4 = StudentChar(1,1, 2*LEFT)
         self.add(st2, st3, st4)
-        self.wait(4)
+        self.wait(1)
+        self.play(Rotate(st4,PI/4, run_time=1))
+
 
 with tempconfig({"quality": "medium_quality", "preview": True}):
     scene = MyChar()
