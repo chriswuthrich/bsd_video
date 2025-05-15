@@ -6,7 +6,12 @@ class StudentChar(VGroup):
         height and width measure the bottom rectangular body part
     """
 
-    def __init__(self, height=1, width=1, centre=np.array([0.,0.,0.]), lid_colour=RED):
+    def __init__(self,
+                 height=1,
+                 width=1,
+                 centre=ORIGIN,
+                 colour=BLUE,
+                 lid_colour=DARK_BLUE):
 
         super().__init__()
 
@@ -22,15 +27,15 @@ class StudentChar(VGroup):
         self.set_stroke(WHITE, width=2)
 
         body = Rectangle(height=2 * h, width=2 * w)
-        body.set_fill(BLUE, opacity=1)
+        body.set_fill(colour, opacity=1)
         body.set_stroke(width=0)  # No border
-        body.set_fill(BLUE, opacity=0.7)
+        body.set_fill(colour, opacity=0.7)
         self.add(body)
 
         # head
         head = Arc(radius=w, start_angle=0, angle=PI)
         head.shift(UP * h)
-        head.set_fill(BLUE, opacity=0.7)
+        head.set_fill(colour, opacity=0.7)
         head.set_stroke(WHITE, width=2)
         self.add(head)
 
@@ -63,9 +68,10 @@ class StudentChar(VGroup):
         self.add(mouth)
 
         # sad face -3
-        # sad = Arc(w/3, PI/6, 2*PI/3,color=BLACK)  # doesn't work fills arc??
-        sad = Arc(w/3,-PI/6,-2*PI/3)
-        sad.flip(RIGHT)
+        # currently with a bug as the arc closes
+        sad = Arc(w/3, PI/6, 2*PI/3)
+        # sad = Arc(w/3,-PI/6,-2*PI/3)  # doesn't work either
+        # sad.flip(RIGHT)
         sad.shift(h*UP+5*w/6*DOWN)
         sad.set_stroke(WHITE, opacity=0)
         sad.set_fill(WHITE, opacity=0)
@@ -129,31 +135,32 @@ class MyChar(Scene):
     def construct(self):
 
         student = StudentChar()
-        student.dull()
         # Show it
         self.play(Create(student))
         self.wait(.2)
 
         # blink left eye
         student.half_close_left_eye()
-        self.wait(1)
+        self.wait(.3)
         student.open_left_eye()
-        self.wait(.2)
+        self.wait(.5)
 
         # sad
         student.sad()
         self.wait(0.2)
+        student.dull()
 
         # more figures of different sizes
-        st2 = StudentChar(.5,.5,2*UP, GREEN)
+        st2 = StudentChar(.5,.5,2*UP, GREEN, GRAY)
         st2.half_close_right_eye()
         st3 = StudentChar(1.5,.5,3*RIGHT)
         st3.dull()
         st4 = StudentChar(1,1, 2*LEFT)
         self.add(st2, st3, st4)
         self.wait(1)
-        self.play(Rotate(st4,PI/4, run_time=1))
-
+        self.play(Wiggle(st2))
+        self.play(Rotate(st4, PI/4, run_time=1))
+        self.wait(3)
 
 with tempconfig({"quality": "medium_quality", "preview": True}):
     scene = MyChar()
