@@ -29,24 +29,24 @@ class StudentChar(VGroup):
         body = Rectangle(height=2 * h, width=2 * w)
         body.set_fill(colour, opacity=1)
         body.set_stroke(width=0)  # No border
-        body.set_fill(colour, opacity=0.7)
+        body.set_fill(colour, opacity=1)
         self.add(body)
 
         # head
         head = Arc(radius=w, start_angle=0, angle=PI)
         head.shift(UP * h)
-        head.set_fill(colour, opacity=0.7)
+        head.set_fill(colour, opacity=1)
         head.set_stroke(WHITE, width=2)
         self.add(head)
 
         # eyes
         left_eye = Circle(w/3)
         left_eye.shift(h*UP+w/2*LEFT)
-        left_eye.set_fill(WHITE, opacity=0.9)
+        left_eye.set_fill(WHITE, opacity=1)
         left_eye.set_stroke(WHITE, width=1)
         right_eye = Circle(w / 3)
         right_eye.shift(h * UP + w / 2 * RIGHT)
-        right_eye.set_fill(WHITE, opacity=0.9)
+        right_eye.set_fill(WHITE, opacity=1)
         right_eye.set_stroke(WHITE, width=1)
         left_eye_centre = Dot(h*UP+w/2*LEFT, radius=w/10, color=BLACK)
         right_eye_centre = Dot(h*UP+w/2*RIGHT, radius=w/10, color=BLACK)
@@ -59,7 +59,7 @@ class StudentChar(VGroup):
         # smile -5
         smile = Arc(w/3,-PI/6,-2*PI/3)
         smile.shift(h*UP+w/3*DOWN)
-        smile.set_stroke(WHITE, opacity=0.9)
+        smile.set_stroke(WHITE, opacity=1)
         self.add(smile)
 
         # non smile mouth -4
@@ -91,13 +91,14 @@ class StudentChar(VGroup):
 
         # place at the right spot
         self.shift(centre)
+        self.set_z_index(10)  # they will be very much in the foreground
 
 
     def half_close_left_eye(self):
-        self[-2].set_fill(self._lid_colour, opacity=0.95)
+        self[-2].set_fill(self._lid_colour, opacity=1)
 
     def half_close_right_eye(self):
-        self[-1].set_fill(self._lid_colour, opacity=0.95)
+        self[-1].set_fill(self._lid_colour, opacity=1)
 
     def open_left_eye(self):
         self[-2].set_fill(self._lid_colour, opacity=0)
