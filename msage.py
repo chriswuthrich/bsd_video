@@ -102,6 +102,7 @@ class Test_smanim(Scene):
         self.wait(2)
 
 
-with tempconfig({"quality": "medium_quality", "preview": True}):
-    scene = Test_smanim()
-    scene.render()
+if __name__ == "__main__":
+    with tempconfig({"quality": "medium_quality", "preview": True}):
+        scene = Test_smanim()
+        scene.render()

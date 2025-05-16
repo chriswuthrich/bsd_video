@@ -162,6 +162,7 @@ class MyChar(Scene):
         self.play(Rotate(st4, PI/4, run_time=1))
         self.wait(3)
 
-with tempconfig({"quality": "medium_quality", "preview": True}):
-    scene = MyChar()
-    scene.render()
+if __name__ == "__main__":
+    with tempconfig({"quality": "medium_quality", "preview": True}):
+        scene = MyChar()
+        scene.render()
