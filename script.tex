@@ -1,0 +1,69 @@
+\documentclass[a4paper]{article}
+\usepackage{graphicx, lmodern, geometry, xcolor, enumitem, booktabs, todonotes}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[british]{babel}
+\usepackage{mathtools, amsopn, amssymb, amsfonts, amsthm}
+\usepackage{hyperref}
+
+\geometry{top=3cm, bottom=3cm, headheight=1cm, headsep=2cm, width=14cm, bindingoffset=0mm, marginpar=25mm, marginparsep=5mm}%,showframe}
+\setlength{\parindent}{4mm}
+\setlist{noitemsep} % no extra space between items
+\hypersetup{
+    breaklinks = {true}, % breaks links over lines
+    pdftitle = {BSD Video script},
+    pdfauthor = {Christian Wuthrich}
+}
+
+\begin{document}
+  \title{Script for the BSD Video}
+  \author{cw}
+  \maketitle
+
+\section{Elliptic Curves}
+\begin{itemize}
+  \item I know the Riemann hypothesis (st), but do you know BSD (te)
+  \item Number theorists work on it, Clay prize
+  \item Start with $y^2 = x^3 + x+ $ with explicit integers and vary them, reflection
+  \item Rational solutions correspond to integer solution of $Y^2Z = X^3 + $
+  \item 3D Pictures and explanation about $O$
+\end{itemize}
+
+\section{Count rational points by height}
+\begin{itemize}
+  \item Define $H$ as max $X$ etc.
+  \item Plot them logarithmically as towers on the points on a rank 2 curve
+  \item Define $N(T)$
+  \item Naive search finds them in that order
+\end{itemize}
+
+\section{Count modulo}
+\begin{itemize}
+  \item For an integer $U$, explain counting modulo $U$
+  \item More rational points more points mod $U$ (is wrong)
+  \item Set $U=T!$, really biiiiiig
+\end{itemize}
+
+\section{Conjecture and non-evidence}
+\begin{itemize}
+  \item Introduce quotient and make conjecture
+  \item A convincing picture for rank 0 and one for rk 2
+  \item A picture with a jump for a point
+\end{itemize}
+
+\section{Rank and original formulation}
+\begin{itemize}
+  \item Explain $N(T) \sim \log(T)^{r/2}$
+  \item Say $r$ is rank of $E(\mathbb{Q})$
+  \item Birch and Swinnerton-Dyer
+\end{itemize}
+
+\section{L-functions and GRH}
+\begin{itemize}
+  \item Say there is an $L$-function, Weil?
+  \item Analytic continuation implied by our conjecture
+  \item As well as GRH
+  \item Write out limit?
+\end{itemize}
+
+\end{document}
