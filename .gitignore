@@ -5,6 +5,7 @@ media/
 *.pdf
 *.aux
 *.log
+*.kate-swp
 
 # pycharm stuff
 .idea/

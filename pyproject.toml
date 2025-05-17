@@ -1,0 +1,9 @@
+[project]
+name = "bsd-video"
+version = "0.1.0"
+description = "Video to explain the BSD conjecture in a naive way"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "manim>=0.19.0",
+]
