@@ -57,7 +57,7 @@ class FirstScene(Scene):
 
         # 2
         # what are elliptic curves
-        # more chars out to corner
+        # move chars out to corner
         self.remove(t1)
         self.play(
             st.animate.shift(np.array([-5, -3.3, 0.])),
@@ -94,6 +94,7 @@ class FirstScene(Scene):
         )
         self.wait(1)
 
+        # merge to another curve
         E2 = EllipticCurve([-7, 6])
         curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         curve2.set_z_index(3)
@@ -103,6 +104,26 @@ class FirstScene(Scene):
             run_time=1
         )
         self.wait(1)
+
+        # try to give lots of curves
+        ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
+        for A,B in ABs:
+            self.remove(e1,curve)
+            E2 = EllipticCurve([A,B])
+            curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+            curve.set_z_index(3)
+            if A>=0:
+                Astr = fr"+{A}\,"
+            else:
+                Astr = fr"-{-A}\,"
+            if B>= 0:
+                Bstr = fr"+{B}"
+            else:
+                Bstr = fr"-{-B}"
+            e1 = MathTex(r"y^2 = x^3 "+Astr+" x "+Bstr)
+            e1.to_corner(UL)
+            self.add(curve,e1)
+            self.wait(1)
 
         # P, Q = E.gens()
         # EQ = []
