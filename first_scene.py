@@ -8,46 +8,124 @@ def subtitle(said):
     r"""
     This prints a text in small white at the bottom of the screen.
     """
-    v = Text(said, font_size=15, color="white", font="sans-serif")
-    v.shift(3*DOWN)
+    vt = Text(said, font_size=15, color="white", font="sans-serif")
+
+    # Create a black rectangle with size matching the text
+    background_box = Rectangle(
+        width = vt.width + 0.1,  # Add some padding around the text
+        height = vt.height + 0.1,  # Add some padding around the text
+        color = BLACK
+    )
+    background_box.set_fill(BLACK, opacity=1)  # Set the fill color to black
+
+    # add them together and shift to bottom of screen
+    v = VGroup()
+    v.add(background_box)
+    v.add(vt)
+    v.to_edge(DOWN)
     v.set_z_index(1) # a bit in the foreground
     return v
 
 
 class FirstScene(Scene):
+
     def construct(self):
-        st = StudentChar(centre=np.array([-6, -3.3, 0.]))
-        te = StudentChar(height=1.2, width=0.8, centre=np.array([-4.5, -3.3, 0.]), colour=GREEN, lid_colour=DARK_GRAY)
-        t1 = subtitle("Do you know the Riemann hypothesis?")
-        self.add(st, te, t1)
-        te.half_close_right_eye()
-        self.wait(0.3)
-        te.open_right_eye()
-        self.wait(0.5)
+        # initiate (needs to change a lot)
+        st = StudentChar()
+        te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
+        st.shift(LEFT)
+        te.shift(RIGHT+0.1*UP)
+        self.add(st, te)
+        self.wait(1)
+        t1 = subtitle("Are you working on the Riemann hypothesis?")
+        t1.shift(LEFT)
+        self.add(t1)
+        self.wait(1)
         self.remove(t1)
-        t2 = subtitle("Yeah, and you have heard of BSD?")
-        self.add(t2)
+        t1 = subtitle("No, my work is connected to another important conjecture in number theory.")
+        t1.shift(2*RIGHT)
+        self.add(t1)
+        st.half_close_left_eye()
+        self.wait(.3)
+        st.open_left_eye()
+        self.wait(1)
+        self.remove(t1)
+        t1 = subtitle("What is that about")
+        t1.shift(2*LEFT)
+        self.add(t1)
+        self.wait(1)
+
+        # 2
+        # what are elliptic curves
+        # more chars out to corner
+        self.remove(t1)
+        self.play(
+            st.animate.shift(np.array([-5, -3.3, 0.])),
+            te.animate.shift(np.array([-6, -3.3, 0.])),
+            run_time=1
+        )
 
         # equation
-        e1 = MathTex("y^2 = x^3 +4x+1")
-        self.add(e1)
-        p1 = MathTex("Y^2Z = X^3 + 4XZ^2+Z^3")
-        self.play(Transform(e1, p1))
-        self.wait(2)
-        self.play(FadeOut(e1))
+        e1 = MathTex(r"y^2 = x^3 - 4\,x + 1")
+        t1 = subtitle("It concerns equation like this...")
+        self.add(e1,t1)
+        self.wait(1)
+        self.remove(t1)
+        e2 = MathTex(r"y^2 = x^3 - 7\,x + 6")
+        t1 = subtitle("..or this")
+        self.add(t1)
+        self.play(Transform(e1,e2))
+        self.wait(1)
 
         # plot elliptic curve
         axes = NumberPlane()
         axes.set_z_index(0.1)
         self.add(axes)
-        E = EllipticCurve(RR, [-.25, 0.1])
+        E = EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         curve.set_z_index(3)
-        self.play(Create(curve))
+        self.remove(e2)
+        e2.to_corner(UL)
+        self.add(e1)
+        self.play(
+            Create(curve),
+            e1.animate.to_corner(UL),
+            run_time=1
+        )
         self.wait(1)
 
+        E2 = EllipticCurve([-7, 6])
+        curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        curve2.set_z_index(3)
+        self.play(
+            Transform(curve, curve2),
+            Transform(e1,e2),
+            run_time=1
+        )
+        self.wait(1)
+
+        # P, Q = E.gens()
+        # EQ = []
+        # for n in [-3,-2,-1,0,1,2,3]:
+        #     for m in range(-13,13):
+        #         R = n*P+m*Q
+        #         if R != 0:
+        #             EQ.append(R)
+        # EQ.sort(key= lambda R : R.height())
         #
-        self.wait(2)
+        # pts_in_pic = []
+        # vpts = VGroup()
+        # for R in EQ:
+        #     if R[0].abs() < 7.111 and R[1].abs() < 4:
+        #         rr = np.array([R[0],R[1],0.])
+        #         pts_in_pic.append(rr)
+        #         vpts.add(Dot(rr))
+        #
+        # self.add(vpts)
+        #
+        #
+        # #
+        # self.wait(2)
 
 
 # now render it
