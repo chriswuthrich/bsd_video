@@ -23,7 +23,7 @@ def subtitle(said):
     v.add(background_box)
     v.add(vt)
     v.to_edge(DOWN)
-    v.set_z_index(1) # a bit in the foreground
+    v.set_z_index(1)  # a bit in the foreground
     return v
 
 
@@ -66,15 +66,15 @@ class FirstScene(Scene):
         )
 
         # equation
-        e1 = MathTex(r"y^2 = x^3 - 4\,x + 1")
+        e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
         t1 = subtitle("It concerns equation like this...")
-        self.add(e1,t1)
+        self.add(e1, t1)
         self.wait(1)
         self.remove(t1)
-        e2 = MathTex(r"y^2 = x^3 - 7\,x + 6")
+        e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
         t1 = subtitle("..or this")
         self.add(t1)
-        self.play(Transform(e1,e2))
+        self.play(Transform(e1, e2))
         self.wait(1)
 
         # plot elliptic curve
@@ -87,12 +87,16 @@ class FirstScene(Scene):
         self.remove(e2)
         e2.to_corner(UL)
         self.add(e1)
+
         self.play(
             Create(curve),
             e1.animate.to_corner(UL),
             run_time=1
         )
         self.wait(1)
+        framebox1 = SurroundingRectangle(e1[1], buff=.1)
+        framebox2 = SurroundingRectangle(e1[3], buff=.1)
+        self.add(framebox1, framebox2)
 
         # merge to another curve
         E2 = EllipticCurve([-7, 6])
@@ -100,7 +104,7 @@ class FirstScene(Scene):
         curve2.set_z_index(3)
         self.play(
             Transform(curve, curve2),
-            Transform(e1,e2),
+            Transform(e1, e2),
             run_time=1
         )
         self.wait(1)
@@ -108,21 +112,21 @@ class FirstScene(Scene):
         # try to give lots of curves
         ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
         for A,B in ABs:
-            self.remove(e1,curve)
-            E2 = EllipticCurve([A,B])
+            self.remove(e1, curve)
+            E2 = EllipticCurve([A, B])
             curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
             curve.set_z_index(3)
-            if A>=0:
+            if A >= 0:
                 Astr = fr"+{A}\,"
             else:
                 Astr = fr"-{-A}\,"
-            if B>= 0:
+            if B >= 0:
                 Bstr = fr"+{B}"
             else:
                 Bstr = fr"-{-B}"
-            e1 = MathTex(r"y^2 = x^3 "+Astr+" x "+Bstr)
+            e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
             e1.to_corner(UL)
-            self.add(curve,e1)
+            self.add(curve, e1)
             self.wait(1)
 
 
