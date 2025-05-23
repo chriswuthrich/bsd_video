@@ -39,38 +39,37 @@ class SecondScene(ThreeDScene):
         dir is the direction in which the label is off the dot
         """
         sc = 0.3  # how much distance between them
-        v = Sphere(center = np.array([R[0],R[1],0]), radius=0.05, color=WHITE)
+        v = Sphere(center=np.array([R[0],R[1],0]), radius=0.05, color=WHITE)
         lastr = self.my_latex(R)
-        print(lastr)
         la = MathTex(lastr, color=YELLOW_A)
-        la.scale(.5)
         la.move_to(np.array([R[0],R[1],0.])+sc*dir)
         return v, la
 
     def my_numberplane(self,
                        x_range=np.array([-50, 50, 1]),
                        y_range=np.array([-10, 100, 1]),
-                       colour=TEAL):
+                       colour=TEAL,
+                       thickness=0.001):
         """
         Version of NumberPlane used in 3D
         """
         v = VGroup()
         xx = x_range[0]
         yy = y_range[0]
-        while xx < x_range[1]:
-            v.add(Line3D(
-                np.array([xx, y_range[0], 0]),
-                np.array([xx, y_range[1], 0]),
-                thickness=.002,
-                color=colour))
-            xx += x_range[2]
         while yy < y_range[1]:
             v.add(Line3D(
                 np.array([x_range[0],yy,0]),
                 np.array([x_range[1],yy,0]),
-                thickness=.001,
-                color=colour))
+                thickness=thickness,
+                color=colour if xx !=0 else WHITE))
             yy += y_range[2]
+        while xx < x_range[1]:
+            v.add(Line3D(
+                np.array([xx, y_range[0], 0]),
+                np.array([xx, y_range[1], 0]),
+                thickness=thickness,
+                color=colour if xx != 0 else WHITE))
+            xx += x_range[2]
         return v
 
     def construct(self):
@@ -109,7 +108,6 @@ class SecondScene(ThreeDScene):
         self.wait(1)
         self.play(Uncreate(vpts))
         self.wait(2)
-
 
 # now render it
 if __name__ == "__main__":
