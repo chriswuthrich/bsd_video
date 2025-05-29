@@ -64,6 +64,7 @@ def sline_to_vmobject(g):
         v = VMobject(stroke_color=colour, stroke_width=4*thickness)
         v.start_new_path(first_vertex)
         v.add_points_as_corners( [np.array([P[0], P[1], 0]) for P in pts] )
+        v.make_smooth()
         return v
 
 

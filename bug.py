@@ -12,8 +12,23 @@ class IsItABug(ThreeDScene):
         self.move_camera(phi=0.9*PI/2, frame_center=(0, -10, 5), run_time=3)
         self.wait(1)
 
+class AnotherScene(ThreeDScene):
+
+    def construct(self):
+        self.set_camera_orientation(phi=0, theta=-PI/2, frame_center=(0,0,5))
+        L = Line3D([0,-10,0],[0,10000,0], color=WHITE)
+        L2 = Line3D([-100,0,0], [100,0,0], color=WHITE)
+        L3 = Line3D([1,-10,0],[1,10000,0], color=TEAL)
+        L4 = Line3D([-100,1,0], [100,1,0], color=TEAL)
+        f = lambda t : np.array([t**2,t**3,0])
+        C = ParametricFunction(f,[0,100])
+        self.add(L, L2, L3, L4, C)
+        self.wait(1)
+        self.move_camera(phi=0.9*PI/2, frame_center=(0, -10, 5), run_time=3)
+        self.wait(1)
+
 
 if __name__ == "__main__":
     with tempconfig({"quality": "medium_quality", "preview": True}):
-        scene = IsItABug()
+        scene = AnotherScene()
         scene.render()

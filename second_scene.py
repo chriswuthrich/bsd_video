@@ -72,6 +72,18 @@ class SecondScene(ThreeDScene):
             xx += x_range[2]
         return v
 
+    # try creating curve with parametric plot
+    # doesn't work
+    def curve_again(self):
+        E = EllipticCurve([-4, 1])
+        wp = E.weierstrass_p().truncate(20)
+        wp2 = wp.derivative()
+        om1, om2 = E.period_lattice().basis()
+        def func(t):
+            return np.array([wp(t), wp2(t), 0])
+        v = ParametricFunction(func, t_range = (-om1/2, om1/2)).set_color(RED_A)
+        return v
+
     def construct(self):
 
         E, EQ = self.calc_curve()
@@ -82,6 +94,8 @@ class SecondScene(ThreeDScene):
         nu = self.my_numberplane()
         self.add(nu)
         self.add(smanim(E.plot(xmin=-3, xmax=100, ymin=-100, ymax=100, color="yellow")))
+        # cu = self.curve_again()
+        # self.add(cu)
 
         for R in EQ[:5]:
             v, la = self.pt_with_label(R)
@@ -99,12 +113,22 @@ class SecondScene(ThreeDScene):
         self.add(vpts)
         self.wait(2)
 
-        self.move_camera(phi=0.45*PI/2, frame_center=(0, -5, 5))
-        # self.remove(nu)
-        # nu = NumberPlane(x_range=[-100,100,2],y_range=[-10,100,2])
-        # self.add(nu)
-        self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
+        number_of_grid_changes = 5
+        y_grid_steps = [1,2,4,8,8]
+        x_grid_steps = [1,2,2,4,4]
+        for i in range(number_of_grid_changes):
+            self.remove(nu)
+            nu = self.my_numberplane(
+                       x_range=np.array([-50, 50, x_grid_steps[i]]),
+                       y_range=np.array([-10, 100, y_grid_steps[i]]),
+                       colour=TEAL,
+                       thickness=0.001)
+            self.add(nu)
+            phi_end = PI/2 * i/number_of_grid_changes
+            frame_centre = -10*i/number_of_grid_changes
+            self.move_camera(phi=phi_end, frame_center=(0, frame_centre, 5))
 
+        self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
         self.wait(1)
         self.play(Uncreate(vpts))
         self.wait(2)
