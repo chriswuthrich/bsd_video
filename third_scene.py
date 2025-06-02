@@ -17,6 +17,28 @@ from first_scene import subtitle
 class ThirdScene(Scene):
 
     def construct(self):
+        gradient_rect = Rectangle(
+            width=config.frame_height,
+            height=config.frame_width,
+            fill_opacity=1,
+        )
+        gradient_rect.set_fill(
+            color=[rgb_to_color([0.0, 0.0, 0.2]), BLACK],
+            opacity=1
+        )
+        gradient_rect.rotate(PI/2)
+        self.add(gradient_rect)
+
+
+        # define N(T)
+        te_defnt = Tex(r"$\mathcal{N}(T) = \# \Bigl\{ P\in E(\mathbb{Q}) \, : \, \lvert X\rvert, \lvert Y\rvert, \lvert Z\rvert \leq T \Bigr\} $")
+        self.add(te_defnt)
+        self.wait(2)
+
+        te_defmq = Tex(r"$\mathcal{M}(Q) = \# E\bigl({}^{\mathbb{Z}}\!/\!{}_{Q\mathbb{Z}}\bigr)$")
+        self.remove(te_defnt)
+        self.add(te_defmq)
+        self.wait(2)
 
         te_compare = Text("Compare")
         te_compare.shift(2*LEFT)
