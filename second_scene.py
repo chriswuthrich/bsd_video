@@ -118,15 +118,21 @@ class SecondScene(ThreeDScene):
         x_grid_steps = [1,2,2,4,4]
         for i in range(number_of_grid_changes):
             self.remove(nu)
+            if i == 0:
+                rf = rate_functions.ease_in_sine
+            elif i == number_of_grid_changes - 1:
+                rf = rate_functions.ease_out_sine
+            else:
+                rf = rate_functions.linear
             nu = self.my_numberplane(
                        x_range=np.array([-50, 50, x_grid_steps[i]]),
                        y_range=np.array([-10, 100, y_grid_steps[i]]),
                        colour=TEAL,
-                       thickness=0.001)
+                       thickness=0.01)
             self.add(nu)
             phi_end = PI/2 * i/number_of_grid_changes
             frame_centre = -10*i/number_of_grid_changes
-            self.move_camera(phi=phi_end, frame_center=(0, frame_centre, 5))
+            self.move_camera(phi=phi_end, frame_center=(0, frame_centre, 5), rate_func=rf)
 
         self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
         self.wait(1)
