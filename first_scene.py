@@ -1,3 +1,11 @@
+r"""
+Part of the bsd_video
+
+This uses the characters and introduces
+elliptic curves with some 2d pictures.
+
+"""
+
 from manim import *
 from sage.all import *
 from character import StudentChar

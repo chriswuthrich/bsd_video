@@ -1,3 +1,10 @@
+r"""
+Part of the bsd_video
+
+Creates dummy characters.
+
+"""
+
 from manim import *
 
 class StudentChar(VGroup):

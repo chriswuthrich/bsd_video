@@ -1,4 +1,6 @@
 r"""
+Part of the bsd_video
+
 File to implement conversion of sage plots to
 manim objects
 
@@ -13,10 +15,8 @@ implement more 2d objects
 """
 
 
-
 from manim import *
 from sage.all import *
-
 
 
 def smanim(gr):
@@ -104,6 +104,6 @@ class Test_smanim(Scene):
 
 
 if __name__ == "__main__":
-    with tempconfig({"quality": "medium_quality", "preview": True}):
+    with tempconfig({"quality": "low_quality", "preview": True}):
         scene = Test_smanim()
         scene.render()

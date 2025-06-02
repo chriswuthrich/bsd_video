@@ -1,3 +1,12 @@
+r"""
+Part of the bsd_video
+
+Here the actual conjecture is
+explained and illustrated
+with graphs.
+
+"""
+
 from manim import *
 from sage.all import *
 from character import StudentChar

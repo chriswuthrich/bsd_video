@@ -1,3 +1,15 @@
+r"""
+Part of the bsd_video
+
+This will contain the intro
+of projective coordinates
+by going to a 3D scene.
+
+Due to bugs this is not done
+and renders slowly.
+
+"""
+
 from manim import *
 from sage.all import *
 from character import StudentChar
