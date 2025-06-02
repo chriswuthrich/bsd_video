@@ -11,24 +11,26 @@ class ThirdScene(Scene):
 
         te_compare = Text("Compare")
         te_compare.shift(2*LEFT)
+
+        rhs = VGroup()
+
         te_nt1 = Tex(r"$\mathcal{N}(T) = $")
-        te_nt2 = Text("bounded rational \n solutions")
+        te_nt2 = Tex("bounded rational \n solutions")
         te_nt = VGroup(te_nt1,te_nt2)
         te_nt.arrange(RIGHT)
-        te_nt.shift(2*RIGHT+1*UP)
+
         te_mq1 = Tex(r"$\mathcal{M}(Q) = $")
-        te_mq2 = Tex("solutions \n modulo ", r"$Q$")
+        te_mq2 = Tex(r"solutions \\ modulo ", r"$Q$")
         te_mq = VGroup(te_mq1,te_mq2)
         te_mq.arrange(RIGHT)
-        te_mq.shift(2*RIGHT+1*DOWN)
-        # te_mq.set_color_by_tex("Q", RED)
-        self.add(te_compare, te_nt, te_mq)
-        self.wait(2)
 
         te_qt = Tex(r"$Q = T! = 1 \cdot 2 \cdots T$")
-        te_qt.shift(2*RIGHT+2*DOWN)
-        self.add(te_mq)
+        rhs.add(te_nt,te_mq,te_qt)
+        rhs.arrange(DOWN, buff=1.1)
+        rhs.shift(3*RIGHT)
+        self.add(rhs)
         self.wait(2)
+
 
         self.remove(te_compare)
         te_lim = Tex(r"$\lim_{T\to\infty} \frac{T!\cdot \mathcal{N}(T)^2}{\mathcal{M}(T!)}$")
