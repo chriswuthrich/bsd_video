@@ -86,9 +86,10 @@ class ThirdScene(Scene):
         te_compare.shift(2*LEFT)
 
         rhs = VGroup()
-        te_nt1 = Tex(r"$\mathcal{N}(T) = \# $")
-        te_nt2 = Text("bounded \n" + "rational \n" + "solutions").scale(.8)
-        te_nt = VGroup(te_nt1,te_nt2)
+        te_nt1 = Tex(r"$\mathcal{N}(T)$")
+        te_nt2 = Tex(r"$ = \# $")
+        te_nt3 = Text("bounded \n" + "rational \n" + "solutions").scale(.8)
+        te_nt = VGroup(te_nt1,te_nt2, te_nt3)
         te_nt.arrange(RIGHT, buff=0.2)
 
         te_mq1 = Tex(r"$\mathcal{M}(Q) = \# $")
@@ -108,6 +109,10 @@ class ThirdScene(Scene):
         rhs.arrange(DOWN, buff=1.1, aligned_edge=LEFT)
         rhs.shift(3.5*RIGHT)
         self.add(rhs)
+
+        new_te_mq4 = Tex(r"$T!$")
+        new_te_mq4.shift(te_mq4.get_center())
+        self.play(Transform(te_mq4,new_te_mq4), run_time=1)
         self.wait(2)
 
         self.remove(te_compare)
