@@ -69,8 +69,9 @@ def mq():
     """
     te_mq1a = Tex(r"$\mathcal{M}($")
     te_mq1b = Tex("$Q$")
-    te_mq1c = Tex(r"$) = \# $")
-    te_mq1 = VGroup(te_mq1a, te_mq1b, te_mq1c)
+    te_mq1c = Tex(r"$)$")
+    te_mq1d = Tex(r"$= \# $")
+    te_mq1 = VGroup(te_mq1a, te_mq1b, te_mq1c, te_mq1d)
     te_mq1.arrange(RIGHT, buff=0.1)
     te_mq2 = Text("solutions").scale(0.8)
     te_mq3 = Text("modulo ").scale(.8)
@@ -136,15 +137,17 @@ class ThirdScene(Scene):
         te_lim = limit_expression()  #  Tex(r"$\lim_{T\to\infty} \frac{T!\cdot \mathcal{N}(T)^2}{\mathcal{M}(T!)}$")
         te_lim.scale(2)
         te_lim.shift(3*LEFT)
-        self.add(te_lim[1][1])
+        self.add(te_lim[1][1])  # ---
         self.wait(1)
-        self.add(te_lim[1][0][2])
+        self.add(te_lim[1][0][2])  # N(T)^2
         self.wait(1)
-        self.add(te_lim[1][2])
+        te_mt1 = te_lim[1][2]  # M(T!)
+        te_mt2 = VGroup(te_mq[0][0], new_te_mq0, te_mq[0][2])
+        self.play(Transform(te_mt2,te_mt1), run_time=2)
         self.wait(1)
-        self.add(te_lim[1][0])
+        self.add(te_lim[1][0])  # numerator
         self.wait(1)
-        self.add(te_lim[0])
+        self.add(te_lim[0])   # lim
         self.wait(1)
 
         self.remove(te_mq, te_qt, te_nt)
