@@ -62,6 +62,27 @@ def limit_expression():
     v.arrange(RIGHT, buff=.1)
     return v
 
+def mq():
+    r"""
+    Writes M(Q) = # solutions modulo Q
+
+    """
+    te_mq1a = Tex(r"$\mathcal{M}($")
+    te_mq1b = Tex("$Q$")
+    te_mq1c = Tex(r"$) = \# $")
+    te_mq1 = VGroup(te_mq1a, te_mq1b, te_mq1c)
+    te_mq1.arrange(RIGHT, buff=0.1)
+    te_mq2 = Text("solutions").scale(0.8)
+    te_mq3 = Text("modulo ").scale(.8)
+    te_mq4 = Tex(r"$Q$")
+    te_mqa = VGroup(te_mq3, te_mq4)
+    te_mqa.arrange(RIGHT, buff=.2)
+    te_mqa[1].shift(0.05 * DOWN)
+    te_mqb = VGroup(te_mq2,te_mqa)
+    te_mqb.arrange(DOWN, buff=0.1, aligned_edge=LEFT)
+    te_mq = VGroup(te_mq1,te_mqb)
+    te_mq.arrange(RIGHT, buff=0.2)
+    return te_mq
 
 class ThirdScene(Scene):
 
@@ -92,17 +113,7 @@ class ThirdScene(Scene):
         te_nt = VGroup(te_nt1,te_nt2, te_nt3)
         te_nt.arrange(RIGHT, buff=0.2)
 
-        te_mq1 = Tex(r"$\mathcal{M}(Q) = \# $")
-        te_mq2 = Text("solutions").scale(0.8)
-        te_mq3 = Text("modulo ").scale(.8)
-        te_mq4 = Tex(r"$Q$")
-        te_mqa = VGroup(te_mq3, te_mq4)
-        te_mqa.arrange(RIGHT, buff=.2)
-        te_mqa[1].shift(0.05 * DOWN)
-        te_mqb = VGroup(te_mq2,te_mqa)
-        te_mqb.arrange(DOWN, buff=0.1, aligned_edge=LEFT)
-        te_mq = VGroup(te_mq1,te_mqb)
-        te_mq.arrange(RIGHT, buff=0.2)
+        te_mq = mq()  # M(Q) = # solutions modulo Q
 
         te_qt = Tex(r"$Q = T! = 1 \cdot 2 \cdots T$")
         rhs.add(te_nt,te_mq,te_qt)
@@ -111,8 +122,14 @@ class ThirdScene(Scene):
         self.add(rhs)
 
         new_te_mq4 = Tex(r"$T!$")
+        te_mq4 = te_mq[1][1][1]
         new_te_mq4.shift(te_mq4.get_center())
-        self.play(Transform(te_mq4,new_te_mq4), run_time=1)
+        new_te_mq0 = Tex(r"$T!$")
+        te_mq0 = te_mq[0][1]
+        new_te_mq0.shift(te_mq0.get_center())
+        self.play(Transform(te_mq4,new_te_mq4),
+                  Transform(te_mq0, new_te_mq0),
+                  run_time=1)
         self.wait(2)
 
         self.remove(te_compare)
