@@ -12,6 +12,7 @@ from sage.all import *
 from character import StudentChar
 from msage import smanim
 from first_scene import subtitle
+import json
 
 
 def my_background():
@@ -84,6 +85,7 @@ def mq():
     te_mq = VGroup(te_mq1,te_mqb)
     te_mq.arrange(RIGHT, buff=0.2)
     return te_mq
+
 
 class ThirdScene(Scene):
 
@@ -194,6 +196,7 @@ class ThirdScene(Scene):
         te_conv.shift(2.5*DOWN)
         self.add(te_conv)
         self.wait(2)
+
 
 
 #  now render it
