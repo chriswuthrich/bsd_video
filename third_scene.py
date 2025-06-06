@@ -122,6 +122,7 @@ class ThirdScene(Scene):
         rhs.shift(3.5*RIGHT)
         self.add(rhs)
 
+        # change Q to T!
         new_te_mq4 = Tex(r"$T!$")
         te_mq4 = te_mq[1][1][1]
         new_te_mq4.shift(te_mq4.get_center())
@@ -134,17 +135,49 @@ class ThirdScene(Scene):
         self.wait(2)
 
         self.remove(te_compare)
-        te_lim = limit_expression()  #  Tex(r"$\lim_{T\to\infty} \frac{T!\cdot \mathcal{N}(T)^2}{\mathcal{M}(T!)}$")
+        te_lim = limit_expression()
         te_lim.scale(2)
         te_lim.shift(3*LEFT)
         self.add(te_lim[1][1])  # ---
         self.wait(1)
-        self.add(te_lim[1][0][2])  # N(T)^2
+
+        # move N(T)
+        te_nt_target = te_lim[1][0][2][0]  # N(T)
+        te_nt_source = te_nt1.copy()
+        path_nt = ArcBetweenPoints(te_nt_source.get_center(), te_nt_target.get_center(), angle= PI / 5)
+
+        def updater_nt(mob, alpha):
+            point = path_nt.point_from_proportion(alpha)
+            scale = interpolate(1, te_nt_target.width/te_nt_source.width, alpha)
+            mob.move_to(point)
+            mob.set(width=te_nt_source.width * scale)
+
+        self.play(UpdateFromAlphaFunc(te_nt_source, updater_nt), run_time=3)
+        # te_lim[1][0][2][0] = te_nt_source
         self.wait(1)
-        te_mt1 = te_lim[1][2]  # M(T!)
-        te_mt2 = VGroup(te_mq[0][0], new_te_mq0, te_mq[0][2])
-        self.play(Transform(te_mt2,te_mt1), run_time=2)
+
+        # add square and highlight it
+        te_sq = te_lim[1][0][2][1]  # "^2"
+        self.add(te_sq)
+        self.play(Indicate(te_sq), run_time=1)
+        self.add(te_lim[1][0][2])
+        self.remove(te_nt_source)
+
+        # move the M(T!) to the fraction
+        te_mt1 = te_lim[1][2]  # M(T!) target
+        te_mt2 = VGroup(te_mq[0][0], new_te_mq0, te_mq[0][2]).copy()
+        path_mt = ArcBetweenPoints(te_mt2.get_center(), te_mt1.get_center(), angle=- PI / 5)
+
+        def updater_mt(mob, alpha):
+            point = path_mt.point_from_proportion(alpha)
+            scale = interpolate(1, te_mt1.width/te_mt2.width, alpha)
+            mob.move_to(point)
+            mob.set(width=te_mt2.width * scale)
+
+        self.play(UpdateFromAlphaFunc(te_mt2, updater_mt), run_time=3)
+        te_lim[1][2] = te_mt2
         self.wait(1)
+
         self.add(te_lim[1][0])  # numerator
         self.wait(1)
         self.add(te_lim[0])   # lim
