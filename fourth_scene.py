@@ -102,6 +102,15 @@ class FourthScene(Scene):
         self.play(t.animate.set_value(7), run_time=10, rate_func=linear)
         self.wait(2)
 
+        now_axes = axes.copy()
+        gras = VGroup()
+        for aa in [-3,-2,-1,0,1,2,3,4]:
+            li = load_list(f"sage_notebooks/plotpts_curve_aa{aa}.json")
+            graa = VMobject(color=YELLOW)
+            graa.set_points_as_corners([now_axes.c2p(x, y) for x, y in li])
+            gras.add(graa)
+            self.play(Create(graa), run_time=3)
+
 
 #  now render it
 if __name__ == "__main__":
