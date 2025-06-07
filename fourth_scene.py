@@ -29,110 +29,74 @@ class FourthScene(Scene):
 
         li = load_list("plotpts_curve_rk2.json")
 
-        axes = Axes(
-            x_range=[0, 10000, 1000],
-            y_range=[0, 10],
-            x_axis_config = {
-                "include_numbers" : False,
-            },
-            axis_config={"color": WHITE},
-        )
-
-        # Add custom x-axis labels at powers of 10
-        for val in [10, 100, 1000]:
-            label = MathTex(str(val)).scale(0.4)
-            label.next_to(axes.c2p(val, 0), DOWN)
-            axes.add(label)
-        self.add(axes)
-
-        gr = VMobject(color=YELLOW)
-        gr.set_points_as_corners([axes.c2p(x, y) for x, y in li])
-        self.play(Create(gr), run_time=3)
+        # axes = Axes(
+        #     x_range=[0, 10000, 1000],
+        #     y_range=[0, 10],
+        #     x_axis_config = {
+        #         "include_numbers" : False,
+        #     },
+        #     axis_config={"color": WHITE},
+        # )
         #
+        # # Add custom x-axis labels at powers of 10
+        # for val in [10, 100, 1000]:
+        #     label = MathTex(str(val)).scale(0.4)
+        #     label.next_to(axes.c2p(val, 0), DOWN)
+        #     axes.add(label)
+        # self.add(axes)
+        #
+        # gr = VMobject(color=YELLOW)
+        # gr.set_points_as_corners([axes.c2p(x, y) for x, y in li])
+        # self.play(Create(gr), run_time=3)
+
         # self.wait(1)
         # self.remove(gr, axes)
-        # # ValueTracker to animate max x-value
-        # x_max_tracker = ValueTracker(1)
-        #
-        # def updater_axes(mob):
-        #     mob.become(
-        #         Axes(x_range=[0, 1000*x_max_tracker.get_value(), 100*x_max_tracker.get_value()],
-        #         y_range=[0, 10],
-        #         x_axis_config = {"include_numbers" : False},
-        #         axis_config={"color": WHITE},
-        #         )
-        #     )
-        # axes.add_updater(updater_axes)
-        #
-        # # # Graph that depends on the current x_max
-        # gr = VMobject(color=YELLOW)
-        # def updater_gr(mob):
-        #     mob.become(VMobject(color=YELLOW).set_points_as_corners([axes.c2p(x, y) for x, y in li if x<900*x_max_tracker.get_value()]))
-        # gr.add_updater(updater_gr)
-        #
-        # # graph = always_redraw(lambda: axes.plot(
-        # #     func,
-        # #     x_range=[0, x_max_tracker.get_value()],
-        # #     use_smoothing=True,
-        # #     color=BLUE,
-        # # ))
-        # #
-        # self.add(axes, gr)
-        # #
-        # # # Animate the value tracker to increase x_max over time
-        # self.play(x_max_tracker.animate.set_value(2), run_time=5, rate_func=linear)
-        # self.wait(1)
 
-        self.remove(gr, axes)
-        self.wait(.5)
-        t = ValueTracker(5)
-        axes = Axes(
-            x_range=[0, t.get_value(), 1],
-            y_range=[0, 5, 1],
-            x_length=10,
-            y_length=5,
-            axis_config={"include_numbers": True}
-        )
+        # ValueTracker to animate max x-value
+        t = ValueTracker(2)  # start at 100 = 10^2
+        x_max = lambda tt: 10**tt
+        ticks = lambda tt: 10**(np.floor(tt)-1)
 
-        # Function to plot
-        def func(x):
-            return 0.5 * x ** 0.5
+        def get_axes():
+            axes = Axes(
+                        x_range=[0, x_max(t.get_value()), ticks(t.get_value())],
+                        y_range=[0, 7, 1],
+                        x_length=10,
+                        y_length=5,
+                        x_axis_config={"include_numbers": False, 'tip_shape': StealthTip},
+                        y_axis_config={"include_numbers": True, 'include_tip': False}
+                        )
+            ft = floor(t.get_value())
+            for j in [ft-1,ft]:
+                i = 10**j
+                label = MathTex(f"10^{str(j)}").scale(0.8)
+                label.next_to(axes.c2p(i, 0), DOWN)
+                axes.add(label)
+                if j == ft and t.get_value() > np.log10(5) + ft:
+                    label2 = MathTex(f"5\\cdot 10^{str(j)}").scale(0.8)
+                    label2.next_to(axes.c2p(5*i, 0), DOWN)
+                    axes.add(label2)
 
-        # Add updater to axes
-        def update_axes(mob):
-            new_x_range = [0, t.get_value(), 1]
-            # Save current state
-            mob.become(
-                Axes(
-                    x_range=new_x_range,
-                    y_range=[0, 5, 1],
-                    x_length=10,
-                    y_length=5,
-                    axis_config={"include_numbers": True}
-                )
-            )
+            return axes
 
-        gr = axes.plot(func,
-                       x_range=[0, 1],
-                       color=BLUE,
-                       )
+        axes = always_redraw(get_axes)
+        self.add(axes)
 
-        def update_gr(mob):
-            mob.become(
-               axes.plot(func,
-                       x_range=[0, t.get_value()],
-                       color=BLUE,
-                       )
-            )
+        def get_graph():
+            axes = get_axes()
+            gr = VMobject(color=YELLOW)
+            lit = [np.array([x,y]) for x,y in li if x < 0.9 * x_max(t.get_value())]
+            gr.set_points_as_corners([axes.c2p(x, y) for x, y in lit])
+            return gr
 
-        axes.add_updater(update_axes)
-        gr.add_updater(update_gr)
+        gr = always_redraw(get_graph)
+        self.add(gr)
+        self.wait(2)
 
-        self.add(axes, gr)
+        # play from 10^3 to 10^(3+4)
+        self.play(t.animate.set_value(7), run_time=10, rate_func=linear)
+        self.wait(2)
 
-        # Animate the tracker to increase x_max
-        self.play(t.animate.set_value(10), run_time=5, rate_func=linear)
-        self.wait()
 
 #  now render it
 if __name__ == "__main__":
