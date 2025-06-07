@@ -53,7 +53,7 @@ class FourthScene(Scene):
         # self.remove(gr, axes)
 
         # ValueTracker to animate max x-value
-        t = ValueTracker(2)  # start at 100 = 10^2
+        t = ValueTracker(3)  # start at 1000 = 10^3
         x_max = lambda tt: 10**tt
         ticks = lambda tt: 10**(np.floor(tt)-1)
 
@@ -66,17 +66,22 @@ class FourthScene(Scene):
                         x_axis_config={"include_numbers": False, 'tip_shape': StealthTip},
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
+            # axes.shift(-3*DOWN-5*LEFT)
             ft = floor(t.get_value())
-            for j in [ft-1,ft]:
-                i = 10**j
-                label = MathTex(f"10^{str(j)}").scale(0.8)
-                label.next_to(axes.c2p(i, 0), DOWN)
-                axes.add(label)
-                if j == ft and t.get_value() > np.log10(5) + ft:
-                    label2 = MathTex(f"5\\cdot 10^{str(j)}").scale(0.8)
-                    label2.next_to(axes.c2p(5*i, 0), DOWN)
-                    axes.add(label2)
-
+            i = 10**ft
+            label = MathTex(f"10^{str(ft)}").scale(0.8)
+            label.next_to(axes.c2p(i, 0), DOWN)
+            axes.add(label)
+            label1 = MathTex(f"10^{str(ft-1)}").scale(0.8)
+            label1.next_to(axes.c2p(i/10, 0), DOWN)
+            axes.add(label1)
+            if t.get_value() < np.log10(5) + ft:
+                i = ft - 1
+            else:
+                i = ft
+            label2 = MathTex(f"5\\cdot 10^{str(i)}").scale(0.8)
+            label2.next_to(axes.c2p(5*10**i, 0), DOWN)
+            axes.add(label2)
             return axes
 
         axes = always_redraw(get_axes)
