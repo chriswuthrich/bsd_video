@@ -27,7 +27,7 @@ class FourthScene(Scene):
         gradient_rect = my_background()
         self.add(gradient_rect)
 
-        li = load_list("plotpts_curve_rk2.json")
+        li = load_list("data/plotpts_curve_aa4_up_to_9.json")
 
         # axes = Axes(
         #     x_range=[0, 10000, 1000],
@@ -66,7 +66,6 @@ class FourthScene(Scene):
                         x_axis_config={"include_numbers": False, 'tip_shape': StealthTip},
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
-            # axes.shift(-3*DOWN-5*LEFT)
             ft = floor(t.get_value())
             i = 10**ft
             label = MathTex(f"10^{str(ft)}").scale(0.8)
@@ -98,18 +97,31 @@ class FourthScene(Scene):
         self.add(gr)
         self.wait(2)
 
-        # play from 10^3 to 10^(3+4)
-        self.play(t.animate.set_value(7), run_time=10, rate_func=linear)
+        # play from 10^3 to 10^(9)
+        self.play(t.animate.set_value(9), run_time=15, rate_func=linear)
         self.wait(2)
 
-        now_axes = axes.copy()
-        gras = VGroup()
+        # plot several in logarithmic coordinates
+        new_axes = Axes(
+                        x_range=[0, 9, 1],
+                        y_range=[0, 7, 1],
+                        x_length=10,
+                        y_length=5,
+                        x_axis_config={"include_numbers": False, 'tip_shape': StealthTip},
+                        y_axis_config={"include_numbers": True, 'include_tip': False}
+                        )
+        for i in range(9):
+            label = MathTex(f"10^{str(i)}").scale(0.5)
+            label.next_to(new_axes.c2p(i, 0), DOWN)
+            axes.add(label)
+
+        self.clear()
+        self.add(new_axes)
         for aa in [-3,-2,-1,0,1,2,3,4]:
-            li = load_list(f"sage_notebooks/plotpts_curve_aa{aa}.json")
+            li = load_list(f"data/plotpts_curve_aa{aa}_up_to_9.json")
             graa = VMobject(color=YELLOW)
-            graa.set_points_as_corners([now_axes.c2p(x, y) for x, y in li])
-            gras.add(graa)
-            self.play(Create(graa), run_time=3)
+            graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li])
+            self.play(Create(graa))
 
 
 #  now render it

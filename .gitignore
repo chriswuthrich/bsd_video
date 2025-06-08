@@ -1,6 +1,9 @@
 # manim output
 media/
 
+# old sage output
+data/old
+
 # latex output
 *.pdf
 *.aux
