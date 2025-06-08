@@ -100,10 +100,10 @@ class FourthScene(Scene):
         # play from 10^3 to 10^(9)
         self.play(t.animate.set_value(9), run_time=15, rate_func=linear)
         self.wait(2)
-
+        self.clear()
         # plot several in logarithmic coordinates
         new_axes = Axes(
-                        x_range=[0, 9, 1],
+                        x_range=[3, 9, 1],
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
@@ -113,16 +113,22 @@ class FourthScene(Scene):
         for i in range(9):
             label = MathTex(f"10^{str(i)}").scale(0.5)
             label.next_to(new_axes.c2p(i, 0), DOWN)
-            axes.add(label)
+            new_axes.add(label)
 
-        self.clear()
+
         self.add(new_axes)
-        for aa in [-3,-2,-1,0,1,2,3,4]:
+        colours = {-4: "#FF6B6B", -3: "#FFB86B", -2: "#FFD66B",
+                   -1: "#C2FF6B", 0: "#6BFF8E", 1: "#6BFFEF",
+                   2: "#6BD4FF", 3: "#6B8CFF", 4: "#B66BFF"}
+
+        for aa in [-4,-3,-2,-1,0,1,2,3,4]:
             li = load_list(f"data/plotpts_curve_aa{aa}_up_to_9.json")
-            graa = VMobject(color=YELLOW)
-            graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li])
+            graa = VMobject(color=colours[aa])
+            graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x>1000])
+            graa.set_style(stroke_width=1)
             self.play(Create(graa))
 
+        self.wait(1)
 
 #  now render it
 if __name__ == "__main__":
