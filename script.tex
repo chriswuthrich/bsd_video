@@ -6,7 +6,7 @@
 \usepackage{mathtools, amsopn, amssymb, amsfonts, amsthm}
 \usepackage{hyperref}
 
-\geometry{top=3cm, bottom=3cm, headheight=1cm, headsep=2cm, width=14cm, bindingoffset=0mm, marginpar=25mm, marginparsep=5mm}%,showframe}
+\geometry{top=2cm, bottom=2cm, width=17cm}
 \setlength{\parindent}{4mm}
 
 \setlist{noitemsep} % no extra space between items
@@ -19,6 +19,7 @@
 }
 
 \newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
 
 
 \begin{document}
@@ -27,7 +28,7 @@
   \maketitle
 
 \section{Elliptic Curves}
-\subsection{I will explain BSD}
+\subsection{Te will explain BSD}
 
 \begin{enumerate}
   \item st+te centred on background
@@ -69,36 +70,60 @@
    \item st: I know this is a projective curve.
    \item te: Indeed. We can now study integer solution $X$, $Y$, $Z$ to this equation instead.
    \item te: But if we, do we get extra solution, like when $Z$ is negative.
-   We need to identify solutions when they are just scalar multiples of each other. ($(X,Y,Z) = (-X,-Y,-Z) = (2X,2Y,2Z)$ as $x = \frac{X}{Z} = {-X}{-Z} = {2X}{2Y}$)
+   We need to identify solutions when they are just scalar multiples of each other. ($(X,Y,Z) = (-X,-Y,-Z) = (2X,2Y,2Z)$ as $x = \frac{X}{Z} = \frac{-X}{-Z} = \frac{2X}{2Y}$)
    \item te: And we have added accidentality a new point, the one with $Z=0$ and $X=0$ and $Y=1$.
    To visual it as a point infinitely far away, we should move to see this. (Turn to the 3d Scene)
  \end{enumerate}
 
- % up to here
 
 
+\section{Count points}
+\subsection{Counting global points}
+\begin{enumerate}
+  \item te: The conjecture is about counting rational solutions
+  \item st: There are only finitely many?
+  \item te: No! For some curves like $y^2=x^3-4x-2$ there are only four points. (plot them)
+  \item te: But for our example $E$ there are infinitely many solutions.
+  \item te: We count them by size of the integers involved.
+  \item te: For instance there are 15 solutions with $\lvert X\rvert, \lvert Y\rvert , \lvert Z\rvert <10$ and 27 smaller than $100$. (give definition of $\mathcal{N}(T)$ and a list of values)
+  \item st: I see, these are the first solutions we would find if we search for them with a computer
+  \item te: Yep. Searching in a box.
+\end{enumerate}
 
-\section{Count rational points by height}
-\begin{itemize}
-  \item Define $H$ as max $X$ etc.
-  \item Plot them logarithmically as towers on the points on a rank 2 curve
-  \item Define $N(T)$
-  \item Naive search finds them in that order
-\end{itemize}
+\subsection{Counting modulo}
+(Not so clear yet)
+\begin{enumerate}
+ \item te: This counting will be compared to counting modulo.
+ \item te: We look for integers such that the two sides have the same remainder when dividing by -- say -- 10.
+ \item st: You solve $y^2 = x^3-4x+1$ modulo $10$.
+ \item te: Ehmm, yes, but also the points at infinity as there might be more than 1.
+ (projective equation modulo 10)
+ \item te: There are 27 solutions modulo 10 of which 11 are at infinity. (list them)
+ \item te: Here we again put equal solutions $(X,Y,Z)$ that were scaled by $3$, $7$ or $9$, the invertible elements in $\ZZ/10\ZZ$.
+ \item te: As $U$ increases the number of solutions modulo $U$ grows quickly.
+\end{enumerate}
 
-\section{Count modulo}
-\begin{itemize}
-  \item For an integer $U$, explain counting modulo $U$
-  \item More rational points more points mod $U$ (is wrong)
-  \item Set $U=T!$, really biiiiiig
-\end{itemize}
+\section{Conjecture}
+\subsection{State conjecture}
+\begin{enumerate}
+  \item te: Recall $\mathcal{N}$ and $\mathcal{M}$ on the right half
+  \item te: Pick $U=T!$
+  \item st: If $T$ is biiig, $T!$ is huuuuge.
+  \item te: Put $\mathcal{N}(T)$ on top of a fraction, and square it.
+  \item te: We compare to $\mathcal{M}(T!)$ by putting it in the denominator.
+  \item te: Balance with $T!$ on top and consider what happens if $T\to \infty$.
+  \item te: This is the conjecture. This converges to a positive real number.
+\end{enumerate}
 
-\section{Conjecture and non-evidence}
-\begin{itemize}
-  \item Introduce quotient and make conjecture
-  \item A convincing picture for rank 0 and one for rk 2
-  \item A picture with a jump for a point
-\end{itemize}
+\subsection{Evidence}
+\begin{enumerate}
+  \item te: Here is a plot for our curve of this fraction up to $1000$. Not clear yet. (Plot to $T$ up to $1000$, then increase.)
+  \item st: Does it converge? It seems bounded and well above $0$.
+  \item te: We can plot the fraction for a few other curves, including the one that has only finitely many solutions. (plot several curves in one graph, with the previous ones fading)
+  \item te points out the problem with the jumps at rational points.
+\end{enumerate}
+
+% up to here
 
 \section{Rank and original formulation}
 \begin{itemize}
