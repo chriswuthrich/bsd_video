@@ -8,12 +8,18 @@
 
 \geometry{top=3cm, bottom=3cm, headheight=1cm, headsep=2cm, width=14cm, bindingoffset=0mm, marginpar=25mm, marginparsep=5mm}%,showframe}
 \setlength{\parindent}{4mm}
+
 \setlist{noitemsep} % no extra space between items
+\setlist[enumerate,1]{label = \roman*),ref = \roman*}
+
 \hypersetup{
     breaklinks = {true}, % breaks links over lines
     pdftitle = {BSD Video script},
     pdfauthor = {Christian Wuthrich}
 }
+
+\newcommand{\QQ}{\mathbb{Q}}
+
 
 \begin{document}
   \title{Script for the BSD Video}
@@ -21,13 +27,56 @@
   \maketitle
 
 \section{Elliptic Curves}
-\begin{itemize}
-  \item I know the Riemann hypothesis (st), but do you know BSD (te)
-  \item Number theorists work on it, Clay prize
-  \item Start with $y^2 = x^3 + x+ $ with explicit integers and vary them, reflection
-  \item Rational solutions correspond to integer solution of $Y^2Z = X^3 + $
-  \item 3D Pictures and explanation about $O$
-\end{itemize}
+\subsection{I will explain BSD}
+
+\begin{enumerate}
+  \item st+te centred on background
+  \item st: I have heard about the Riemann hypothesis (bubbles with $\zeta(s)$)
+  You are a number theorist. Are you working on this?
+  \item te: Not directly. My research concerns another important conjecture,
+  also worth a million dollars (bubble $\zeta(s)$ is kicked out for an elliptic curve)
+  \item st: What is it?
+  \item te: The Birch and Swinnerton-Dyer conjecture.
+  \item st: Can you explain?
+  \item te: Sure. (Bubble increases, characters stay in the bubble, until the whole screen is in the bubble. Characters also move to the left lower corner.)
+\end{enumerate}
+
+\subsection{Define elliptic curves}
+ \begin{enumerate}
+   \item te: It deals with equations like $y^2=x^3-4x+1$, called elliptic curves (centred).
+   \item st: What do they look like?
+   \item te: Here (Equation moves up left, picture appears.)
+   \item st: What are other examples?
+   \item te: We need $y^2=x^3+$ integer $x+$ integers. (Equation and picture show other curves with coefficients framed)
+   \item st: They are all symmetric ? (Back to $E$)
+   \item te: Yes as $y$ only appears as an even power ($(-y)^2 = y^2 = \dots$)
+ \end{enumerate}
+
+ \subsection{Rational points}
+ \begin{enumerate}
+   \item st: What you study about them?
+   \item te: I count solutions to the equation with both $x$ and $y$ rational. ($x,y\in\QQ$ appears)
+   \item st: Hmm, if $x=0$ and $y$ \dots $y=1$ or $y=-1$.
+   \item te: Yep. I chose an example with a lot of solutions (Points are highlighted successively, including one really complicated example)
+   \item te: Some other elliptic curves have very few.
+ \end{enumerate}
+
+ \subsection{Projective curve}
+ \begin{enumerate}
+   \item te: We can write $x=X/Z$ and $y=Y/Z$ with integers where $Z$ is the least positive common denominator.
+   \item (The equation transforms to substitute, move power).
+   \item te: Multiply by $Z^3$. (Get to the projective equation $Y^2Z= X^3-4XZ^2+Z^3$)
+   \item st: I know this is a projective curve.
+   \item te: Indeed. We can now study integer solution $X$, $Y$, $Z$ to this equation instead.
+   \item te: But if we, do we get extra solution, like when $Z$ is negative.
+   We need to identify solutions when they are just scalar multiples of each other. ($(X,Y,Z) = (-X,-Y,-Z) = (2X,2Y,2Z)$ as $x = \frac{X}{Z} = {-X}{-Z} = {2X}{2Y}$)
+   \item te: And we have added accidentality a new point, the one with $Z=0$ and $X=0$ and $Y=1$.
+   To visual it as a point infinitely far away, we should move to see this. (Turn to the 3d Scene)
+ \end{enumerate}
+
+ % up to here
+
+
 
 \section{Count rational points by height}
 \begin{itemize}

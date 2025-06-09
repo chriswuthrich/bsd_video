@@ -137,6 +137,18 @@ class FirstScene(Scene):
             self.add(curve, e1)
             self.wait(1)
 
+# https://github.com/3b1b/manim/issues/760
+# cap = cv2.VideoCapture("repressilator_animate.mov")
+#        flag = True
+#        while flag:
+#            flag, frame = cap.read()
+#            if flag:
+#                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#                frame_img = ImageMobject(frame)
+#                self.add(frame_img)
+#                self.wait(0.04)
+#                self.remove(frame_img)
+#        cap.release()
 
 # now render it
 if __name__ == "__main__":
