@@ -103,7 +103,7 @@ class FirstScene(Scene):
         original_cloud = th[0].copy()
 
         def scale_updater(m):
-            scale_factor = 1 + 3*t.get_value()  # from 1x to 2x
+            scale_factor = 1 + 9*t.get_value()
             new_square = original_cloud.copy().scale(scale_factor)
             m.become(new_square)
 
@@ -112,14 +112,16 @@ class FirstScene(Scene):
         te_start = te.get_center()
         st_start = st.get_center()
         th_start = th.get_center()
+        the_start = the.get_center()
         te.add_updater(lambda m: m.move_to(te_start + pa(t.get_value())))
         st.add_updater(lambda m: m.move_to(st_start + pa(t.get_value())))
         th.add_updater(lambda m: m.move_to(th_start + pa(t.get_value())))
         for thi in th[1]:
             thi.add_updater(lambda m: m.scale(op(t.get_value())))
             thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
+        the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start))
         self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
-        self.wait()
+        self.wait(1)
 
         self.remove(th)
         self.remove(st)
