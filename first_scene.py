@@ -52,7 +52,8 @@ class FirstScene(Scene):
         th[1][2].shift(vec(2, 0.6))
         th[2] = MathTex(r"E", font_size=36)
         th[2].move_to(th[0].get_center())
-        # th[2].scale(2)
+        th[2].set_z_index(6)
+        th[2].scale(2)
         self.wait()
 
         # as the walk to the forefront, the bubble increases
