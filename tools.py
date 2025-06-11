@@ -8,6 +8,10 @@ Common commands for useful for all parts
 from manim import *
 
 
+def vec(x,y):
+    return np.array([x, y, 0])
+
+
 def subtitle(said):
     r"""
     This prints a text in small white at the bottom of the screen.
@@ -31,7 +35,6 @@ def subtitle(said):
     return v
 
 
-
 def my_background():
     r"""
     A gradient background
@@ -48,6 +51,7 @@ def my_background():
     gradient_rect.rotate(PI/2)
     return gradient_rect
 
+
 def nature_background():
     r"""
     Background picture for opening scene.
@@ -61,7 +65,8 @@ def nature_background():
     bg_image.set_z_index(-10)
     return bg_image
 
-def thought_bubble():
+
+def thought_bubble(text):
     r"""
     A cloud shape together with little dots below.
     """
@@ -73,15 +78,17 @@ def thought_bubble():
     bubble.set_fill([rgb_to_color([0.0, 0.0, 0.3]), BLACK], opacity=1)
     bubble.shift(UP)
 
-    trail = VGroup(
-        Circle(radius=0.2),
-        Circle(radius=0.15),
-        Circle(radius=0.1),
-    )
-    trail.arrange(DOWN, aligned_edge=LEFT).next_to(bubble, DOWN, buff=0.1)
+    c = Circle(radius=0.1,
+               color=WHITE,
+               stroke_width=8,
+               fill_opacity=1,
+               fill_color=BLACK
+               )
+    trail = VGroup(c.copy().scale(2), c.copy().scale(1.5), c)
+    trail.arrange(DOWN).next_to(bubble, DOWN, buff=0.5)
 
     # Add text inside the bubble
-    thought_text = Text("Hmm...", font_size=36)
+    thought_text = MathTex(text, font_size=36)
     thought_text.move_to(bubble.get_center())
 
     # Combine all parts
