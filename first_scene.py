@@ -38,33 +38,87 @@ class FirstScene(Scene):
         th.shift(vec(-1, 1.9))
         th.scale(.75)
         th[2].scale(2)  # text in bubble
+        th[2].set_color(YELLOW)
         th[1][1].shift(vec(0.2,0))  # shift middle bubble
         th[1][2].shift(vec(0.4,0))
         th.set_z_index(5)
         th[2].set_z_index(6)
         self.add(th)
-        self.wait(1)
+        self.wait(2)
 
         # te thinks of $E$
-        # todo: should kick the zeta out
         th[1][0].shift(vec(2,1))
-        th[1][1].shift(vec(2,0.8))
+        th[1][1].shift(vec(2.2,0.8))
         th[1][2].shift(vec(2, 0.6))
-        th[2] = MathTex(r"E", font_size=36)
-        th[2].move_to(th[0].get_center())
-        th[2].set_z_index(6)
-        th[2].scale(2)
-        self.wait()
+        the = MathTex(r"E", font_size=36)
+        the.move_to(th[0].get_center()+vec(1,0))
+        the.set_z_index(6)
+        the.set_color(WHITE)
+        the.scale(2)
+        self.add(the)
+        self.wait(.3)
+
+        # and the E kicks out the zeta
+        t = ValueTracker(0)
+        def ple(tt):
+            if tt < 0.4:
+                return 0.5 / 0.4 ** 2 * tt ** 2
+            elif tt < 0.5:
+                return 1 - 50 * (tt - .5) ** 2
+            elif tt < 1:
+                return -3.2 * tt ** 3 + 7.2 * tt ** 2 - 4.8 * tt + 1.5
+            else:
+                return 0.7
+        def plz(tt):
+            if tt < 0.5:
+                return 0
+            else:
+                return 6 * (tt - 0.5)
+        def opz(tt):
+            if tt < 0.5:
+                return 1
+            else:
+                return 2 * (1 - tt)
+
+        the_start = the.get_center()
+        the.add_updater(lambda m: m.move_to(the_start + vec(-0.7*ple(t.get_value()),0)))
+        # white goes to yellow:
+        the.add_updater(lambda m: m.set_color(rgb_to_color([255,255,255*(1-t.get_value())])))
+        zeta_start = th[2].get_center()
+        th[2].add_updater(lambda m: m.move_to(zeta_start + vec(-plz(t.get_value()),0)))
+        th[2].add_updater(lambda m: m.set_opacity(opz(t.get_value())))
+        self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
+        self.remove(th[2])
+        self.wait(1)
 
         # as the walk to the forefront, the bubble increases
         t = ValueTracker(0)
-        pa = lambda tt: vec(-6.5*tt**2,-3*tt)
+        pa = lambda tt: vec(-6*tt**2,-2.7*tt)
+        def op(tt):
+            if tt < .5:
+                return 1-2*tt
+            else:
+                return 0
+
+        original_cloud = th[0].copy()
+
+        def scale_updater(m):
+            scale_factor = 1 + 3*t.get_value()  # from 1x to 2x
+            new_square = original_cloud.copy().scale(scale_factor)
+            m.become(new_square)
+
+        th[0].add_updater(scale_updater)
+
         te_start = te.get_center()
+        st_start = st.get_center()
         th_start = th.get_center()
-        te.add_updater(lambda m: m.move_to(te_start+pa(t.get_value())))
-        th.add_updater(lambda m: m.move_to(th_start+pa(t.get_value())))
-        th[0].add_updater(lambda m: m.scale(1+.1*t.get_value()))
-        self.play(t.animate.set_value(1), run_time=3, rate_func=linear)
+        te.add_updater(lambda m: m.move_to(te_start + pa(t.get_value())))
+        st.add_updater(lambda m: m.move_to(st_start + pa(t.get_value())))
+        th.add_updater(lambda m: m.move_to(th_start + pa(t.get_value())))
+        for thi in th[1]:
+            thi.add_updater(lambda m: m.scale(op(t.get_value())))
+            thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
+        self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
         self.wait()
 
         self.remove(th)
