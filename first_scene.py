@@ -10,12 +10,16 @@ from manim import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim
-from tools import subtitle, my_background
+from tools import subtitle, my_background, nature_background, thought_bubble
 
 
 class FirstScene(Scene):
 
     def construct(self):
+        # ##1.1
+        bg_image = nature_background()
+        self.add(bg_image)
+
         # initiate (needs to change a lot)
         st = StudentChar()
         te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
@@ -23,11 +27,9 @@ class FirstScene(Scene):
         te.shift(RIGHT+0.1*UP)
         self.add(st, te)
         self.wait(1)
-        t1 = subtitle("Are you working on the Riemann hypothesis?")
-        t1.shift(LEFT)
-        self.add(t1)
+        self.add(thought_bubble())
+
         self.wait(1)
-        self.remove(t1)
         t1 = subtitle("No, my work is connected to another important conjecture in number theory.")
         t1.shift(2*RIGHT)
         self.add(t1)
@@ -41,10 +43,11 @@ class FirstScene(Scene):
         self.add(t1)
         self.wait(1)
 
-        # 2
+        # 1.2
         # what are elliptic curves
         # move chars out to corner
-        self.remove(t1)
+        self.remove(bg_image)
+        self.add(my_background())
         self.play(
             st.animate.shift(np.array([-5, -3.3, 0.])),
             te.animate.shift(np.array([-6, -3.3, 0.])),

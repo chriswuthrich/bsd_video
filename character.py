@@ -9,7 +9,7 @@ from manim import *
 
 class StudentChar(VGroup):
     """
-        This creates a little character that is a placeholder for the student figure
+        This creates a little character that is a placeholder for the figures
         height and width measure the bottom rectangular body part
     """
 
