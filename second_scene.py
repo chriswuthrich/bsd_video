@@ -14,7 +14,7 @@ from manim import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim
-from first_scene import subtitle
+from tools import subtitle
 
 
 class SecondScene(ThreeDScene):

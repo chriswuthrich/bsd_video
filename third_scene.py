@@ -11,25 +11,8 @@ from manim import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim
-from first_scene import subtitle
+from tools import subtitle, my_background
 import json
-
-
-def my_background():
-    r"""
-    A gradient background
-    """
-    gradient_rect = Rectangle(
-        width=config.frame_height,
-        height=config.frame_width,
-        fill_opacity=1,
-    )
-    gradient_rect.set_fill(
-        color=[rgb_to_color([0.0, 0.0, 0.3]), BLACK],
-        opacity=1
-    )
-    gradient_rect.rotate(PI/2)
-    return gradient_rect
 
 
 def limit_expression():

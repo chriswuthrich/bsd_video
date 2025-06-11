@@ -10,29 +10,7 @@ from manim import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim
-
-
-def subtitle(said):
-    r"""
-    This prints a text in small white at the bottom of the screen.
-    """
-    vt = Text(said, font_size=15, color="white", font="sans-serif")
-
-    # Create a black rectangle with size matching the text
-    background_box = Rectangle(
-        width = vt.width + 0.1,  # Add some padding around the text
-        height = vt.height + 0.1,  # Add some padding around the text
-        color = BLACK
-    )
-    background_box.set_fill(BLACK, opacity=1)  # Set the fill color to black
-
-    # add them together and shift to bottom of screen
-    v = VGroup()
-    v.add(background_box)
-    v.add(vt)
-    v.to_edge(DOWN)
-    v.set_z_index(1)  # a bit in the foreground
-    return v
+from tools import subtitle, my_background
 
 
 class FirstScene(Scene):
