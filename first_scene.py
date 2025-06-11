@@ -102,12 +102,12 @@ class FirstScene(Scene):
 
         original_cloud = th[0].copy()
 
-        def scale_updater(m):
+        def scale_cloud_updater(m):
             scale_factor = 1 + 9*t.get_value()
             new_square = original_cloud.copy().scale(scale_factor)
             m.become(new_square)
 
-        th[0].add_updater(scale_updater)
+        th[0].add_updater(scale_cloud_updater)
 
         te_start = te.get_center()
         st_start = st.get_center()
@@ -119,7 +119,35 @@ class FirstScene(Scene):
         for thi in th[1]:
             thi.add_updater(lambda m: m.scale(op(t.get_value())))
             thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start))
+        the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3,3)))
+        the.add_updater(lambda m: m.set_opacity(1-t.get_value()))
+
+        # title
+        tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
+                        font_size=40,
+                        color=YELLOW,
+                        opacity=0,
+                        alignment="center"
+                       )
+        tit.move_to(vec(-1,3))
+        tit.set_z_index(11)
+        self.add(tit)
+
+        def scale_title_updater(m):
+            new_tit =  Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
+                                font_size=40,
+                                font="Liberation Sans",
+                                color=YELLOW,
+                                opacity=t.get_value()**2,
+                                alignment="center"
+                                )
+            new_tit.move_to((1-t.get_value())*vec(-1,3))
+            new_tit.set_z_index(11)
+            new_tit.scale(0.1+t.get_value())
+            m.become(new_tit)
+
+        tit.add_updater(scale_title_updater)
+
         self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
         self.wait(1)
 
