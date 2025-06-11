@@ -28,6 +28,8 @@ class FirstScene(Scene):
         te.scale(1)
         st.shift(vec(0.5, -.5))
         te.shift(vec(1.8, -.5))
+        st.set_z_index(10)
+        te.set_z_index(10)
         self.add(st, te)
         self.wait(1)
 
@@ -38,19 +40,32 @@ class FirstScene(Scene):
         th[2].scale(2)  # text in bubble
         th[1][1].shift(vec(0.2,0))  # shift middle bubble
         th[1][2].shift(vec(0.4,0))
+        th.set_z_index(5)
+        th[2].set_z_index(6)
         self.add(th)
         self.wait(1)
 
         # te thinks of $E$
+        # todo: should kick the zeta out
         th[1][0].shift(vec(2,1))
         th[1][1].shift(vec(2,0.8))
         th[1][2].shift(vec(2, 0.6))
         th[2] = MathTex(r"E", font_size=36)
         th[2].move_to(th[0].get_center())
-        th[2].scale(2)
+        # th[2].scale(2)
         self.wait()
 
         # as the walk to the forefront, the bubble increases
+        t = ValueTracker(0)
+        pa = lambda tt: vec(-6.5*tt**2,-3*tt)
+        te_start = te.get_center()
+        th_start = th.get_center()
+        te.add_updater(lambda m: m.move_to(te_start+pa(t.get_value())))
+        th.add_updater(lambda m: m.move_to(th_start+pa(t.get_value())))
+        th[0].add_updater(lambda m: m.scale(1+.1*t.get_value()))
+        self.play(t.animate.set_value(1), run_time=3, rate_func=linear)
+        self.wait()
+
         self.remove(th)
         self.remove(st)
         self.remove(te)
