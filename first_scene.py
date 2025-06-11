@@ -151,16 +151,14 @@ class FirstScene(Scene):
         self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
         self.wait(1)
 
-        self.remove(th)
-        self.remove(st)
-        self.remove(te)
+        self.remove(tit, the, bg_image)
 
-        #
         # # 1.2
         # # what are elliptic curves
-        # # move chars out to corner
-        # self.remove(bg_image)
-        # self.add(my_background())
+        bgr = my_background()
+        bgr.set_z_index(0)
+        self.play(Transform(th, bgr))
+#        self.add(bgr, st, te)
         # self.play(
         #     st.animate.shift(np.array([-5, -3.3, 0.])),
         #     te.animate.shift(np.array([-6, -3.3, 0.])),
@@ -168,16 +166,14 @@ class FirstScene(Scene):
         # )
         #
         # # equation
-        # e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
-        # t1 = subtitle("It concerns equation like this...")
-        # self.add(e1, t1)
-        # self.wait(1)
-        # self.remove(t1)
-        # e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
-        # t1 = subtitle("..or this")
-        # self.add(t1)
-        # self.play(Transform(e1, e2))
-        # self.wait(1)
+        e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
+        e1.set_z_index(5)
+        self.add(e1)
+        self.wait(1)
+        e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
+        e2.set_z_index(5)
+        self.play(Transform(e1, e2))
+        self.wait(1)
         #
         # # plot elliptic curve
         # axes = NumberPlane()

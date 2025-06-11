@@ -49,6 +49,7 @@ def my_background():
         opacity=1
     )
     gradient_rect.rotate(PI/2)
+    gradient_rect.set_z_index(0)
     return gradient_rect
 
 
