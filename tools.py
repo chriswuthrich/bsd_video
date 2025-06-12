@@ -137,6 +137,7 @@ def my_fading_numberplane():
     v.add(ay)
     return v
 
+
 class TestSome(Scene):
     """
     A placeholder character for the student

@@ -174,8 +174,7 @@ class FirstScene(Scene):
         self.wait(1)
 
         # plot elliptic curve, move equations out
-        # TODO make own number plane with fading line to the right
-        axes = NumberPlane()
+        axes = my_fading_numberplane()
         axes.set_z_index(1)
         self.add(axes)
         E = EllipticCurve([-4, 1])
@@ -188,10 +187,6 @@ class FirstScene(Scene):
                   e1.animate.to_corner(UL),
                   run_time=1 )
         self.wait(1)
-
-        self.clear()
-        self.add(my_fading_numberplane())
-        self.wait(2)
 
         # framebox1 = SurroundingRectangle(e1[1], buff=.1)
         # framebox2 = SurroundingRectangle(e1[3], buff=.1)
