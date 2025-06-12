@@ -62,14 +62,18 @@ class FirstScene(Scene):
         # and the E kicks out the zeta
         t = ValueTracker(0)
         def ple(tt):
+            """
+            bouncing function cooked up with cubic splines
+            """
             if tt < 0.4:
-                return 0.5 / 0.4 ** 2 * tt ** 2
+                return 9.375 * tt ** 3 - 1.875 * tt ** 2
             elif tt < 0.5:
-                return 1 - 50 * (tt - .5) ** 2
-            elif tt < 1:
-                return -3.2 * tt ** 3 + 7.2 * tt ** 2 - 4.8 * tt + 1.5
+                return -300 * tt ** 3 + 390 * tt ** 2 - 165 * tt + 23.1
+            elif tt < 0.7:
+                return 50 * tt ** 3 - 90 * tt ** 2 + 52.5 * tt - 9.4
             else:
-                return 0.7
+                return (-400 * tt ** 3 + 1020 * tt ** 2 - 840 * tt + 229) / 9
+
         def plz(tt):
             if tt < 0.5:
                 return 0
@@ -82,7 +86,7 @@ class FirstScene(Scene):
                 return 2 * (1 - tt)
 
         the_start = the.get_center()
-        the.add_updater(lambda m: m.move_to(the_start + vec(-0.7*ple(t.get_value()),0)))
+        the.add_updater(lambda m: m.move_to(the_start + vec(- ple(t.get_value()),0)))
         # white goes to yellow:
         the.add_updater(lambda m: m.set_color(rgb_to_color([255,255,255*(1-t.get_value())])))
         zeta_start = th[2].get_center()
@@ -181,7 +185,7 @@ class FirstScene(Scene):
         E = EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         curve.set_z_index(5)
-        self.add(e1)
+        # self.add(e1)
         self.add(curve)
 
         self.play(Create(curve),
@@ -204,39 +208,27 @@ class FirstScene(Scene):
             run_time=1
         )
         self.wait(1)
-        #
-        # # try to give lots of curves
-        # ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
-        # for A,B in ABs:
-        #     self.remove(e1, curve)
-        #     E2 = EllipticCurve([A, B])
-        #     curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        #     curve.set_z_index(3)
-        #     if A >= 0:
-        #         Astr = fr"+{A}\,"
-        #     else:
-        #         Astr = fr"-{-A}\,"
-        #     if B >= 0:
-        #         Bstr = fr"+{B}"
-        #     else:
-        #         Bstr = fr"-{-B}"
-        #     e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
-        #     e1.to_corner(UL)
-        #     self.add(curve, e1)
-        #     self.wait(1)
 
-# https://github.com/3b1b/manim/issues/760
-# cap = cv2.VideoCapture("repressilator_animate.mov")
-#        flag = True
-#        while flag:
-#            flag, frame = cap.read()
-#            if flag:
-#                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-#                frame_img = ImageMobject(frame)
-#                self.add(frame_img)
-#                self.wait(0.04)
-#                self.remove(frame_img)
-#        cap.release()
+        # try to give lots of curves
+        ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
+        for A,B in ABs:
+            self.remove(e1, curve)
+            E2 = EllipticCurve([A, B])
+            curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+            curve.set_z_index(3)
+            if A >= 0:
+                Astr = fr"+{A}\,"
+            else:
+                Astr = fr"-{-A}\,"
+            if B >= 0:
+                Bstr = fr"+{B}"
+            else:
+                Bstr = fr"-{-B}"
+            e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
+            e1.to_corner(UL)
+            self.add(curve, e1)
+            self.wait(1)
+
 
 # now render it
 if __name__ == "__main__":

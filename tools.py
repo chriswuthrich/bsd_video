@@ -169,7 +169,7 @@ class TestSome(Scene):
         self.wait(.2)
         t = ValueTracker(0)
         dot.add_updater(lambda m: m.move_to(vec(t.get_value(), t.get_value()**3)) )
-        self.play(t.animate.set_value(1), run_time=7)
+        self.play(t.animate.set_value(1), run_time=1)
         self.wait(2)
 
 if __name__ == "__main__":
