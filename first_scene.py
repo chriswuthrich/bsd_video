@@ -10,7 +10,7 @@ from manim import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim
-from tools import subtitle, my_background, nature_background, thought_bubble, vec
+from tools import subtitle, my_background, nature_background, thought_bubble, vec, my_fading_numberplane
 
 
 class FirstScene(Scene):
@@ -43,10 +43,11 @@ class FirstScene(Scene):
         th[1][2].shift(vec(0.4,0))
         th.set_z_index(5)
         th[2].set_z_index(6)
-        self.add(th)
-        self.wait(2)
+        self.play(FadeIn(th))
+        self.wait(1)
 
         # te thinks of $E$
+        # TODO Replace E by a curve?
         th[1][0].shift(vec(2,1))
         th[1][1].shift(vec(2.2,0.8))
         th[1][2].shift(vec(2, 0.6))
@@ -55,7 +56,7 @@ class FirstScene(Scene):
         the.set_z_index(6)
         the.set_color(WHITE)
         the.scale(2)
-        self.add(the)
+        self.play(FadeIn(the))
         self.wait(.3)
 
         # and the E kicks out the zeta
@@ -122,7 +123,7 @@ class FirstScene(Scene):
         the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3,3)))
         the.add_updater(lambda m: m.set_opacity(1-t.get_value()))
 
-        # title
+        # title appears
         tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
                         font_size=40,
                         color=YELLOW,
@@ -131,7 +132,7 @@ class FirstScene(Scene):
                        )
         tit.move_to(vec(-1,3))
         tit.set_z_index(11)
-        self.add(tit)
+        self.play(FadeIn(tit))
 
         def scale_title_updater(m):
             new_tit =  Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
@@ -153,45 +154,45 @@ class FirstScene(Scene):
 
         self.remove(tit, the, bg_image)
 
+# -------------------------------------------
+
         # # 1.2
-        # # what are elliptic curves
+        # what are elliptic curves
+        # TODO : Transition for the background. Maybe better in an editor?
         bgr = my_background()
         bgr.set_z_index(0)
         self.play(Transform(th, bgr))
-#        self.add(bgr, st, te)
-        # self.play(
-        #     st.animate.shift(np.array([-5, -3.3, 0.])),
-        #     te.animate.shift(np.array([-6, -3.3, 0.])),
-        #     run_time=1
-        # )
-        #
-        # # equation
+
+        # equations appear central
         e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
         e1.set_z_index(5)
-        self.add(e1)
+        self.play(FadeIn(e1))
         self.wait(1)
         e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
         e2.set_z_index(5)
         self.play(Transform(e1, e2))
         self.wait(1)
-        #
-        # # plot elliptic curve
-        # axes = NumberPlane()
-        # axes.set_z_index(0.1)
-        # self.add(axes)
-        # E = EllipticCurve([-4, 1])
-        # curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        # curve.set_z_index(3)
-        # self.remove(e2)
-        # e2.to_corner(UL)
-        # self.add(e1)
-        #
-        # self.play(
-        #     Create(curve),
-        #     e1.animate.to_corner(UL),
-        #     run_time=1
-        # )
-        # self.wait(1)
+
+        # plot elliptic curve, move equations out
+        # TODO make own number plane with fading line to the right
+        axes = NumberPlane()
+        axes.set_z_index(1)
+        self.add(axes)
+        E = EllipticCurve([-4, 1])
+        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        curve.set_z_index(3)
+        self.remove(e2)
+        self.play(FadeIn(e1))
+
+        self.play(Create(curve),
+                  e1.animate.to_corner(UL),
+                  run_time=1 )
+        self.wait(1)
+
+        self.clear()
+        self.add(my_fading_numberplane())
+        self.wait(2)
+
         # framebox1 = SurroundingRectangle(e1[1], buff=.1)
         # framebox2 = SurroundingRectangle(e1[3], buff=.1)
         # self.add(framebox1, framebox2)

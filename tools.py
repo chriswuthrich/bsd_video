@@ -94,3 +94,62 @@ def thought_bubble(text):
 
     # Combine all parts
     return VGroup(bubble, trail, thought_text)
+
+
+def fading_line(y, stroke_width=4, **kwargs):
+    """
+    helper for my_fading_number_plane
+    """
+    v = VGroup()
+    start = vec(-7.112, y)
+    end = vec(7.112, y)
+    num_segments = 50  # More segments = smoother fade
+    le = (end - start)/num_segments
+
+    for i in range(num_segments):
+        if i < num_segments/2:
+            opacity = 2*i/num_segments  # Fade out to the right
+        else:
+            opacity = 1
+        segment = Line(i*le+start, (i+1)*le+start, stroke_opacity=opacity, stroke_width=stroke_width, **kwargs)
+        v.add(segment)
+    return v
+
+
+def my_fading_numberplane():
+    r"""
+    A version of NumberPlane, where the lines fade out to the left
+    currently not much can be configured as it is used in one form only
+    """
+    v = VGroup()
+    for i in [-3,-2,-1,1,2,3]:
+        li = fading_line(i, stroke_width=2, color=GRAY)
+        v.add(li)
+    ax = fading_line(0, stroke_width=2, color=WHITE)
+    v.add(ax)
+    for i in [1,2,3,4,5,6,7]:
+        li = Line(vec(i,-4), vec(i,4), stroke_width=2, color=GRAY)
+        v.add(li)
+    for i in [1, 2, 3, 4, 5, 6, 7]:
+        li = Line(vec(-i, -4), vec(-i, 4), stroke_opacity=(7-i)/7, stroke_width=2, color=GRAY)
+        v.add(li)
+    ay = Line(vec(0, -4), vec(0,4), stroke_width=2, color=WHITE)
+    v.add(ay)
+    return v
+
+class TestSome(Scene):
+    """
+    A placeholder character for the student
+
+    Example how to use the above class
+    """
+    def construct(self):
+
+        self.add(my_fading_numberplane())
+        self.wait(2)
+
+
+if __name__ == "__main__":
+    with tempconfig({"quality": "medium_quality", "preview": True}):
+        scene = TestSome()
+        scene.render()
