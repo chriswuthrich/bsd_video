@@ -138,6 +138,22 @@ def my_fading_numberplane():
     return v
 
 
+def glow_dot(centre, radius=0.035, glow_radius=0.2, glow_opacity=0.3, colour=YELLOW, **kwargs):
+    v = VGroup()
+    dot = Dot(point=centre, radius=radius, color=colour, **kwargs)
+    v.add(dot)
+    nu = 10
+    for i in range(nu):
+        glow = Circle(radius=i*glow_radius/nu,
+                      color=colour,
+                      fill_opacity=(nu-i)*glow_opacity/nu,
+                      stroke_opacity=0
+                      )
+        glow.move_to(centre)
+        v.add(glow)
+    return v
+
+
 class TestSome(Scene):
     """
     A placeholder character for the student
@@ -147,8 +163,14 @@ class TestSome(Scene):
     def construct(self):
 
         self.add(my_fading_numberplane())
+        self.wait(.2)
+        dot = glow_dot(centre=vec(.3,.5))
+        self.add(dot)
+        self.wait(.2)
+        t = ValueTracker(0)
+        dot.add_updater(lambda m: m.move_to(vec(t.get_value(), t.get_value()**3)) )
+        self.play(t.animate.set_value(1), run_time=7)
         self.wait(2)
-
 
 if __name__ == "__main__":
     with tempconfig({"quality": "medium_quality", "preview": True}):

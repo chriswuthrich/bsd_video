@@ -132,7 +132,6 @@ class FirstScene(Scene):
                        )
         tit.move_to(vec(-1,3))
         tit.set_z_index(11)
-        self.play(FadeIn(tit))
 
         def scale_title_updater(m):
             new_tit =  Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
@@ -159,9 +158,11 @@ class FirstScene(Scene):
         # # 1.2
         # what are elliptic curves
         # TODO : Transition for the background. Maybe better in an editor?
+        # or keep the bubble for later.
         bgr = my_background()
         bgr.set_z_index(0)
-        self.play(Transform(th, bgr))
+        th.set_z_index(0)
+        self.play(Transform(th[0], bgr))
 
         # equations appear central
         e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
@@ -179,29 +180,30 @@ class FirstScene(Scene):
         self.add(axes)
         E = EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        curve.set_z_index(3)
-        self.remove(e2)
-        self.play(FadeIn(e1))
+        curve.set_z_index(5)
+        self.add(e1)
+        self.add(curve)
 
         self.play(Create(curve),
                   e1.animate.to_corner(UL),
+                  e2.animate.to_corner(UL),
                   run_time=1 )
         self.wait(1)
 
-        # framebox1 = SurroundingRectangle(e1[1], buff=.1)
-        # framebox2 = SurroundingRectangle(e1[3], buff=.1)
-        # self.add(framebox1, framebox2)
-        #
-        # # merge to another curve
-        # E2 = EllipticCurve([-7, 6])
-        # curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        # curve2.set_z_index(3)
-        # self.play(
-        #     Transform(curve, curve2),
-        #     Transform(e1, e2),
-        #     run_time=1
-        # )
-        # self.wait(1)
+        framebox1 = SurroundingRectangle(e1[1], buff=.1)
+        framebox2 = SurroundingRectangle(e1[3], buff=.1)
+        self.add(framebox1, framebox2)
+
+        # merge to another curve
+        E2 = EllipticCurve([-7, 6])
+        curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        curve2.set_z_index(5)
+        self.play(
+            Transform(curve, curve2),
+            Transform(e1, e2),
+            run_time=1
+        )
+        self.wait(1)
         #
         # # try to give lots of curves
         # ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
