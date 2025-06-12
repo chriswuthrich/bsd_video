@@ -8,8 +8,21 @@ Common commands for useful for all parts
 from manim import *
 
 
+def set_z_index(m, z):
+    r"""
+    change the z_level of the object
+    depending on whether opengl
+    or cairo is used.
+    """
+    if config.renderer == "opengl":
+        z0 = m.get_center()[2]
+        m.shift(np.array([0,0,z/100-z0]))
+    else: # config.renderer == "cairo":
+        m.set_z_index(z)
+
 def vec(x,y):
     return np.array([x, y, 0])
+
 
 
 def subtitle(said):
@@ -31,7 +44,7 @@ def subtitle(said):
     v.add(background_box)
     v.add(vt)
     v.to_edge(DOWN)
-    v.set_z_index(1)  # a bit in the foreground
+    set_z_index(v, 1)  # a bit in the foreground
     return v
 
 
@@ -49,7 +62,7 @@ def my_background():
         opacity=1
     )
     gradient_rect.rotate(PI/2)
-    gradient_rect.set_z_index(0)
+    set_z_index(gradient_rect, 0)
     return gradient_rect
 
 
@@ -63,7 +76,7 @@ def nature_background():
     bg_image.scale_to_fit_height(config.frame_height)
     bg_image.scale_to_fit_width(config.frame_width)
     bg_image.move_to(ORIGIN)
-    bg_image.set_z_index(-10)
+    set_z_index(bg_image, -1)
     return bg_image
 
 
@@ -172,7 +185,11 @@ class TestSome(Scene):
         self.play(t.animate.set_value(1), run_time=1)
         self.wait(2)
 
+        self.clear()
+        self.add(my_background())
+        self.wait()
+
 if __name__ == "__main__":
-    with tempconfig({"quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "opengl",  "quality": "medium_quality", "preview": True}):
         scene = TestSome()
         scene.render()

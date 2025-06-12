@@ -13,6 +13,8 @@ from first_scene import subtitle
 from third_scene import my_background
 import json
 
+# config.renderer = "opengl"
+
 def load_list(fi):
     r"""
     read json file fi into as a list
@@ -132,6 +134,6 @@ class FourthScene(Scene):
 
 #  now render it
 if __name__ == "__main__":
-    with tempconfig({"quality": "medium_quality", "preview": True}):
+    with tempconfig({"quality": "medium_quality", "preview": True}):  # "renderer": "opengl",
         scene = FourthScene()
         scene.render()

@@ -6,6 +6,7 @@ Creates dummy characters.
 """
 
 from manim import *
+from tools import set_z_index
 
 class StudentChar(VGroup):
     """
@@ -98,7 +99,7 @@ class StudentChar(VGroup):
 
         # place at the right spot
         self.shift(centre)
-        self.set_z_index(10)  # they will be very much in the foreground
+        set_z_index(self, 10)  # they will be very much in the foreground
 
 
     def half_close_left_eye(self):
@@ -171,6 +172,6 @@ class MyChar(Scene):
         self.wait(3)
 
 if __name__ == "__main__":
-    with tempconfig({"quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
         scene = MyChar()
         scene.render()

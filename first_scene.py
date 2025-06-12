@@ -10,7 +10,8 @@ from manim import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim
-from tools import subtitle, my_background, nature_background, thought_bubble, vec, my_fading_numberplane
+from tools import *
+
 
 
 class FirstScene(Scene):
@@ -28,8 +29,8 @@ class FirstScene(Scene):
         te.scale(1)
         st.shift(vec(0.5, -.5))
         te.shift(vec(1.8, -.5))
-        st.set_z_index(10)
-        te.set_z_index(10)
+        set_z_index(st, 10)
+        set_z_index(te, 10)
         self.add(st, te)
         self.wait(1)
 
@@ -41,8 +42,8 @@ class FirstScene(Scene):
         th[2].set_color(YELLOW)
         th[1][1].shift(vec(0.2,0))  # shift middle bubble
         th[1][2].shift(vec(0.4,0))
-        th.set_z_index(5)
-        th[2].set_z_index(6)
+        set_z_index(th, 5)
+        set_z_index(th[2], 6)
         self.play(FadeIn(th))
         self.wait(1)
 
@@ -53,7 +54,7 @@ class FirstScene(Scene):
         th[1][2].shift(vec(2, 0.6))
         the = MathTex(r"E", font_size=36)
         the.move_to(th[0].get_center()+vec(1,0))
-        the.set_z_index(6)
+        set_z_index(the, 6)
         the.set_color(WHITE)
         the.scale(2)
         self.play(FadeIn(the))
@@ -125,7 +126,12 @@ class FirstScene(Scene):
             thi.add_updater(lambda m: m.scale(op(t.get_value())))
             thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
         the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3,3)))
-        the.add_updater(lambda m: m.set_opacity(1-t.get_value()))
+        def ope(tt):
+            if tt < 0.333:
+                return 1-3*tt
+            else:
+                return 0
+        the.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
 
         # title appears
         tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
@@ -135,18 +141,19 @@ class FirstScene(Scene):
                         alignment="center"
                        )
         tit.move_to(vec(-1,3))
-        tit.set_z_index(11)
+        set_z_index(tit, 10)
+        tit.add()
 
         def scale_title_updater(m):
             new_tit =  Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
                                 font_size=40,
-                                font="Liberation Sans",
+                                # font="Liberation Sans",
                                 color=YELLOW,
                                 opacity=t.get_value()**2,
                                 alignment="center"
                                 )
             new_tit.move_to((1-t.get_value())*vec(-1,3))
-            new_tit.set_z_index(11)
+            set_z_index(ner_tit, 11)
             new_tit.scale(0.1+t.get_value())
             m.become(new_tit)
 
@@ -164,8 +171,8 @@ class FirstScene(Scene):
         # TODO : Transition for the background. Maybe better in an editor?
         # or keep the bubble for later.
         bgr = my_background()
-        bgr.set_z_index(0)
-        th.set_z_index(0)
+        set_z_index(bgr, 0)
+        set_z_index(th, 0)
         self.play(Transform(th[0], bgr))
 
         # equations appear central
@@ -174,17 +181,17 @@ class FirstScene(Scene):
         self.play(FadeIn(e1))
         self.wait(1)
         e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
-        e2.set_z_index(5)
+        set_z_index(e2, 5)
         self.play(Transform(e1, e2))
         self.wait(1)
 
         # plot elliptic curve, move equations out
         axes = my_fading_numberplane()
-        axes.set_z_index(1)
+        set_z_index(axes, 1)
         self.add(axes)
         E = EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        curve.set_z_index(5)
+        set_z_index(curve, 5)
         # self.add(e1)
         self.add(curve)
 
@@ -201,7 +208,7 @@ class FirstScene(Scene):
         # merge to another curve
         E2 = EllipticCurve([-7, 6])
         curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        curve2.set_z_index(5)
+        set_z_index(curve2, 5)
         self.play(
             Transform(curve, curve2),
             Transform(e1, e2),
@@ -215,7 +222,7 @@ class FirstScene(Scene):
             self.remove(e1, curve)
             E2 = EllipticCurve([A, B])
             curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-            curve.set_z_index(3)
+            set_z_index(curve, 3)
             if A >= 0:
                 Astr = fr"+{A}\,"
             else:
@@ -232,6 +239,6 @@ class FirstScene(Scene):
 
 # now render it
 if __name__ == "__main__":
-    with tempconfig({"quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
         scene = FirstScene()
         scene.render()
