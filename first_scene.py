@@ -8,7 +8,7 @@ elliptic curves with some 2d pictures.
 
 from manim import *
 from manim.opengl import *
-from sage.all import *
+import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
 from tools import *

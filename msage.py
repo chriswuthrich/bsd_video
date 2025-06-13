@@ -17,7 +17,9 @@ implement more 2d objects
 
 from manim import *
 from manim.opengl import *
-from sage.all import *
+import sage.all as sagemath
+#from sage.schemes.elliptic_curves.constructor import EllipticCurve
+from sage.plot.line import Line as sagemathLine
 
 
 def smanim(gr):
@@ -25,7 +27,7 @@ def smanim(gr):
     If the Graphics gr is a primitive, we return a VMobject
     otherwise a VGroup
     """
-    if isinstance(gr, sage.plot.graphics.Graphics):
+    if isinstance(gr, sagemath.Graphics):
         v = VGroup()
         components = list(gr)
         if len(components) == 1:
@@ -42,7 +44,7 @@ def sage_to_vmobject(g):
     """
     Turn a single Graphics primitive to a VMoject
     """
-    if isinstance(g, sage.plot.line.Line):
+    if isinstance(g, sagemathLine):
         return sline_to_vmobject(g)
     else:
         raise NotImplementedError("Not yet done")
@@ -80,28 +82,28 @@ class Test_smanim(Scene):
         self.wait(1)
 
         # test line
-        sli1 = line([(-7., 0.), (1., 3.9)], color="white")
+        sli1 = sagemath.line([(-7., 0.), (1., 3.9)], color="white")
         li1 = smanim(sli1)
-        sli2 = line([(0, 0), (1.3, 0.8)], color="yellow")
+        sli2 = sagemath.line([(0, 0), (1.3, 0.8)], color="yellow")
         li2 = smanim(sli2)
         self.play(Create(li1))
         self.play(Transform(li1, li2))
         self.wait(1)
 
-        sli3 = line([(cos(n*PI/7), sin(n*PI/7+0.1)-0.5) for n in srange(6)], color="red")
+        sli3 = sagemath.line([(sagemath.cos(n*PI/7), sagemath.sin(n*PI/7+0.1)-0.5) for n in sagemath.srange(6)], color="red")
         li3 = smanim(sli3)
         self.play(Create(li3))
         self.play(Wiggle(li3))
 
         # test plot of elliptic curve
-        E = EllipticCurve([RR(-.25), RR(0.01)])
+        E = sagemath.EllipticCurve([sagemath.RR(-.25), sagemath.RR(0.01)])
         gr = E.plot(color="yellow", xmin=-7.1, xmax=7.1, ymin=-3.8, ymax=3.8)
         curve = smanim(gr)
         self.add(curve)
         self.wait(.5)
 
         # test a function plot
-        gr = plot(sin, (-7, 7), color="white", alpha=0.5, thickness=3)
+        gr = sagemath.plot(sagemath.sin, (-7, 7), color="white", alpha=0.5, thickness=3)
         self.add(smanim(gr))
         self.wait(2)
 

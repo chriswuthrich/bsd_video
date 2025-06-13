@@ -7,11 +7,11 @@ Here we illustrate the conjectures with moving graphs
 
 from manim import *
 from manim.opengl import *
-from sage.all import *
+import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
 from first_scene import subtitle
-from third_scene import my_background
+from tools import my_background
 import json
 
 
@@ -66,10 +66,10 @@ class FourthScene(Scene):
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False},  # , 'tip_shape': StealthTip},
+                        x_axis_config={"include_numbers": False},  # , 'tip_shape': StealthTip,
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
-            ft = floor(t.get_value())
+            ft = sagemath.floor(t.get_value())
             i = 10**ft
             label = MathTex(f"10^{str(ft)}").scale(0.8)
             label.next_to(axes.c2p(i, 0), DOWN)
@@ -110,7 +110,7 @@ class FourthScene(Scene):
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False},  # 'tip_shape': StealthTip},
+                        x_axis_config={"include_numbers": False},  # 'tip_shape': StealthTip,
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
         for i in range(9):
