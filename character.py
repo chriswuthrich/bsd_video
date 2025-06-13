@@ -9,6 +9,7 @@ from manim import *
 from manim.opengl import *
 from tools import shz
 
+
 class StudentChar(VGroup):
     """
         This creates a little character that is a placeholder for the figures
@@ -16,8 +17,8 @@ class StudentChar(VGroup):
     """
 
     def __init__(self,
-                 height=1,
-                 width=1,
+                 height=1.,
+                 width=1.,
                  centre=ORIGIN,
                  colour=BLUE,
                  lid_colour=DARK_BLUE):
@@ -66,7 +67,7 @@ class StudentChar(VGroup):
 
         # these should stay in order
         # smile -5
-        smile = Arc(w/3,-PI/6,-2*PI/3)
+        smile = Arc(w/3, -PI/6, -2*PI/3)
         smile.shift(h*UP+w/3*DOWN)
         smile.set_stroke(WHITE, opacity=1)
         self.add(smile)
@@ -87,21 +88,20 @@ class StudentChar(VGroup):
         self.add(sad)
 
         # lids -1 right -2 left
-        left_lid = Arc(w/3,0,PI)
+        left_lid = Arc(w/3, 0, PI)
         left_lid.shift(h*UP+w/2*LEFT)
         left_lid.set_fill(lid_colour, opacity=0)  # invisible at this stage
-        left_lid.set_stroke(WHITE,0)
-        right_lid = Arc(w/3,0,PI)
+        left_lid.set_stroke(WHITE, 0)
+        right_lid = Arc(w/3, 0, PI)
         right_lid.shift(h*UP+w/2*RIGHT)
         right_lid.set_fill(lid_colour, opacity=0)
-        right_lid.set_stroke(WHITE,0)
+        right_lid.set_stroke(WHITE, 0)
         self.add(left_lid)
         self.add(right_lid)
 
         # place at the right spot
         self.shift(centre)
         shz(self, 8)  # they will be very much in the foreground
-
 
     def half_close_left_eye(self):
         self[-2].set_fill(self._lid_colour, opacity=1)
@@ -161,16 +161,17 @@ class MyChar(Scene):
         student.dull()
 
         # more figures of different sizes
-        st2 = StudentChar(.5,.5,2*UP, GREEN, GRAY)
+        st2 = StudentChar(.5, .5, 2*UP, GREEN, GRAY)
         st2.half_close_right_eye()
-        st3 = StudentChar(1.5,.5,3*RIGHT)
+        st3 = StudentChar(1.5, .5, 3*RIGHT)
         st3.dull()
-        st4 = StudentChar(1,1, 2*LEFT)
+        st4 = StudentChar(1, 1, 2*LEFT)
         self.add(st2, st3, st4)
         self.wait(1)
         self.play(Wiggle(st2))
         self.play(Rotate(st4, PI/4, run_time=1))
         self.wait(3)
+
 
 if __name__ == "__main__":
     with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):

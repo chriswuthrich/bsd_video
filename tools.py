@@ -9,20 +9,9 @@ from manim import *
 from manim.opengl import *
 
 
-# def set_z_index(m, z):
-#     r"""
-#     change the z_level of the object
-#     depending on whether opengl
-#     or cairo is used.
-#     """
-#     # if config.renderer == "opengl":
-#     z0 = m.get_center()[2]
-#     m.shift(np.array([0,0,z/100-z0]))
-#     #else: # config.renderer == "cairo":
-#     #    m.set_z_index(z)
-
 def vec(x: float, y: float, z=0):
     return np.array([x, y, z])
+
 
 def shz(m, z: float):
     r"""
@@ -43,9 +32,9 @@ def subtitle(said):
 
     # Create a black rectangle with size matching the text
     background_box = Rectangle(
-        width = vt.width + 0.1,  # Add some padding around the text
-        height = vt.height + 0.1,  # Add some padding around the text
-        color = BLACK
+        width=vt.width + 0.1,  # Add some padding around the text
+        height=vt.height + 0.1,  # Add some padding around the text
+        color=BLACK
     )
     background_box.set_fill(BLACK, opacity=1)  # Set the fill color to black
 
@@ -54,7 +43,7 @@ def subtitle(said):
     v.add(background_box)
     v.add(vt)
     v.to_edge(DOWN)
-    shz(v,10)
+    shz(v, 10)
     return v
 
 
@@ -145,18 +134,18 @@ def my_fading_numberplane():
     currently not much can be configured as it is used in one form only
     """
     v = VGroup()
-    for i in [-3,-2,-1,1,2,3]:
+    for i in [-3, -2, -1, 1, 2, 3]:
         li = fading_line(i, stroke_width=2, color=GRAY)
         v.add(li)
     ax = fading_line(0, stroke_width=2, color=WHITE)
     v.add(ax)
-    for i in [1,2,3,4,5,6,7]:
-        li = Line(vec(i,-4), vec(i,4), stroke_width=2, color=GRAY)
+    for i in [1, 2, 3, 4, 5, 6, 7]:
+        li = Line(vec(i, -4), vec(i, 4), stroke_width=2, color=GRAY)
         v.add(li)
     for i in [1, 2, 3, 4, 5, 6, 7]:
         li = Line(vec(-i, -4), vec(-i, 4), stroke_opacity=(7-i)/7, stroke_width=2, color=GRAY)
         v.add(li)
-    ay = Line(vec(0, -4), vec(0,4), stroke_width=2, color=WHITE)
+    ay = Line(vec(0, -4), vec(0, 4), stroke_width=2, color=WHITE)
     v.add(ay)
     return v
 
@@ -187,11 +176,11 @@ class TestSome(Scene):
 
         self.add(my_fading_numberplane())
         self.wait(.2)
-        dot = glow_dot(centre=vec(.3,.5))
+        dot = glow_dot(centre=vec(.3, .5))
         self.add(dot)
         self.wait(.2)
         t = ValueTracker(0)
-        dot.add_updater(lambda m: m.move_to(vec(t.get_value(), t.get_value()**3)) )
+        dot.add_updater(lambda m: m.move_to(vec(t.get_value(), t.get_value()**3)))
         self.play(t.animate.set_value(1), run_time=1)
         self.wait(2)
 
@@ -201,6 +190,7 @@ class TestSome(Scene):
 
         self.add(thought_bubble("Hello"))
         self.wait()
+
 
 if __name__ == "__main__":
     with tempconfig({"renderer": "opengl",  "quality": "medium_quality", "preview": True}):

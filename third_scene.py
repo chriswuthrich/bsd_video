@@ -40,12 +40,13 @@ def limit_expression():
     num.arrange(RIGHT, buff=0.1)
     den = MathTex(r"\mathcal{M}(T!)")
     fraction = VGroup()
-    li = Line(np.array([-1,0,0]), np.array([1,0,0]))
+    li = Line(np.array([-1, 0, 0]), np.array([1, 0, 0]))
     fraction.add(num, li, den)
     fraction.arrange(DOWN, buff=0.2)
     v.add(lim, fraction)
     v.arrange(RIGHT, buff=.1)
     return v
+
 
 def mq():
     r"""
@@ -64,9 +65,9 @@ def mq():
     te_mqa = VGroup(te_mq3, te_mq4)
     te_mqa.arrange(RIGHT, buff=.2)
     te_mqa[1].shift(0.05 * DOWN)
-    te_mqb = VGroup(te_mq2,te_mqa)
+    te_mqb = VGroup(te_mq2, te_mqa)
     te_mqb.arrange(DOWN, buff=0.1, aligned_edge=LEFT)
-    te_mq = VGroup(te_mq1,te_mqb)
+    te_mq = VGroup(te_mq1, te_mqb)
     te_mq.arrange(RIGHT, buff=0.2)
     return te_mq
 
@@ -78,7 +79,10 @@ class ThirdScene(Scene):
         self.add(gradient_rect)
 
         # define N(T)
-        te_defnt = Tex(r"$\mathcal{N}(T) = \# \Bigl\{ P\in E(\mathbb{Q}) \, : \, \lvert X\rvert, \lvert Y\rvert, \lvert Z\rvert \leq T \Bigr\} $")
+        te_defnt = Tex(r"$\mathcal{N}(T) = ",
+                       r"\# \Bigl\{ P\in E(\mathbb{Q}) \, ",
+                       r": \, \lvert X\rvert, \lvert Y\rvert, ",
+                       r"\lvert Z\rvert \leq T \Bigr\} $")
         self.add(te_defnt)
         # now add an animation counting points
         self.wait(2)
@@ -97,13 +101,13 @@ class ThirdScene(Scene):
         te_nt1 = Tex(r"$\mathcal{N}(T)$")
         te_nt2 = Tex(r"$ = \# $")
         te_nt3 = Text("bounded \n" + "rational \n" + "solutions").scale(.8)
-        te_nt = VGroup(te_nt1,te_nt2, te_nt3)
+        te_nt = VGroup(te_nt1, te_nt2, te_nt3)
         te_nt.arrange(RIGHT, buff=0.2)
 
         te_mq = mq()  # M(Q) = # solutions modulo Q
 
         te_qt = Tex(r"$Q = T! = 1 \cdot 2 \cdots T$")
-        rhs.add(te_nt,te_mq,te_qt)
+        rhs.add(te_nt, te_mq, te_qt)
         rhs.arrange(DOWN, buff=1.1, aligned_edge=LEFT)
         rhs.shift(3.5*RIGHT)
         self.add(rhs)
@@ -115,7 +119,7 @@ class ThirdScene(Scene):
         new_te_mq0 = Tex(r"$T!$")
         te_mq0 = te_mq[0][1]
         new_te_mq0.shift(te_mq0.get_center())
-        self.play(Transform(te_mq4,new_te_mq4),
+        self.play(Transform(te_mq4, new_te_mq4),
                   Transform(te_mq0, new_te_mq0),
                   run_time=1)
         self.wait(2)
@@ -130,7 +134,7 @@ class ThirdScene(Scene):
         # move N(T)
         te_nt_target = te_lim[1][0][2][0]  # N(T)
         te_nt_source = te_nt1.copy()
-        path_nt = ArcBetweenPoints(te_nt_source.get_center(), te_nt_target.get_center(), angle= PI / 5)
+        path_nt = ArcBetweenPoints(te_nt_source.get_center(), te_nt_target.get_center(), angle=PI/5)
 
         def updater_nt(mob, alpha):
             point = path_nt.point_from_proportion(alpha)
@@ -182,9 +186,8 @@ class ThirdScene(Scene):
         self.wait(2)
 
 
-
 #  now render it
 if __name__ == "__main__":
-    with tempconfig({"renderer" : "opengl", "quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
         scene = ThirdScene()
         scene.render()

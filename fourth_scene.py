@@ -23,6 +23,7 @@ def load_list(fi):
         li = json.load(f)
     return li
 
+
 class FourthScene(Scene):
 
     def construct(self):
@@ -91,7 +92,7 @@ class FourthScene(Scene):
         def get_graph():
             axes = get_axes()
             gr = OpenGLVMobject(color=YELLOW)
-            lit = [np.array([x,y]) for x,y in li if x < 0.9 * x_max(t.get_value())]
+            lit = [np.array([x, y]) for x, y in li if x < 0.9 * x_max(t.get_value())]
             gr.set_points_as_corners([axes.c2p(x, y) for x, y in lit])
             return gr
 
@@ -125,11 +126,12 @@ class FourthScene(Scene):
         for aa in [-4, -3, -2, -1, 0, 1, 2, 3, 4]:
             li = load_list(f"data/plotpts_curve_aa{aa}_up_to_9.json")
             graa = OpenGLVMobject(color=colours[aa])
-            graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x>1000])
+            graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
             graa.set_style(stroke_width=1)
             self.play(Create(graa))
 
         self.wait(1)
+
 
 #  now render it
 if __name__ == "__main__":

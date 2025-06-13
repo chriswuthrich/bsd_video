@@ -14,7 +14,6 @@ from msage import smanim
 from tools import *
 
 
-
 class FirstScene(Scene):
 
     def construct(self):
@@ -25,7 +24,7 @@ class FirstScene(Scene):
         # chars on path
         st = StudentChar()
         te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
-        te.shift(vec(0,0.1)) # aligned below
+        te.shift(vec(0, 0.1))  # aligned below
         st.scale(1)
         te.scale(1)
         st.shift(vec(0.5, -.5))
@@ -41,8 +40,8 @@ class FirstScene(Scene):
         th.scale(.75)
         th[2].scale(2)  # text in bubble
         th[2].set_color(YELLOW)
-        th[1][1].shift(vec(0.2,0))  # shift middle bubble
-        th[1][2].shift(vec(0.4,0))
+        th[1][1].shift(vec(0.2, 0))  # shift middle bubble
+        th[1][2].shift(vec(0.4, 0))
         shz(th, 5)
         shz(th[2], 6)
         self.add(th)
@@ -50,11 +49,11 @@ class FirstScene(Scene):
 
         # te thinks of $E$
         # TODO Replace E by a curve?
-        th[1][0].shift(vec(2,1))
-        th[1][1].shift(vec(2.2,0.8))
+        th[1][0].shift(vec(2, 1))
+        th[1][1].shift(vec(2.2, 0.8))
         th[1][2].shift(vec(2, 0.6))
         the = MathTex(r"E", font_size=36)
-        the.move_to(th[0].get_center()+vec(1,0))
+        the.move_to(th[0].get_center()+vec(1, 0))
         shz(the, 6)
         the.set_color(WHITE)
         the.scale(2)
@@ -91,11 +90,11 @@ class FirstScene(Scene):
                 return 2 * (1 - tt)
 
         the_start = the.get_center()
-        the.add_updater(lambda m: m.move_to(the_start + vec(- ple(t.get_value()),0)))
+        the.add_updater(lambda m: m.move_to(the_start + vec(- ple(t.get_value()), 0)))
         # white goes to yellow:
         # the.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255*(1-t.get_value())])))
         zeta_start = th[2].get_center()
-        th[2].add_updater(lambda m: m.move_to(zeta_start + vec(-plz(t.get_value()),0)))
+        th[2].add_updater(lambda m: m.move_to(zeta_start + vec(-plz(t.get_value()), 0)))
         th[2].add_updater(lambda m: m.set_opacity(opz(t.get_value())))
         self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
         self.remove(th[2])
@@ -105,7 +104,8 @@ class FirstScene(Scene):
         # TODO : Currently does not work correctly, bubbles don't disappear
         th.clear_updaters()
         t = ValueTracker(0)
-        pa = lambda tt: vec(-6*tt**2,-2.7*tt)
+        pa = lambda tt: vec(-6*tt**2, -2.7*tt)
+
         def op(tt):
             if tt < .5:
                 return 1-2*tt
@@ -131,7 +131,8 @@ class FirstScene(Scene):
         for thi in th[1]:
             thi.add_updater(lambda m: m.scale(op(t.get_value())))
             thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3,3)))
+        the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3, 3)))
+
         def ope(tt):
             if tt < 0.333:
                 return 1-3*tt
@@ -145,20 +146,21 @@ class FirstScene(Scene):
                         color=YELLOW,
                         opacity=0,
                         alignment="center"
-                       )
-        tit.move_to(vec(-1,3))
+                        )
+
+        tit.move_to(vec(-1, 3))
         shz(tit, 10)
         tit.add()
 
         def scale_title_updater(m):
-            new_tit =  Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
+            new_tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
                                 font_size=40,
                                 # font="Liberation Sans",
                                 color=YELLOW,
                                 opacity=t.get_value()**2,
                                 alignment="center"
                                 )
-            new_tit.move_to((1-t.get_value())*vec(-1,3))
+            new_tit.move_to((1-t.get_value())*vec(-1, 3))
             shz(new_tit, 11)
             new_tit.scale(0.1+t.get_value())
             m.become(new_tit)

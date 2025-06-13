@@ -28,14 +28,15 @@ def smanim(gr):
     if isinstance(gr, sage.plot.graphics.Graphics):
         v = VGroup()
         components = list(gr)
-        if len(components)==1:
+        if len(components) == 1:
             return sage_to_vmobject(gr[0])
         else:
             for g in list(gr):
-                v.add( sage_to_vmobject(g) )
+                v.add(sage_to_vmobject(g))
             return v
     else:
         raise NotImplementedError("Not yet done")
+
 
 def sage_to_vmobject(g):
     """
@@ -45,6 +46,7 @@ def sage_to_vmobject(g):
         return sline_to_vmobject(g)
     else:
         raise NotImplementedError("Not yet done")
+
 
 def sline_to_vmobject(g):
     r"""
@@ -57,14 +59,14 @@ def sline_to_vmobject(g):
     P0, *pts = list(g)
     first_vertex = np.array([P0[0], P0[1], 0.])
     if len(pts) == 1:
-        v = Line(first_vertex, np.array([pts[0][0],pts[0][1],0.]), stroke_width=4*thickness)
-        print(first_vertex, pts, np.array([pts[0][0],pts[0][1],0.]))
+        v = Line(first_vertex, np.array([pts[0][0], pts[0][1], 0.]), stroke_width=4*thickness)
+        print(first_vertex, pts, np.array([pts[0][0], pts[0][1], 0.]))
         v.set_stroke(colour, opacity=alpha)
         return v
     else:
         v = OpenGLVMobject(stroke_color=colour, stroke_width=4*thickness)
         v.start_new_path(first_vertex)
-        v.add_points_as_corners( [np.array([P[0], P[1], 0]) for P in pts] )
+        v.add_points_as_corners([np.array([P[0], P[1], 0]) for P in pts])
         v.make_smooth()
         return v
 
@@ -72,7 +74,7 @@ def sline_to_vmobject(g):
 class Test_smanim(Scene):
     def construct(self):
         # a manim line
-        li0 = Line(ORIGIN,UL)
+        li0 = Line(ORIGIN, UL)
         self.play(Create(li0))
         # self.add(Text(f" Hello {li0.width}, {li0.depth}, {li0.height}")) gives 1, 0, 1
         self.wait(1)
@@ -80,26 +82,26 @@ class Test_smanim(Scene):
         # test line
         sli1 = line([(-7., 0.), (1., 3.9)], color="white")
         li1 = smanim(sli1)
-        sli2 = line([(0,0), (1.3,0.8)], color="yellow")
+        sli2 = line([(0, 0), (1.3, 0.8)], color="yellow")
         li2 = smanim(sli2)
         self.play(Create(li1))
-        self.play(Transform(li1,li2))
+        self.play(Transform(li1, li2))
         self.wait(1)
 
-        sli3 = line([(cos(n*PI/7),sin(n*PI/7+0.1)-0.5) for n in srange(6)], color="red")
+        sli3 = line([(cos(n*PI/7), sin(n*PI/7+0.1)-0.5) for n in srange(6)], color="red")
         li3 = smanim(sli3)
         self.play(Create(li3))
         self.play(Wiggle(li3))
 
         # test plot of elliptic curve
         E = EllipticCurve([RR(-.25), RR(0.01)])
-        gr = E.plot(color="yellow", xmin=-7.1,xmax=7.1,ymin=-3.8,ymax=3.8)
+        gr = E.plot(color="yellow", xmin=-7.1, xmax=7.1, ymin=-3.8, ymax=3.8)
         curve = smanim(gr)
         self.add(curve)
         self.wait(.5)
 
         # test a function plot
-        gr = plot(sin,(-7,7), color="white", alpha=0.5, thickness=3 )
+        gr = plot(sin, (-7, 7), color="white", alpha=0.5, thickness=3)
         self.add(smanim(gr))
         self.wait(2)
 
