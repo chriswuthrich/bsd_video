@@ -34,17 +34,19 @@ class FirstScene(Scene):
         self.add(st, te)
         self.wait(1)
 
-        cloud_centre = vec(-1, 1.9)
         # st thinks of zeta(s)
-        thoughts = thought_bubble(r"\zeta(s)", 72)
-        thoughts.shift(cloud_centre)
-        thoughts.scale(.75)
-        thoughts[2].set_color(YELLOW)  # text in the bubble
+        cloud_centre = vec(-1, 1.9)
+        thoughts = thought_bubble(cloud_centre, 0.75)
         thoughts[1][1].shift(vec(0.2, 0))  # shift middle little bubble
         thoughts[1][2].shift(vec(0.4, 0))
         shz(thoughts, 5)
-        shz(thoughts[2], 6)
-        self.add(thoughts)
+
+        # text in the bubble
+        zeta = MathTex(r"\zeta(s)", font_size=72)
+        zeta.set_color(YELLOW)
+        zeta.move_to(cloud_centre)
+        shz(zeta, 6)
+        self.add(thoughts, zeta)
         self.wait(1)
 
         # te thinks of $E$
@@ -54,7 +56,8 @@ class FirstScene(Scene):
         thoughts[1][2].shift(vec(2.1, 0.6))
 
         # the letter E appears
-        zeta_centre = thoughts[2].get_center()
+        zeta_centre = zeta.get_center()
+        print(zeta_centre, cloud_centre)
         letter_E_centre = zeta_centre + vec(1, 0)
         letter_E_text = MathTex(r"E", font_size=72)
         letter_E_text.move_to(letter_E_centre)
@@ -98,16 +101,17 @@ class FirstScene(Scene):
             else:
                 return 2 * (1 - tt)
 
-        thoughts[2].add_updater(lambda m: m.move_to(cloud_centre - vec(plz(t.get_value()), 0)))
-        thoughts[2].add_updater(lambda m: m.set_opacity(opz(t.get_value())))
+        zeta.add_updater(lambda m: m.move_to(zeta_centre - vec(plz(t.get_value()), 0)))
+        zeta.add_updater(lambda m: m.set_opacity(opz(t.get_value())))
 
         self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
-        self.remove(thoughts[2])
         self.wait(1)
 
         # as the walk to the forefront, the bubble increases
         # TODO : Currently does not work correctly, bubbles don't disappear
+        self.remove(zeta)
         thoughts.clear_updaters()
+        zeta.clear_updaters()
         letter_E_text.clear_updaters()
         t = ValueTracker(0)
         pa = lambda tt: vec(-6*tt**2, -2.7*tt)

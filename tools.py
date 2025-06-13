@@ -79,7 +79,7 @@ def nature_background():
     return bg_image
 
 
-def thought_bubble(text, font_size=36):
+def thought_bubble(centre, size=1.):
     r"""
     A cloud shape together with little dots below.
     Text is given to MathTex so its raw TeX.
@@ -88,9 +88,9 @@ def thought_bubble(text, font_size=36):
                         color=WHITE,
                         stroke_width=8
                         )
-    bubble.scale(1.5)
+    bubble.scale(1.5*size)
     bubble.set_fill([rgb_to_color([0.0, 0.0, 0.3]), BLACK], opacity=1)
-    bubble.shift(UP)
+    bubble.shift(centre)
 
     c = Circle(radius=0.1,
                color=WHITE,
@@ -98,13 +98,10 @@ def thought_bubble(text, font_size=36):
                fill_opacity=1,
                fill_color=BLACK
                )
-    trail = VGroup(c.copy().scale(2), c.copy().scale(1.5), c)
-    trail.arrange(DOWN).next_to(bubble, DOWN, buff=0.4)
-
-    thought_text = MathTex(text, font_size=font_size)
-    thought_text.move_to(bubble.get_center())
-
-    return VGroup(bubble, trail, thought_text)
+    small_bubbles = VGroup(c.copy().scale(2), c.copy().scale(1.5), c)
+    small_bubbles.arrange(DOWN).next_to(bubble, DOWN, buff=0.4)
+    v = VGroup(bubble, small_bubbles)
+    return v
 
 
 def fading_line(y, stroke_width=4, **kwargs):
@@ -187,7 +184,7 @@ class TestSome(Scene):
         self.add(my_background())
         self.wait()
 
-        self.add(thought_bubble("Hello"))
+        self.add(thought_bubble(ORIGIN, 1.3))
         self.wait()
 
 
