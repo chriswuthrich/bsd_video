@@ -6,7 +6,7 @@ Common commands for useful for all parts
 """
 
 from manim import *
-from manim.mobject.opengl.opengl_image_mobject import OpenGLImageMobject
+from manim.opengl import *
 
 
 # def set_z_index(m, z):

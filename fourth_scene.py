@@ -6,7 +6,7 @@ Here we illustrate the conjectures with moving graphs
 """
 
 from manim import *
-from manim.mobject.opengl.opengl_vectorized_mobject import OpenGLVMobject
+from manim.opengl import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim
@@ -14,7 +14,6 @@ from first_scene import subtitle
 from third_scene import my_background
 import json
 
-# config.renderer = "opengl"
 
 def load_list(fi):
     r"""

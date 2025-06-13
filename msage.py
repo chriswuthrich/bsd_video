@@ -16,7 +16,7 @@ implement more 2d objects
 
 
 from manim import *
-from manim.mobject.opengl.opengl_vectorized_mobject import OpenGLVMobject
+from manim.opengl import *
 from sage.all import *
 
 
@@ -57,7 +57,7 @@ def sline_to_vmobject(g):
     P0, *pts = list(g)
     first_vertex = np.array([P0[0], P0[1], 0.])
     if len(pts) == 1:
-        v = Line(first_vertex,np.array([pts[0][0],pts[0][1],0.]), stroke_width=4*thickness)
+        v = Line(first_vertex, np.array([pts[0][0],pts[0][1],0.]), stroke_width=4*thickness)
         print(first_vertex, pts, np.array([pts[0][0],pts[0][1],0.]))
         v.set_stroke(colour, opacity=alpha)
         return v

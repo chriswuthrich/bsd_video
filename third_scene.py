@@ -8,6 +8,7 @@ with graphs.
 """
 
 from manim import *
+from manim.opengl import *
 from sage.all import *
 from character import StudentChar
 from msage import smanim

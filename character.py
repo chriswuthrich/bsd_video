@@ -6,6 +6,7 @@ Creates dummy characters.
 """
 
 from manim import *
+from manim.opengl import *
 from tools import shz
 
 class StudentChar(VGroup):
