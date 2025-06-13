@@ -101,7 +101,16 @@ class SecondScene(ThreeDScene):
         E, EQ = self.calc_curve()
         # phi = 0 from above theta = -90 gives 2d view
         # self.camera.frame.move_to((0,0,5))
-        self.set_camera_orientation(phi=0, theta=-PI/2, frame_center=(0,0,5), distance=5)
+        # self.renderer.camera.set_camera_orientation(
+        #     phi=0,
+        #     theta=-PI/2,
+        #     frame_center=[0, 0, 5],
+        #     distance=5
+        # )  # self.set_camera_orientation(phi=0, theta=-PI/2, frame_center=(0,0,5), distance=5)
+        self.renderer.camera.phi = 0
+        self.renderer.camera.theta = -PI / 2
+        self.renderer.camera.distance = 5
+        self.renderer.camera.frame_center = [0, 0, 5]
 
         nu = self.my_numberplane()
         self.add(nu)
@@ -153,6 +162,6 @@ class SecondScene(ThreeDScene):
 
 # now render it
 if __name__ == "__main__":
-    with tempconfig({"quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
         scene = SecondScene()
         scene.render()

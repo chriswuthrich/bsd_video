@@ -29,8 +29,8 @@ class FirstScene(Scene):
         te.scale(1)
         st.shift(vec(0.5, -.5))
         te.shift(vec(1.8, -.5))
-        set_z_index(st, 10)
-        set_z_index(te, 10)
+        shz(st, 10)
+        shz(te, 10)
         self.add(st, te)
         self.wait(1)
 
@@ -42,9 +42,9 @@ class FirstScene(Scene):
         th[2].set_color(YELLOW)
         th[1][1].shift(vec(0.2,0))  # shift middle bubble
         th[1][2].shift(vec(0.4,0))
-        set_z_index(th, 5)
-        set_z_index(th[2], 6)
-        self.play(FadeIn(th))
+        shz(th, 5)
+        shz(th[2], 6)
+        self.add(th)
         self.wait(1)
 
         # te thinks of $E$
@@ -54,14 +54,16 @@ class FirstScene(Scene):
         th[1][2].shift(vec(2, 0.6))
         the = MathTex(r"E", font_size=36)
         the.move_to(th[0].get_center()+vec(1,0))
-        set_z_index(the, 6)
+        shz(the, 6)
         the.set_color(WHITE)
         the.scale(2)
         self.play(FadeIn(the))
         self.wait(.3)
 
         # and the E kicks out the zeta
+        # TODO: Wrong item flies off???
         t = ValueTracker(0)
+
         def ple(tt):
             """
             bouncing function cooked up with cubic splines
@@ -80,6 +82,7 @@ class FirstScene(Scene):
                 return 0
             else:
                 return 6 * (tt - 0.5)
+
         def opz(tt):
             if tt < 0.5:
                 return 1
@@ -89,7 +92,7 @@ class FirstScene(Scene):
         the_start = the.get_center()
         the.add_updater(lambda m: m.move_to(the_start + vec(- ple(t.get_value()),0)))
         # white goes to yellow:
-        the.add_updater(lambda m: m.set_color(rgb_to_color([255,255,255*(1-t.get_value())])))
+        # the.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255*(1-t.get_value())])))
         zeta_start = th[2].get_center()
         th[2].add_updater(lambda m: m.move_to(zeta_start + vec(-plz(t.get_value()),0)))
         th[2].add_updater(lambda m: m.set_opacity(opz(t.get_value())))
@@ -98,6 +101,8 @@ class FirstScene(Scene):
         self.wait(1)
 
         # as the walk to the forefront, the bubble increases
+        # TODO : Currently does not work correctly, bubbles don't disappear
+        th.clear_updaters()
         t = ValueTracker(0)
         pa = lambda tt: vec(-6*tt**2,-2.7*tt)
         def op(tt):
@@ -141,7 +146,7 @@ class FirstScene(Scene):
                         alignment="center"
                        )
         tit.move_to(vec(-1,3))
-        set_z_index(tit, 10)
+        shz(tit, 10)
         tit.add()
 
         def scale_title_updater(m):
@@ -153,7 +158,7 @@ class FirstScene(Scene):
                                 alignment="center"
                                 )
             new_tit.move_to((1-t.get_value())*vec(-1,3))
-            set_z_index(ner_tit, 11)
+            shz(new_tit, 11)
             new_tit.scale(0.1+t.get_value())
             m.become(new_tit)
 
@@ -170,71 +175,75 @@ class FirstScene(Scene):
         # what are elliptic curves
         # TODO : Transition for the background. Maybe better in an editor?
         # or keep the bubble for later.
+        th.clear_updaters()
         bgr = my_background()
-        set_z_index(bgr, 0)
-        set_z_index(th, 0)
-        self.play(Transform(th[0], bgr))
+        shz(bgr, -10)
+        shz(th, -10)
+        t = ValueTracker(0)
+        bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
+        th.add_updater(lambda m: m.set_opacity(1-t.get_value()))
+        self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
 
         # equations appear central
         e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
-        e1.set_z_index(5)
+        shz(e1, 5)
         self.play(FadeIn(e1))
         self.wait(1)
         e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
-        set_z_index(e2, 5)
+        shz(e2, 5)
         self.play(Transform(e1, e2))
         self.wait(1)
 
-        # plot elliptic curve, move equations out
-        axes = my_fading_numberplane()
-        set_z_index(axes, 1)
-        self.add(axes)
-        E = EllipticCurve([-4, 1])
-        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        set_z_index(curve, 5)
-        # self.add(e1)
-        self.add(curve)
-
-        self.play(Create(curve),
-                  e1.animate.to_corner(UL),
-                  e2.animate.to_corner(UL),
-                  run_time=1 )
-        self.wait(1)
-
-        framebox1 = SurroundingRectangle(e1[1], buff=.1)
-        framebox2 = SurroundingRectangle(e1[3], buff=.1)
-        self.add(framebox1, framebox2)
-
-        # merge to another curve
-        E2 = EllipticCurve([-7, 6])
-        curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        set_z_index(curve2, 5)
-        self.play(
-            Transform(curve, curve2),
-            Transform(e1, e2),
-            run_time=1
-        )
-        self.wait(1)
-
-        # try to give lots of curves
-        ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
-        for A,B in ABs:
-            self.remove(e1, curve)
-            E2 = EllipticCurve([A, B])
-            curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-            set_z_index(curve, 3)
-            if A >= 0:
-                Astr = fr"+{A}\,"
-            else:
-                Astr = fr"-{-A}\,"
-            if B >= 0:
-                Bstr = fr"+{B}"
-            else:
-                Bstr = fr"-{-B}"
-            e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
-            e1.to_corner(UL)
-            self.add(curve, e1)
-            self.wait(1)
+        # # plot elliptic curve, move equations out
+        # axes = my_fading_numberplane()
+        # shz(axes, 1)
+        # self.add(axes)
+        # E = EllipticCurve([-4, 1])
+        # curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        # shz(curve, 5)
+        # # self.add(e1)
+        # self.add(curve)
+        #
+        # self.play(Create(curve),
+        #           e1.animate.to_corner(UL),
+        #           e2.animate.to_corner(UL),
+        #           run_time=1 )
+        # self.wait(1)
+        #
+        # framebox1 = SurroundingRectangle(e1[1], buff=.1)
+        # framebox2 = SurroundingRectangle(e1[3], buff=.1)
+        # self.add(framebox1, framebox2)
+        #
+        # # merge to another curve
+        # E2 = EllipticCurve([-7, 6])
+        # curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        # shz(curve2, 5)
+        # self.play(
+        #     Transform(curve, curve2),
+        #     Transform(e1, e2),
+        #     run_time=1
+        # )
+        # self.wait(1)
+        #
+        # # try to give lots of curves
+        # ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
+        # for A,B in ABs:
+        #     self.remove(e1, curve)
+        #     E2 = EllipticCurve([A, B])
+        #     curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        #     shz(curve, 5)
+        #     if A >= 0:
+        #         Astr = fr"+{A}\,"
+        #     else:
+        #         Astr = fr"-{-A}\,"
+        #     if B >= 0:
+        #         Bstr = fr"+{B}"
+        #     else:
+        #         Bstr = fr"-{-B}"
+        #     e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
+        #     e1.to_corner(UL)
+        #     self.add(curve, e1)
+        #     self.wait(1)
 
 
 # now render it

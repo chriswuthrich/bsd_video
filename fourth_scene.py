@@ -6,6 +6,7 @@ Here we illustrate the conjectures with moving graphs
 """
 
 from manim import *
+from manim.mobject.opengl.opengl_vectorized_mobject import OpenGLVMobject
 from sage.all import *
 from character import StudentChar
 from msage import smanim
@@ -65,7 +66,7 @@ class FourthScene(Scene):
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False, 'tip_shape': StealthTip},
+                        x_axis_config={"include_numbers": False},  # , 'tip_shape': StealthTip},
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
             ft = floor(t.get_value())
@@ -90,7 +91,7 @@ class FourthScene(Scene):
 
         def get_graph():
             axes = get_axes()
-            gr = VMobject(color=YELLOW)
+            gr = OpenGLVMobject(color=YELLOW)
             lit = [np.array([x,y]) for x,y in li if x < 0.9 * x_max(t.get_value())]
             gr.set_points_as_corners([axes.c2p(x, y) for x, y in lit])
             return gr
@@ -109,7 +110,7 @@ class FourthScene(Scene):
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False, 'tip_shape': StealthTip},
+                        x_axis_config={"include_numbers": False},  # 'tip_shape': StealthTip},
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
         for i in range(9):
@@ -117,15 +118,14 @@ class FourthScene(Scene):
             label.next_to(new_axes.c2p(i, 0), DOWN)
             new_axes.add(label)
 
-
         self.add(new_axes)
         colours = {-4: "#FF6B6B", -3: "#FFB86B", -2: "#FFD66B",
                    -1: "#C2FF6B", 0: "#6BFF8E", 1: "#6BFFEF",
                    2: "#6BD4FF", 3: "#6B8CFF", 4: "#B66BFF"}
 
-        for aa in [-4,-3,-2,-1,0,1,2,3,4]:
+        for aa in [-4, -3, -2, -1, 0, 1, 2, 3, 4]:
             li = load_list(f"data/plotpts_curve_aa{aa}_up_to_9.json")
-            graa = VMobject(color=colours[aa])
+            graa = OpenGLVMobject(color=colours[aa])
             graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x>1000])
             graa.set_style(stroke_width=1)
             self.play(Create(graa))
@@ -134,6 +134,6 @@ class FourthScene(Scene):
 
 #  now render it
 if __name__ == "__main__":
-    with tempconfig({"quality": "medium_quality", "preview": True}):  # "renderer": "opengl",
+    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
         scene = FourthScene()
         scene.render()

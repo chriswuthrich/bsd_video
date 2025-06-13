@@ -6,7 +6,7 @@ Creates dummy characters.
 """
 
 from manim import *
-from tools import set_z_index
+from tools import shz
 
 class StudentChar(VGroup):
     """
@@ -99,7 +99,7 @@ class StudentChar(VGroup):
 
         # place at the right spot
         self.shift(centre)
-        set_z_index(self, 10)  # they will be very much in the foreground
+        shz(self, 8)  # they will be very much in the foreground
 
 
     def half_close_left_eye(self):

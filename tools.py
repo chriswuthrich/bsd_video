@@ -6,23 +6,33 @@ Common commands for useful for all parts
 """
 
 from manim import *
+from manim.mobject.opengl.opengl_image_mobject import OpenGLImageMobject
 
 
-def set_z_index(m, z):
+# def set_z_index(m, z):
+#     r"""
+#     change the z_level of the object
+#     depending on whether opengl
+#     or cairo is used.
+#     """
+#     # if config.renderer == "opengl":
+#     z0 = m.get_center()[2]
+#     m.shift(np.array([0,0,z/100-z0]))
+#     #else: # config.renderer == "cairo":
+#     #    m.set_z_index(z)
+
+def vec(x: float, y: float, z=0):
+    return np.array([x, y, z])
+
+def shz(m, z: float):
     r"""
-    change the z_level of the object
-    depending on whether opengl
-    or cairo is used.
+    To arrange object in z-levels
+    (since in opengl the set_z_level doesn't work)
+    We expect z to be integers between -100 and 100,
+    this shifts by z/100
+    Typically the background will be -10 and the most forefront +10
     """
-    if config.renderer == "opengl":
-        z0 = m.get_center()[2]
-        m.shift(np.array([0,0,z/100-z0]))
-    else: # config.renderer == "cairo":
-        m.set_z_index(z)
-
-def vec(x,y):
-    return np.array([x, y, 0])
-
+    return m.shift(np.array([0, 0, z/100]))
 
 
 def subtitle(said):
@@ -44,7 +54,7 @@ def subtitle(said):
     v.add(background_box)
     v.add(vt)
     v.to_edge(DOWN)
-    set_z_index(v, 1)  # a bit in the foreground
+    shz(v,10)
     return v
 
 
@@ -62,7 +72,7 @@ def my_background():
         opacity=1
     )
     gradient_rect.rotate(PI/2)
-    set_z_index(gradient_rect, 0)
+    shz(gradient_rect, -10)
     return gradient_rect
 
 
@@ -72,11 +82,11 @@ def nature_background():
 
     This is a placeholder
     """
-    bg_image = ImageMobject("pics/path.jpg")
+    bg_image = OpenGLImageMobject("pics/path.jpg")
     bg_image.scale_to_fit_height(config.frame_height)
     bg_image.scale_to_fit_width(config.frame_width)
     bg_image.move_to(ORIGIN)
-    set_z_index(bg_image, -1)
+    shz(bg_image, -10)
     return bg_image
 
 
@@ -187,6 +197,9 @@ class TestSome(Scene):
 
         self.clear()
         self.add(my_background())
+        self.wait()
+
+        self.add(thought_bubble("Hello"))
         self.wait()
 
 if __name__ == "__main__":

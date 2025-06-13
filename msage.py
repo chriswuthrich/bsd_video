@@ -16,6 +16,7 @@ implement more 2d objects
 
 
 from manim import *
+from manim.mobject.opengl.opengl_vectorized_mobject import OpenGLVMobject
 from sage.all import *
 
 
@@ -61,7 +62,7 @@ def sline_to_vmobject(g):
         v.set_stroke(colour, opacity=alpha)
         return v
     else:
-        v = VMobject(stroke_color=colour, stroke_width=4*thickness)
+        v = OpenGLVMobject(stroke_color=colour, stroke_width=4*thickness)
         v.start_new_path(first_vertex)
         v.add_points_as_corners( [np.array([P[0], P[1], 0]) for P in pts] )
         v.make_smooth()
@@ -104,6 +105,6 @@ class Test_smanim(Scene):
 
 
 if __name__ == "__main__":
-    with tempconfig({"quality": "low_quality", "preview": True}):
+    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
         scene = Test_smanim()
         scene.render()
