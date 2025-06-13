@@ -79,9 +79,10 @@ def nature_background():
     return bg_image
 
 
-def thought_bubble(text):
+def thought_bubble(text, font_size=36):
     r"""
     A cloud shape together with little dots below.
+    Text is given to MathTex so its raw TeX.
     """
     bubble = SVGMobject("pics/cloud.svg",
                         color=WHITE,
@@ -98,13 +99,11 @@ def thought_bubble(text):
                fill_color=BLACK
                )
     trail = VGroup(c.copy().scale(2), c.copy().scale(1.5), c)
-    trail.arrange(DOWN).next_to(bubble, DOWN, buff=0.5)
+    trail.arrange(DOWN).next_to(bubble, DOWN, buff=0.4)
 
-    # Add text inside the bubble
-    thought_text = MathTex(text, font_size=36)
+    thought_text = MathTex(text, font_size=font_size)
     thought_text.move_to(bubble.get_center())
 
-    # Combine all parts
     return VGroup(bubble, trail, thought_text)
 
 

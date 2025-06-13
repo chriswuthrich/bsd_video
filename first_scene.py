@@ -34,30 +34,33 @@ class FirstScene(Scene):
         self.add(st, te)
         self.wait(1)
 
+        cloud_centre = vec(-1, 1.9)
         # st thinks of zeta(s)
-        th = thought_bubble(r"\zeta(s)")
-        th.shift(vec(-1, 1.9))
-        th.scale(.75)
-        th[2].scale(2)  # text in bubble
-        th[2].set_color(YELLOW)
-        th[1][1].shift(vec(0.2, 0))  # shift middle bubble
-        th[1][2].shift(vec(0.4, 0))
-        shz(th, 5)
-        shz(th[2], 6)
-        self.add(th)
+        thoughts = thought_bubble(r"\zeta(s)", 72)
+        thoughts.shift(cloud_centre)
+        thoughts.scale(.75)
+        thoughts[2].set_color(YELLOW)  # text in the bubble
+        thoughts[1][1].shift(vec(0.2, 0))  # shift middle little bubble
+        thoughts[1][2].shift(vec(0.4, 0))
+        shz(thoughts, 5)
+        shz(thoughts[2], 6)
+        self.add(thoughts)
         self.wait(1)
 
         # te thinks of $E$
-        # TODO Replace E by a curve?
-        th[1][0].shift(vec(2, 1))
-        th[1][1].shift(vec(2.2, 0.8))
-        th[1][2].shift(vec(2, 0.6))
-        the = MathTex(r"E", font_size=36)
-        the.move_to(th[0].get_center()+vec(1, 0))
-        shz(the, 6)
-        the.set_color(WHITE)
-        the.scale(2)
-        self.play(FadeIn(the))
+        # small bubbles move to teacher
+        thoughts[1][0].shift(vec(2, 1))
+        thoughts[1][1].shift(vec(2.2, 0.8))
+        thoughts[1][2].shift(vec(2.1, 0.6))
+
+        # the letter E appears
+        zeta_centre = thoughts[2].get_center()
+        letter_E_centre = zeta_centre + vec(1, 0)
+        letter_E_text = MathTex(r"E", font_size=72)
+        letter_E_text.move_to(letter_E_centre)
+        shz(letter_E_text, 6)
+        letter_E_text.set_color(WHITE)
+        self.play(FadeIn(letter_E_text))
         self.wait(.3)
 
         # and the E kicks out the zeta
@@ -68,14 +71,20 @@ class FirstScene(Scene):
             """
             bouncing function cooked up with cubic splines
             """
-            if tt < 0.4:
+            if 0 < tt < 0.4:
                 return 9.375 * tt ** 3 - 1.875 * tt ** 2
             elif tt < 0.5:
                 return -300 * tt ** 3 + 390 * tt ** 2 - 165 * tt + 23.1
             elif tt < 0.7:
                 return 50 * tt ** 3 - 90 * tt ** 2 + 52.5 * tt - 9.4
-            else:
+            elif tt < 1:
                 return (-400 * tt ** 3 + 1020 * tt ** 2 - 840 * tt + 229) / 9
+            else:
+                return 1
+
+        letter_E_text.add_updater(lambda m: m.move_to(letter_E_centre - vec(ple(t.get_value()), 0)))
+        # white goes to yellow:
+        letter_E_text.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
 
         def plz(tt):
             if tt < 0.5:
@@ -89,20 +98,17 @@ class FirstScene(Scene):
             else:
                 return 2 * (1 - tt)
 
-        the_start = the.get_center()
-        the.add_updater(lambda m: m.move_to(the_start + vec(- ple(t.get_value()), 0)))
-        # white goes to yellow:
-        # the.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255*(1-t.get_value())])))
-        zeta_start = th[2].get_center()
-        th[2].add_updater(lambda m: m.move_to(zeta_start + vec(-plz(t.get_value()), 0)))
-        th[2].add_updater(lambda m: m.set_opacity(opz(t.get_value())))
-        self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
-        self.remove(th[2])
+        thoughts[2].add_updater(lambda m: m.move_to(cloud_centre - vec(plz(t.get_value()), 0)))
+        thoughts[2].add_updater(lambda m: m.set_opacity(opz(t.get_value())))
+
+        self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
+        self.remove(thoughts[2])
         self.wait(1)
 
         # as the walk to the forefront, the bubble increases
         # TODO : Currently does not work correctly, bubbles don't disappear
-        th.clear_updaters()
+        thoughts.clear_updaters()
+        letter_E_text.clear_updaters()
         t = ValueTracker(0)
         pa = lambda tt: vec(-6*tt**2, -2.7*tt)
 
@@ -112,33 +118,33 @@ class FirstScene(Scene):
             else:
                 return 0
 
-        original_cloud = th[0].copy()
+        original_cloud = thoughts[0].copy()
 
         def scale_cloud_updater(m):
             scale_factor = 1 + 9*t.get_value()
             new_square = original_cloud.copy().scale(scale_factor)
             m.become(new_square)
 
-        th[0].add_updater(scale_cloud_updater)
+        thoughts[0].add_updater(scale_cloud_updater)
 
         te_start = te.get_center()
         st_start = st.get_center()
-        th_start = th.get_center()
-        the_start = the.get_center()
+        th_start = thoughts.get_center()
+        the_start = letter_E_text.get_center()
         te.add_updater(lambda m: m.move_to(te_start + pa(t.get_value())))
         st.add_updater(lambda m: m.move_to(st_start + pa(t.get_value())))
-        th.add_updater(lambda m: m.move_to(th_start + pa(t.get_value())))
-        for thi in th[1]:
+        thoughts.add_updater(lambda m: m.move_to(th_start + pa(t.get_value())))
+        for thi in thoughts[1]:
             thi.add_updater(lambda m: m.scale(op(t.get_value())))
             thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        the.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3, 3)))
+        letter_E_text.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3, 3)))
 
         def ope(tt):
             if tt < 0.333:
                 return 1-3*tt
             else:
                 return 0
-        the.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
+        letter_E_text.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
 
         # title appears
         tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
@@ -170,7 +176,7 @@ class FirstScene(Scene):
         self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
         self.wait(1)
 
-        self.remove(tit, the, bg_image)
+        self.remove(tit, letter_E_text, bg_image)
 
 # -------------------------------------------
 
@@ -178,13 +184,13 @@ class FirstScene(Scene):
         # what are elliptic curves
         # TODO : Transition for the background. Maybe better in an editor?
         # or keep the bubble for later.
-        th.clear_updaters()
+        thoughts.clear_updaters()
         bgr = my_background()
         shz(bgr, -10)
-        shz(th, -10)
+        shz(thoughts, -10)
         t = ValueTracker(0)
         bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        th.add_updater(lambda m: m.set_opacity(1-t.get_value()))
+        thoughts.add_updater(lambda m: m.set_opacity(1-t.get_value()))
         self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
 
         # equations appear central
