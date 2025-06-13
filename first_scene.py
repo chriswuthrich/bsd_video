@@ -14,6 +14,14 @@ from msage import smanim
 from tools import *
 
 
+def little_curve():
+    ellicon = SVGMobject("pics/ellicon2.svg",
+                        stroke_width=4
+                        )
+    ellicon.scale(0.45)
+    return ellicon
+
+
 class FirstScene(Scene):
 
     def construct(self):
@@ -57,17 +65,20 @@ class FirstScene(Scene):
 
         # the letter E appears
         zeta_centre = zeta.get_center()
-        print(zeta_centre, cloud_centre)
-        letter_E_centre = zeta_centre + vec(1, 0)
-        letter_E_text = MathTex(r"E", font_size=72)
-        letter_E_text.move_to(letter_E_centre)
-        shz(letter_E_text, 6)
-        letter_E_text.set_color(WHITE)
-        self.play(FadeIn(letter_E_text))
+
+        # letter_E_centre = zeta_centre + vec(1, 0)
+        icon = little_curve()
+        # letter_E_text = MathTex(r"E", font_size=72)
+        icon.move_to(zeta_centre+vec(1.3, 0))
+        # letter_E_text.move_to(letter_E_centre)
+        shz(icon, 6)
+        # shz(letter_E_text, 6)
+        # letter_E_text.set_color(WHITE)
+        # self.play(FadeIn(letter_E_text))
+        self.play(FadeIn(icon))
         self.wait(.3)
 
         # and the E kicks out the zeta
-        # TODO: Wrong item flies off???
         t = ValueTracker(0)
 
         def ple(tt):
@@ -85,9 +96,14 @@ class FirstScene(Scene):
             else:
                 return 1
 
-        letter_E_text.add_updater(lambda m: m.move_to(letter_E_centre - vec(ple(t.get_value()), 0)))
+        # letter_E_text.add_updater(lambda m: m.move_to(letter_E_centre - vec(ple(t.get_value()), 0)))
         # white goes to yellow:
-        letter_E_text.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
+        # letter_E_text.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
+        icon.add_updater(lambda m: m.move_to(zeta_centre+vec(1.3, 0) - vec(ple(t.get_value()), 0)))
+        # white goes to yellow:
+        #icon.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
+
+
 
         def plz(tt):
             if tt < 0.5:
@@ -112,7 +128,9 @@ class FirstScene(Scene):
         self.remove(zeta)
         thoughts.clear_updaters()
         zeta.clear_updaters()
-        letter_E_text.clear_updaters()
+        # letter_E_text.clear_updaters()
+        icon.clear_updaters()
+
         t = ValueTracker(0)
         pa = lambda tt: vec(-6*tt**2, -2.7*tt)
 
@@ -134,21 +152,24 @@ class FirstScene(Scene):
         te_start = te.get_center()
         st_start = st.get_center()
         th_start = thoughts.get_center()
-        the_start = letter_E_text.get_center()
+        # the_start = letter_E_text.get_center()
+        the_start = icon.get_center()
         te.add_updater(lambda m: m.move_to(te_start + pa(t.get_value())))
         st.add_updater(lambda m: m.move_to(st_start + pa(t.get_value())))
         thoughts.add_updater(lambda m: m.move_to(th_start + pa(t.get_value())))
         for thi in thoughts[1]:
             thi.add_updater(lambda m: m.scale(op(t.get_value())))
             thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        letter_E_text.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3, 3)))
+        # letter_E_text.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3, 3)))
+        icon.add_updater(lambda m: m.move_to((1 - t.get_value()) * the_start + t.get_value() * vec(-3, 3)))
 
         def ope(tt):
             if tt < 0.333:
                 return 1-3*tt
             else:
                 return 0
-        letter_E_text.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
+        # letter_E_text.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
+        icon.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
 
         # title appears
         tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
@@ -180,7 +201,7 @@ class FirstScene(Scene):
         self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
         self.wait(1)
 
-        self.remove(tit, letter_E_text, bg_image)
+        self.remove(tit, icon, bg_image)
 
 # -------------------------------------------
 
