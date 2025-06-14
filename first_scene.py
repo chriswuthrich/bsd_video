@@ -12,13 +12,12 @@ import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
 from tools import *
-import svgelements as se
 
 def little_curve():
     # the svg file is a simplified output from
     # sage modified with inkscape
     ellicon = SVGMobject("pics/ellicon3.svg",
-                        stroke_width=4
+                        stroke_width=8
                         )
     # part 0 and 1 are boxes
     v = ellicon[2]  # this is the curve
@@ -48,10 +47,12 @@ class FirstScene(Scene):
         self.wait(1)
 
         # st thinks of zeta(s)
-        cloud_centre = vec(-1, 1.9)
-        thoughts = thought_bubble(cloud_centre, 0.75)
-        thoughts[1][1].shift(vec(0.2, 0))  # shift middle little bubble
-        thoughts[1][2].shift(vec(0.4, 0))
+        cloud_centre = vec(-1, 2.6)
+        thoughts = thought_bubble(cloud_centre, 0.85)
+        # shift small bubbles a little
+        thoughts[1][0].shift(vec(0, 0.2))
+        thoughts[1][1].shift(vec(0.2, 0.2))  # shift middle little bubble
+        thoughts[1][2].shift(vec(0.6, 0.4))
         shz(thoughts, 5)
 
         # text in the bubble
@@ -62,28 +63,22 @@ class FirstScene(Scene):
         self.add(thoughts, zeta)
         self.wait(1)
 
-        # te thinks of $E$
+        # te thinks of an elliptic curve
         # small bubbles move to teacher
-        thoughts[1][0].shift(vec(2, 1))
-        thoughts[1][1].shift(vec(2.2, 0.8))
+        thoughts[1][0].shift(vec(2, .5))
+        thoughts[1][1].shift(vec(2.2, .7))
         thoughts[1][2].shift(vec(2.1, 0.6))
 
-        # the letter E appears
+        # the little elliptic curve appears
         zeta_centre = zeta.get_center()
-
-        # letter_E_centre = zeta_centre + vec(1, 0)
         icon = little_curve()
-        # letter_E_text = MathTex(r"E", font_size=72)
         icon.move_to(zeta_centre+vec(1.3, 0))
-        # letter_E_text.move_to(letter_E_centre)
         shz(icon, 6)
-        # shz(letter_E_text, 6)
-        # letter_E_text.set_color(WHITE)
-        # self.play(FadeIn(letter_E_text))
         self.play(FadeIn(icon))
         self.wait(.3)
 
-        # and the E kicks out the zeta
+        # and the curve kicks out the zeta
+        # TODO curve goes out with zeta??
         t = ValueTracker(0)
 
         def ple(tt):
@@ -101,14 +96,9 @@ class FirstScene(Scene):
             else:
                 return 1
 
-        # letter_E_text.add_updater(lambda m: m.move_to(letter_E_centre - vec(ple(t.get_value()), 0)))
-        # white goes to yellow:
-        # letter_E_text.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
         icon.add_updater(lambda m: m.move_to(zeta_centre+vec(1.3, 0) - vec(ple(t.get_value()), 0)))
         # white goes to yellow:
-        #icon.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
-
-
+        icon.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
 
         def plz(tt):
             if tt < 0.5:
@@ -149,8 +139,8 @@ class FirstScene(Scene):
 
         def scale_cloud_updater(m):
             scale_factor = 1 + 9*t.get_value()
-            new_square = original_cloud.copy().scale(scale_factor)
-            m.become(new_square)
+            mo = original_cloud.copy().scale(scale_factor)
+            m.become(mo)
 
         thoughts[0].add_updater(scale_cloud_updater)
 
@@ -193,7 +183,7 @@ class FirstScene(Scene):
                                 font_size=40,
                                 # font="Liberation Sans",
                                 color=YELLOW,
-                                opacity=t.get_value()**2,
+                                opacity=1,  # t.get_value()**2,
                                 alignment="center"
                                 )
             new_tit.move_to((1-t.get_value())*vec(-1, 3))

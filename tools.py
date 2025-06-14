@@ -92,14 +92,14 @@ def thought_bubble(centre, size=1.):
     bubble.set_fill([rgb_to_color([0.0, 0.0, 0.3]), BLACK], opacity=1)
     bubble.shift(centre)
 
-    c = Circle(radius=0.1,
+    c = Circle(radius=0.08,
                color=WHITE,
                stroke_width=8,
                fill_opacity=1,
                fill_color=BLACK
                )
     small_bubbles = VGroup(c.copy().scale(2), c.copy().scale(1.5), c)
-    small_bubbles.arrange(DOWN).next_to(bubble, DOWN, buff=0.4)
+    small_bubbles.arrange(DOWN).next_to(bubble, DOWN, buff=0.3)
     v = VGroup(bubble, small_bubbles)
     return v
 
