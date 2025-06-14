@@ -136,13 +136,14 @@ class FirstScene(Scene):
         # self.wait(.5)
 
         # as the walk to the forefront, the bubble increases
-        # TODO Z- values don't work. Seems a bug of manim
         self.remove(zeta)
         thoughts.clear_updaters()
         icon.clear_updaters()
+        self.remove(thoughts, icon, tit, st, te, bg_image)
+        self.add(bg_image, thoughts, tit, icon, st, te)  # put in the correct order
 
         t = ValueTracker(0)
-        pa = lambda tt: vec(-6*tt**2, -2.7*tt)
+        pa = lambda tt: vec(-6*tt**2, -2.5*tt)
 
         def op(tt):
             if tt < .5:
@@ -171,7 +172,11 @@ class FirstScene(Scene):
         # for thi in thoughts[1]:
         #    thi.add_updater(lambda m: m.scale(op(t.get_value())))
         #    thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        # icon.add_updater(lambda m: m.set_opacity(t.get_value()))
+
+        i_path = lambda tt : vec(5*tt,0)
+        icon.add_updater(lambda m: m.move_to(cloud_centre
+                                             + i_path(t.get_value())
+                                             + vec(0, 0, z=5/100)))
         self.remove(thoughts[1])
 
         def title_updater(m):
@@ -190,45 +195,50 @@ class FirstScene(Scene):
         tit.add_updater(title_updater)
 
         self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
-        print(st.get_center(), te.get_center(), tit.get_center(), icon.get_center(), thoughts.get_center())
         self.wait(1)
 
         self.remove(tit, icon, bg_image)
 
-# # -------------------------------------------
-#
-#         # # 1.2
-#         # what are elliptic curves
-#         # TODO : Transition for the background. Maybe better in an editor?
-#         # or keep the bubble for later.
-#         thoughts.clear_updaters()
-#         bgr = my_background()
-#         shz(bgr, -10)
-#         shz(thoughts, -10)
-#         t = ValueTracker(0)
-#         bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-#         thoughts.add_updater(lambda m: m.set_opacity(1-t.get_value()))
-#         self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
-#
-#         # equations appear central
-#         e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
-#         shz(e1, 5)
-#         self.play(FadeIn(e1))
-#         self.wait(1)
-#         e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
-#         shz(e2, 5)
-#         self.play(Transform(e1, e2))
-#         self.wait(1)
+# -------------------------------------------
 
-        # # plot elliptic curve, move equations out
-        # axes = my_fading_numberplane()
-        # shz(axes, 1)
-        # self.add(axes)
-        # E = EllipticCurve([-4, 1])
-        # curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        # shz(curve, 5)
-        # # self.add(e1)
-        # self.add(curve)
+        # # 1.2
+        # what are elliptic curves
+        # TODO : Transition for the background. Maybe better in an editor?
+        # or keep the bubble for later.
+        thoughts.clear_updaters()
+        st.clear_updaters()
+        te.clear_updaters()
+        bgr = my_background()
+        shz(bgr, -10)
+        shz(thoughts, -10)
+        t = ValueTracker(0)
+        bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
+        thoughts.add_updater(lambda m: m.set_opacity(1-t.get_value()))
+        self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
+
+        self.remove(thoughts)
+        self.add(bgr)
+        self.wait(1)
+
+        # equations appear central
+        e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
+        shz(e1, 5)
+        self.play(FadeIn(e1))
+        self.wait(1)
+        e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
+        shz(e2, 5)
+        self.play(Transform(e1, e2))
+        self.wait(1)
+
+        # plot elliptic curve, move equations out
+        axes = my_fading_numberplane()
+        shz(axes, 1)
+        self.add(axes)
+        E = sagemath.EllipticCurve([-4, 1])
+        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(curve, 5)
+        # self.add(e1)
+        self.add(curve)
         #
         # self.play(Create(curve),
         #           e1.animate.to_corner(UL),
