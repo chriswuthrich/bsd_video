@@ -39,8 +39,10 @@ class FirstScene(Scene):
         te.shift(vec(0, 0.1))  # aligned below
         st.scale(1)
         te.scale(1)
-        st.shift(vec(0.5, -.5))
-        te.shift(vec(1.8, -.5))
+        st_start = vec(1.8, -.5)
+        te_start = vec(.5,-.5)
+        st.shift(st_start)
+        te.shift(te_start)
         shz(st, 10)
         shz(te, 10)
         self.add(st, te)
@@ -53,13 +55,13 @@ class FirstScene(Scene):
         thoughts[1][0].shift(vec(0, 0.2))
         thoughts[1][1].shift(vec(0.2, 0.2))  # shift middle little bubble
         thoughts[1][2].shift(vec(0.6, 0.4))
-        shz(thoughts, 5)
+        shz(thoughts[0], 1)
 
         # text in the bubble
         zeta = MathTex(r"\zeta(s)", font_size=72)
         zeta.set_color(YELLOW)
         zeta.move_to(cloud_centre)
-        shz(zeta, 6)
+        shz(zeta, 5)
         self.add(thoughts, zeta)
         self.wait(1)
 
@@ -72,7 +74,7 @@ class FirstScene(Scene):
         # the little elliptic curve appears
         icon = little_curve()
         icon.move_to(cloud_centre+vec(1.3, 0))
-        shz(icon, 6)
+        shz(icon, 5)
         self.play(FadeIn(icon))
         self.wait(.3)
 
@@ -83,18 +85,20 @@ class FirstScene(Scene):
             """
             bouncing function cooked up with cubic splines
             """
-            if 0 < tt < 0.4:
-                return 9.375 * tt ** 3 - 1.875 * tt ** 2
+            if tt < 0.4:
+                return 12.5*tt**3 - 3.75*tt**2
             elif tt < 0.5:
-                return -300 * tt ** 3 + 390 * tt ** 2 - 165 * tt + 23.1
+                return -100*tt**3 + 120*tt**2 - 45*tt + 5.4
             elif tt < 0.7:
-                return 50 * tt ** 3 - 90 * tt ** 2 + 52.5 * tt - 9.4
+                return 50*tt**3 - 90*tt**2 + 52.5*tt - 9.6
             elif tt < 1:
-                return (-400 * tt ** 3 + 1020 * tt ** 2 - 840 * tt + 229) / 9
+                return (-1600*tt**3 + 4080*tt**2 - 3360*tt + 907)/27
             else:
                 return 1
 
-        icon.add_updater(lambda m: m.move_to(cloud_centre+vec(1.3, 0) - vec(ple(t.get_value()), 0)))
+        icon.add_updater(lambda m: m.move_to(cloud_centre
+                                             + vec(1.3, 0, z=5/100)
+                                             - vec(ple(t.get_value()), 0)))
         # white goes to yellow:
         icon.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
 
@@ -110,17 +114,31 @@ class FirstScene(Scene):
             else:
                 return 2 * (1 - tt)
 
-        zeta.add_updater(lambda m: m.move_to(cloud_centre - vec(plz(t.get_value()), 0)))
+        zeta.add_updater(lambda m: m.move_to(cloud_centre
+                                             - vec(plz(t.get_value()), 0, z=5/100)))
         zeta.add_updater(lambda m: m.set_opacity(opz(t.get_value())))
 
         self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
-        self.wait(1)
+        self.play(icon.animate.move_to(cloud_centre), run_time=0.3)
+        self.wait(.7)
+
+        # title appears
+        tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
+                        font_size=40,
+                        color=YELLOW,
+                        opacity=1,
+                        alignment="center"
+                        )
+
+        tit.move_to(vec(-1, 3))
+        shz(tit, 5)
+        # self.play(Write(tit))
+        # self.wait(.5)
 
         # as the walk to the forefront, the bubble increases
-        # TODO title does not appears, small bubbles need adjudment
+        # TODO Z- values don't work. Seems a bug of manim
         self.remove(zeta)
         thoughts.clear_updaters()
-        zeta.clear_updaters()
         icon.clear_updaters()
 
         t = ValueTracker(0)
@@ -141,41 +159,22 @@ class FirstScene(Scene):
 
         thoughts[0].add_updater(scale_cloud_updater)
 
-        te_start = te.get_center()
-        st_start = st.get_center()
-        th_start = thoughts.get_center()
-        # the_start = letter_E_text.get_center()
-        the_start = icon.get_center()
-        te.add_updater(lambda m: m.move_to(te_start + pa(t.get_value())))
-        st.add_updater(lambda m: m.move_to(st_start + pa(t.get_value())))
-        thoughts.add_updater(lambda m: m.move_to(th_start + pa(t.get_value())))
-        for thi in thoughts[1]:
-            thi.add_updater(lambda m: m.scale(op(t.get_value())))
-            thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        # letter_E_text.add_updater(lambda m: m.move_to((1-t.get_value())*the_start+t.get_value()*vec(-3, 3)))
-        icon.add_updater(lambda m: m.move_to((1 - t.get_value()) * the_start + t.get_value() * vec(-3, 3)))
+        te.add_updater(lambda m: m.move_to(te_start
+                                           + pa(t.get_value())
+                                           + vec(0,0, z=10/100)))
+        st.add_updater(lambda m: m.move_to(st_start
+                                           + pa(t.get_value())
+                                           + vec(0,0, z=10/100)))
+        thoughts.add_updater(lambda m: m.move_to(cloud_centre
+                                                 + pa(t.get_value())
+                                                 + vec(0, 0, z=1/100)))
+        # for thi in thoughts[1]:
+        #    thi.add_updater(lambda m: m.scale(op(t.get_value())))
+        #    thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
+        # icon.add_updater(lambda m: m.set_opacity(t.get_value()))
+        self.remove(thoughts[1])
 
-        def ope(tt):
-            if tt < 0.333:
-                return 1-3*tt
-            else:
-                return 0
-        # letter_E_text.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
-        icon.add_updater(lambda m: m.set_opacity(ope(t.get_value())))
-
-        # title appears
-        tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
-                        font_size=40,
-                        color=YELLOW,
-                        opacity=0,
-                        alignment="center"
-                        )
-
-        tit.move_to(vec(-1, 3))
-        shz(tit, 10)
-        tit.add()
-
-        def scale_title_updater(m):
+        def title_updater(m):
             new_tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
                                 font_size=40,
                                 # font="Liberation Sans",
@@ -183,14 +182,15 @@ class FirstScene(Scene):
                                 opacity=1,  # t.get_value()**2,
                                 alignment="center"
                                 )
-            new_tit.move_to((1-t.get_value())*vec(-1, 3))
-            shz(new_tit, 11)
-            new_tit.scale(0.1+t.get_value())
+            new_tit.scale(0.1 + t.get_value())
+            new_tit.move_to((1 - t.get_value()) * vec(-1, 3))
+            shz(new_tit, 5)
             m.become(new_tit)
 
-        tit.add_updater(scale_title_updater)
+        tit.add_updater(title_updater)
 
         self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
+        print(st.get_center(), te.get_center(), tit.get_center(), icon.get_center(), thoughts.get_center())
         self.wait(1)
 
         self.remove(tit, icon, bg_image)
