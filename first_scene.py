@@ -12,14 +12,19 @@ import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
 from tools import *
-
+import svgelements as se
 
 def little_curve():
-    ellicon = SVGMobject("pics/ellicon2.svg",
+    # the svg file is a simplified output from
+    # sage modified with inkscape
+    ellicon = SVGMobject("pics/ellicon3.svg",
                         stroke_width=4
                         )
-    ellicon.scale(0.45)
-    return ellicon
+    # part 0 and 1 are boxes
+    v = ellicon[2]  # this is the curve
+    v.set_color(WHITE)
+    v.scale(.5)
+    return v
 
 
 class FirstScene(Scene):
@@ -203,30 +208,30 @@ class FirstScene(Scene):
 
         self.remove(tit, icon, bg_image)
 
-# -------------------------------------------
-
-        # # 1.2
-        # what are elliptic curves
-        # TODO : Transition for the background. Maybe better in an editor?
-        # or keep the bubble for later.
-        thoughts.clear_updaters()
-        bgr = my_background()
-        shz(bgr, -10)
-        shz(thoughts, -10)
-        t = ValueTracker(0)
-        bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        thoughts.add_updater(lambda m: m.set_opacity(1-t.get_value()))
-        self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
-
-        # equations appear central
-        e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
-        shz(e1, 5)
-        self.play(FadeIn(e1))
-        self.wait(1)
-        e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
-        shz(e2, 5)
-        self.play(Transform(e1, e2))
-        self.wait(1)
+# # -------------------------------------------
+#
+#         # # 1.2
+#         # what are elliptic curves
+#         # TODO : Transition for the background. Maybe better in an editor?
+#         # or keep the bubble for later.
+#         thoughts.clear_updaters()
+#         bgr = my_background()
+#         shz(bgr, -10)
+#         shz(thoughts, -10)
+#         t = ValueTracker(0)
+#         bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
+#         thoughts.add_updater(lambda m: m.set_opacity(1-t.get_value()))
+#         self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
+#
+#         # equations appear central
+#         e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
+#         shz(e1, 5)
+#         self.play(FadeIn(e1))
+#         self.wait(1)
+#         e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
+#         shz(e2, 5)
+#         self.play(Transform(e1, e2))
+#         self.wait(1)
 
         # # plot elliptic curve, move equations out
         # axes = my_fading_numberplane()
