@@ -70,15 +70,13 @@ class FirstScene(Scene):
         thoughts[1][2].shift(vec(2.1, 0.6))
 
         # the little elliptic curve appears
-        zeta_centre = zeta.get_center()
         icon = little_curve()
-        icon.move_to(zeta_centre+vec(1.3, 0))
+        icon.move_to(cloud_centre+vec(1.3, 0))
         shz(icon, 6)
         self.play(FadeIn(icon))
         self.wait(.3)
 
         # and the curve kicks out the zeta
-        # TODO curve goes out with zeta??
         t = ValueTracker(0)
 
         def ple(tt):
@@ -96,7 +94,7 @@ class FirstScene(Scene):
             else:
                 return 1
 
-        icon.add_updater(lambda m: m.move_to(zeta_centre+vec(1.3, 0) - vec(ple(t.get_value()), 0)))
+        icon.add_updater(lambda m: m.move_to(cloud_centre+vec(1.3, 0) - vec(ple(t.get_value()), 0)))
         # white goes to yellow:
         icon.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
 
@@ -112,18 +110,17 @@ class FirstScene(Scene):
             else:
                 return 2 * (1 - tt)
 
-        zeta.add_updater(lambda m: m.move_to(zeta_centre - vec(plz(t.get_value()), 0)))
+        zeta.add_updater(lambda m: m.move_to(cloud_centre - vec(plz(t.get_value()), 0)))
         zeta.add_updater(lambda m: m.set_opacity(opz(t.get_value())))
 
         self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
         self.wait(1)
 
         # as the walk to the forefront, the bubble increases
-        # TODO : Currently does not work correctly, bubbles don't disappear
+        # TODO title does not appears, small bubbles need adjudment
         self.remove(zeta)
         thoughts.clear_updaters()
         zeta.clear_updaters()
-        # letter_E_text.clear_updaters()
         icon.clear_updaters()
 
         t = ValueTracker(0)
