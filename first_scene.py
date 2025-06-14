@@ -209,16 +209,18 @@ class FirstScene(Scene):
         st.clear_updaters()
         te.clear_updaters()
         bgr = my_background()
-        shz(bgr, -10)
-        shz(thoughts, -10)
+        shz(bgr, -1)
+        shz(thoughts, -1)
         t = ValueTracker(0)
         bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
         thoughts.add_updater(lambda m: m.set_opacity(1-t.get_value()))
         self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
 
         self.remove(thoughts)
+        bgr.set_opacity(1)
+        bgr.clear_updaters()
         self.add(bgr)
-        self.wait(1)
+        self.wait(.2)
 
         # equations appear central
         e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
@@ -239,28 +241,29 @@ class FirstScene(Scene):
         shz(curve, 5)
         # self.add(e1)
         self.add(curve)
-        #
-        # self.play(Create(curve),
-        #           e1.animate.to_corner(UL),
-        #           e2.animate.to_corner(UL),
-        #           run_time=1 )
-        # self.wait(1)
-        #
+
+        self.play(Create(curve),
+                  e1.animate.to_corner(UL),
+                  e2.animate.to_corner(UL),
+                  run_time=1 )
+        self.wait(1)
+
+        # doesn't work yet? opengl problem?
         # framebox1 = SurroundingRectangle(e1[1], buff=.1)
         # framebox2 = SurroundingRectangle(e1[3], buff=.1)
         # self.add(framebox1, framebox2)
-        #
-        # # merge to another curve
-        # E2 = EllipticCurve([-7, 6])
-        # curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        # shz(curve2, 5)
-        # self.play(
-        #     Transform(curve, curve2),
-        #     Transform(e1, e2),
-        #     run_time=1
-        # )
-        # self.wait(1)
-        #
+
+        # merge to another curve
+        E2 = sagemath.EllipticCurve([-7, 6])
+        curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(curve2, 5)
+        self.play(
+            Transform(curve, curve2),
+            Transform(e1, e2),
+            run_time=1
+        )
+        self.wait(1)
+
         # # try to give lots of curves
         # ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
         # for A,B in ABs:
