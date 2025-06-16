@@ -8,7 +8,6 @@ Common commands for useful for all parts
 from manim import *
 from manim.opengl import *
 
-
 def vec(x: float, y: float, z=0):
     return np.array([x, y, z])
 
@@ -160,6 +159,41 @@ def glow_dot(centre, radius=0.035, glow_radius=0.2, glow_opacity=0.3, colour=YEL
         glow.move_to(centre)
         v.add(glow)
     return v
+
+
+class MySurroundingRectangle(RoundedRectangle):
+    r"""
+    untyped version
+    """
+
+    def __init__(
+        self,
+        *mobjects,
+        color,
+        buff,
+        corner_radius = 0.0,
+        **kwargs
+    ) -> None:
+        from manim.mobject.mobject import Group
+
+        # if not all(isinstance(mob, Mobject) or for mob in mobjects):
+        #     raise TypeError(
+        #         "Expected all inputs for parameter mobjects to be a Mobjects"
+        #     )
+
+        group = Group(*mobjects)
+        super().__init__(
+            color=color,
+            width=group.width + 2 * buff,
+            height=group.height + 2 * buff,
+            corner_radius=corner_radius,
+            **kwargs,
+        )
+        self.buff = buff
+        self.move_to(group)
+
+
+
 
 
 class TestSome(Scene):

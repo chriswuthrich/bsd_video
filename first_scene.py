@@ -249,9 +249,9 @@ class FirstScene(Scene):
         self.wait(1)
 
         # doesn't work yet? opengl problem?
-        # framebox1 = SurroundingRectangle(e1[1], buff=.1)
-        # framebox2 = SurroundingRectangle(e1[3], buff=.1)
-        # self.add(framebox1, framebox2)
+        framebox1 = MySurroundingRectangle(e1[1], color=YELLOW, buff=.1)
+        framebox2 = MySurroundingRectangle(e1[3], color=YELLOW, buff=.1)
+        self.add(framebox1, framebox2)
 
         # merge to another curve
         E2 = sagemath.EllipticCurve([-7, 6])
