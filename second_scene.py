@@ -120,9 +120,9 @@ class SecondScene(ThreeDScene):
 
         nu = my_numberplane()
         self.add(nu)
-        self.add(smanim(E.plot(xmin=-3, xmax=100, ymin=-100, ymax=100, color="yellow")))
-        # cu = self.curve_again()
-        # self.add(cu)
+        # self.add(smanim(E.plot(xmin=-3, xmax=1000, ymin=-1000, ymax=1000, color="yellow")))
+        cu = curve_again()
+        self.add(cu)
 
         for R in EQ[:5]:
             v, la = pt_with_label(R)
@@ -151,12 +151,12 @@ class SecondScene(ThreeDScene):
                 rf = rate_functions.ease_out_sine
             else:
                 rf = rate_functions.linear
-            nu = my_numberplane(
-                       x_range=np.array([-50, 50, x_grid_steps[i]]),
-                       y_range=np.array([-10, 100, y_grid_steps[i]]),
-                       colour=TEAL,
-                       thickness=0.01)
-            self.add(nu)
+            # nu = my_numberplane(
+            #            x_range=np.array([-50, 50, x_grid_steps[i]]),
+            #            y_range=np.array([-10, 100, y_grid_steps[i]]),
+            #            colour=TEAL,
+            #            thickness=0.01)
+            # self.add(nu)
             phi_end = PI/2 * i/number_of_grid_changes
             frame_centre = -10*i/number_of_grid_changes
             self.move_camera(phi=phi_end, frame_center=(0, frame_centre, 5), rate_func=rf)
