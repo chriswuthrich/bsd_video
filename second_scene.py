@@ -12,16 +12,16 @@ and renders slowly.
 
 from manim import *
 from manim.opengl import *
-from sage.all import *
+import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
-from tools import subtitle
+from tools import *
 
 
 def calc_curve():
     # Do the sage calculations to
     # get the curve and its rational points EQ
-    E = EllipticCurve([-4, 1])
+    E = sagemath.EllipticCurve([-4, 1])
 
     P, Q = E.gens()
     EQ = []
@@ -57,6 +57,54 @@ def pt_with_label(R, dir=UR):
     la.move_to(np.array([R[0], R[1], 0.])+sc*dir)
     return v, la
 
+def path(pts, colour=WHITE, **kwargs):
+    v = OpenGLVMobject(stroke_color=colour, **kwargs)
+    v.start_new_path(pts[0])
+    v.add_points_as_corners(pts[1:])
+    v.make_smooth()
+    return v
+
+def dummy_curve():
+    """ Curve to display with few points only no precalculation """
+    li = [(29.4069687323273, 159.102579768869),
+             (18.5558451565427, 79.4727242193263),
+             (14.1839020946821, 52.8944749670282),
+             (11.7262277758544, 39.5790754415291),
+             (10.1187887022127, 31.5687575733752),
+             (8.97066530771083, 26.2109179055659),
+             (8.10165070958815, 22.3687141460578),
+             (7.41619491447776, 19.4737142746493),
+             (6.85853538093578, 17.2101128833461),
+             (6.39376390014999, 15.3884176858763),
+             (5.99882183547338, 13.8880342695749),
+             (5.65781679020570, 12.6285584472365),
+             (5.35941122265808, 11.5543182694121),
+             (5.09528270060630, 10.6255408657860),
+             (4.85917339148022, 9.81305252752575),
+             (4.64628032827383, 9.09496623640533),
+             (4.45285130986880, 8.45453827892505),
+             (4.27590946907810, 7.87873929984326),
+             (4.11306091336658, 7.35727657909984),
+             (3.96235749116391, 6.88190960235587),
+             (3.82219703585803, 6.44596115892533),
+             (3.69124964709792, 6.04396175204804),
+             (3.56840241904170, 5.67138674627703),
+             (3.45271747499337, 5.32445920162396),
+             (3.4695648421091643, 5.374750833741052),
+             (3.066992086080393, 4.193031134234696),
+             (2.660875126026444, 3.032520030131728),
+             (2.255573830329872, 1.8582766495268068),
+             (1.9409259929060723, 0.7403649237419704),
+             (1.8638334808854342, 0.13925180616285376),
+             (1.8812097842720061, -0.36423715331547174),
+             (2.0825905509946057, -1.304689606470304),
+             (2.410536193850231, -2.316186759721809),
+             (2.792956787977554, -3.4080687858887733),
+             (3.1999194600953365, -4.578847893959676)]
+    lip = [vec(a[0], a[1]) for a in li]
+    return path(lip)
+
+
 
 def my_numberplane(x_range=np.array([-50, 50, 1]),
                    y_range=np.array([-10, 100, 1]),
@@ -88,7 +136,7 @@ def my_numberplane(x_range=np.array([-50, 50, 1]),
 # try creating curve with parametric plot
 # doesn't work
 def curve_again():
-    E = EllipticCurve([-4, 1])
+    E = sagemath.EllipticCurve([-4, 1])
     wp = E.weierstrass_p().truncate(20)
     wp2 = wp.derivative()
     om1, om2 = E.period_lattice().basis()
@@ -121,7 +169,8 @@ class SecondScene(ThreeDScene):
         nu = my_numberplane()
         self.add(nu)
         # self.add(smanim(E.plot(xmin=-3, xmax=1000, ymin=-1000, ymax=1000, color="yellow")))
-        cu = curve_again()
+        # cu = curve_again()
+        cu = dummy_curve()
         self.add(cu)
 
         for R in EQ[:5]:
@@ -132,34 +181,34 @@ class SecondScene(ThreeDScene):
 
         pts_in_pic = []
         vpts = VGroup()
-        for R in EQ[:30]:  # do more but restrict better later
-            rr = np.array([R[0], R[1], 0.])
+        for R in EQ[:10]:  # do more but restrict better later
+            rr = vec(R[0], R[1])
             pts_in_pic.append(rr)
-            vpts.add(Dot(rr))  # Sphere(center=rr, radius=0.1, color=YELLOW_A))
+            vpts.add(Dot3D(rr))
 
         self.add(vpts)
         self.wait(2)
-
-        number_of_grid_changes = 5
-        y_grid_steps = [1, 2, 4, 8, 8]
-        x_grid_steps = [1, 2, 2, 4, 4]
-        for i in range(number_of_grid_changes):
-            self.remove(nu)
-            if i == 0:
-                rf = rate_functions.ease_in_sine
-            elif i == number_of_grid_changes - 1:
-                rf = rate_functions.ease_out_sine
-            else:
-                rf = rate_functions.linear
-            # nu = my_numberplane(
-            #            x_range=np.array([-50, 50, x_grid_steps[i]]),
-            #            y_range=np.array([-10, 100, y_grid_steps[i]]),
-            #            colour=TEAL,
-            #            thickness=0.01)
-            # self.add(nu)
-            phi_end = PI/2 * i/number_of_grid_changes
-            frame_centre = -10*i/number_of_grid_changes
-            self.move_camera(phi=phi_end, frame_center=(0, frame_centre, 5), rate_func=rf)
+        #
+        # number_of_grid_changes = 5
+        # y_grid_steps = [1, 2, 4, 8, 8]
+        # x_grid_steps = [1, 2, 2, 4, 4]
+        # for i in range(number_of_grid_changes):
+        #     self.remove(nu)
+        #     if i == 0:
+        #         rf = rate_functions.ease_in_sine
+        #     elif i == number_of_grid_changes - 1:
+        #         rf = rate_functions.ease_out_sine
+        #     else:
+        #         rf = rate_functions.linear
+        #     # nu = my_numberplane(
+        #     #            x_range=np.array([-50, 50, x_grid_steps[i]]),
+        #     #            y_range=np.array([-10, 100, y_grid_steps[i]]),
+        #     #            colour=TEAL,
+        #     #            thickness=0.01)
+        #     # self.add(nu)
+        #     phi_end = PI/2 * i/number_of_grid_changes
+        #     frame_centre = -10*i/number_of_grid_changes
+        #     self.move_camera(phi=phi_end, frame_center=(0, frame_centre, 5), rate_func=rf)
 
         self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
         self.wait(1)
