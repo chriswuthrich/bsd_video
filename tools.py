@@ -234,7 +234,27 @@ class MySurroundingRectangle(RoundedRectangle):
 #           DOWN * length,
 #         ]
 #         self.set_points_smoothly(path)
+      # Define triangle vertices
+def a_triangle(length=2, width=1, side_angle=PI/4, pointiness= 1):
+        tip = vec(length,0)
+        upper_corner = vec(0, width/2)
+        lower_corner = vec(0, -width/2)
 
+        # Control points to curve the left and right sides inward
+        cp1 = vec(length-pointiness,0)
+        cp2 = upper_corner + length/6 * vec(np.sin(side_angle), -np.cos(side_angle))
+        cp3 = lower_corner + length/6 * vec(np.sin(side_angle), np.cos(side_angle))
+        cp4 = vec(length-pointiness, 0)
+
+        # Create the VMobject and set points
+        triangle = OpenGLVMobject()
+        triangle.start_new_path(tip)
+        triangle.add_cubic_bezier_curve_to(cp1, cp2, upper_corner)
+        triangle.add_cubic_bezier_curve_to(upper_corner, lower_corner, lower_corner)
+        triangle.add_cubic_bezier_curve_to(cp3, cp4, tip)
+        triangle.set_stroke(WHITE)
+        triangle.set_fill(BLUE, opacity=0.4)
+        return triangle
 
 
 class TestSome(Scene):
@@ -245,7 +265,10 @@ class TestSome(Scene):
     """
     def construct(self):
 
-        self.clear()
+        v = a_triangle()
+        self.add(v)
+        self.wait()
+        # self.clear()
         self.add(my_background())
         self.wait()
 
