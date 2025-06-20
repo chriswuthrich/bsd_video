@@ -199,62 +199,45 @@ class MySurroundingRectangle(RoundedRectangle):
         self.buff = buff
         self.move_to(group)
 
-#
-#
-# class CurvyPointyTip(ArrowTip):
-#     def __init__(
-#         self,
-#         fill_opacity: float = 1,
-#         stroke_width: float = 3,
-#         length: float = DEFAULT_ARROW_TIP_LENGTH / 2,
-#         start_angle: float = PI,
-#         **kwargs: Any,
-#     ):
-#         self.start_angle = start_angle
-#         VMobject.__init__(
-#             self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
-#         )
-#
-#         self.set_points_as_corners(
-#             np.array(
-#                 [
-#                     [2, 0, 0],  # tip
-#                     [-1.2, 1.6, 0],
-#                     [0, 0, 0],  # base
-#                     [-1.2, -1.6, 0],
-#                     [2, 0, 0],  # close path, back to tip
-#                 ]
-#             )
-#         )
-#         self.scale(length / self.length)
-#     self.width = length
-#         path = [
-#           UP * length,
-#           ORIGIN,
-#           DOWN * length,
-#         ]
-#         self.set_points_smoothly(path)
-      # Define triangle vertices
-def a_triangle(length=2, width=1, side_angle=PI/4, pointiness= 1):
+
+class CurvyPointyTip(ArrowTip):
+    r"""
+    My class for a tip that has inwards curved sides
+
+    """
+
+    def __init__(
+        self,
+        fill_opacity: float = 1,
+        stroke_width: float = 3,
+        length: float = DEFAULT_ARROW_TIP_LENGTH,
+        width: float = DEFAULT_ARROW_TIP_LENGTH*.8,
+        start_angle: float = PI,
+        side_angle: float = PI/4,
+        pointiness: float = 1.3,
+        **kwargs
+    ):
+        self.start_angle = start_angle  # doesn't seem to change anything
+
         tip = vec(length,0)
         upper_corner = vec(0, width/2)
         lower_corner = vec(0, -width/2)
 
-        # Control points to curve the left and right sides inward
-        cp1 = vec(length-pointiness,0)
-        cp2 = upper_corner + length/6 * vec(np.sin(side_angle), -np.cos(side_angle))
-        cp3 = lower_corner + length/6 * vec(np.sin(side_angle), np.cos(side_angle))
-        cp4 = vec(length-pointiness, 0)
+        # Control points to curve the left and right sides inwards
+        cp1 = vec(length/pointiness,0)
+        cp2 = upper_corner + length/3 * vec(np.sin(side_angle), -np.cos(side_angle))
+        cp3 = lower_corner + length/3 * vec(np.sin(side_angle), np.cos(side_angle))
+        cp4 = vec(length/pointiness, 0)
 
-        # Create the VMobject and set points
-        triangle = OpenGLVMobject()
-        triangle.start_new_path(tip)
-        triangle.add_cubic_bezier_curve_to(cp1, cp2, upper_corner)
-        triangle.add_cubic_bezier_curve_to(upper_corner, lower_corner, lower_corner)
-        triangle.add_cubic_bezier_curve_to(cp3, cp4, tip)
-        triangle.set_stroke(WHITE)
-        triangle.set_fill(BLUE, opacity=0.4)
-        return triangle
+        OpenGLVMobject.__init__(
+            self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
+        )
+        self.start_new_path(tip)
+        self.add_cubic_bezier_curve_to(cp1, cp2, upper_corner)
+        self.add_cubic_bezier_curve_to(upper_corner, lower_corner, lower_corner)
+        self.add_cubic_bezier_curve_to(cp3, cp4, tip)
+        self.scale(length / self.length)
+
 
 
 class TestSome(Scene):
@@ -266,7 +249,17 @@ class TestSome(Scene):
     def construct(self):
 
         v = a_triangle()
-        self.add(v)
+        w = Arrow(start=vec(1,1), end=vec(2,3), tip_shape=CurvyPointyTip , buff =0)
+        wt = w.tip
+        # print(wt.tip_point, wt.base, wt.tip_angle, wt.length, wt.points )
+        w2 = Arrow(start=vec(-5, 0), end=vec(-3, 0), tip_shape=CurvyPointyTip,)
+        w3 = Arrow(start=vec(-4, -3), end=vec(-4, 3))
+        # w4 = Arrow(start=vec(0, 0), end=vec(-2, 0), tip_shape=CurvyPointyTip)
+        w5 = Arrow(start=vec(-1, -1.3), end=vec(-5, -1.3), tip_shape=CurvyPointyTip)
+        w6 = Arrow(start=vec(-1, -1), end=vec(0, 0), tip_shape=CurvyPointyTip)
+        wt = w2.tip
+        # print(wt.tip_point, wt.base, wt.tip_angle, wt.length, wt.points)
+        self.add(v, w,w2,w3,w5,w6)
         self.wait()
         # self.clear()
         self.add(my_background())
