@@ -79,9 +79,9 @@ class ThirdScene(Scene):
         self.add(gradient_rect)
 
         # define N(T)
-        te_defnt = Tex(r"$\mathcal{N}(T) = ",
-                       r"\# \Bigl\{ P\in E(\mathbb{Q}) \, ",
-                       r": \, \lvert X\rvert, \lvert Y\rvert, ",
+        te_defnt = Tex(r"$\mathcal{N}(T) = " +
+                       r"\# \Bigl\{ P\in E(\mathbb{Q}) \, " +
+                       r": \, \lvert X\rvert, \lvert Y\rvert, " +
                        r"\lvert Z\rvert \leq T \Bigr\} $")
         self.add(te_defnt)
         # now add an animation counting points

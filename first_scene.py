@@ -114,8 +114,9 @@ class FirstScene(Scene):
             else:
                 return 2 * (1 - tt)
 
+        # TODO check there is no little jump anymore in zeta before move.
         zeta.add_updater(lambda m: m.move_to(cloud_centre
-                                             - vec(plz(t.get_value()), 0, z=5/100)))
+                                             - vec(plz(t.get_value()), 0)))
         zeta.add_updater(lambda m: m.set_opacity(opz(t.get_value())))
 
         self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
@@ -173,11 +174,12 @@ class FirstScene(Scene):
         #    thi.add_updater(lambda m: m.scale(op(t.get_value())))
         #    thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
 
-        i_path = lambda tt : vec(5*tt,0)
-        icon.add_updater(lambda m: m.move_to(cloud_centre
-                                             + i_path(t.get_value())
-                                             + vec(0, 0, z=5/100)))
-        self.remove(thoughts[1])
+        # i_path = lambda tt : vec(5*tt,0)
+        # icon.add_updater(lambda m: m.move_to(cloud_centre
+        #                                      + i_path(t.get_value())
+        #                                      + vec(0, 0, z=5/100)))
+        #icon.add_updater(lambda m: m.set_opacity(1-t.get_value()))
+        #self.remove(thoughts[1])
 
         def title_updater(m):
             new_tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
@@ -194,10 +196,16 @@ class FirstScene(Scene):
 
         tit.add_updater(title_updater)
 
-        self.play(t.animate.set_value(1), run_time=7, rate_func=linear)
+        self.play(t.animate.set_value(1),
+                  FadeOut(icon),
+                  run_time=7,
+                  rate_func=linear)
         self.wait(1)
 
         self.remove(tit, icon, bg_image)
+        self.clear()
+        self.add(thoughts[0])
+        self.add(st, te)
 
 # -------------------------------------------
 
@@ -220,6 +228,7 @@ class FirstScene(Scene):
         bgr.set_opacity(1)
         bgr.clear_updaters()
         self.add(bgr)
+        self.add(st, te)
         self.wait(.2)
 
         # equations appear central
@@ -230,6 +239,10 @@ class FirstScene(Scene):
         e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
         shz(e2, 5)
         self.play(Transform(e1, e2))
+        self.play(Transform(e2, e1))
+        ellc = Text("Elliptic curve")
+        ellc.next_to(e1, DOWN)
+        self.play(FadeIn(ellc))
         self.wait(1)
 
         # plot elliptic curve, move equations out
@@ -241,11 +254,11 @@ class FirstScene(Scene):
         shz(curve, 5)
         # self.add(e1)
         self.add(curve)
-
+        ellc.add_updater(lambda m: m.next_to(e1, DOWN))
         self.play(Create(curve),
                   e1.animate.to_corner(UL),
                   e2.animate.to_corner(UL),
-                  run_time=1 )
+                  run_time=1)
         self.wait(1)
 
         # doesn't work yet? opengl problem?
