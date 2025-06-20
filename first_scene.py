@@ -126,6 +126,7 @@ class FirstScene(Scene):
         # title appears
         tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
                         font_size=40,
+                        font="Noto Sans",
                         color=YELLOW,
                         opacity=1,
                         alignment="center"
@@ -179,12 +180,12 @@ class FirstScene(Scene):
         #                                      + i_path(t.get_value())
         #                                      + vec(0, 0, z=5/100)))
         #icon.add_updater(lambda m: m.set_opacity(1-t.get_value()))
-        #self.remove(thoughts[1])
+        self.remove(thoughts[1])
 
         def title_updater(m):
             new_tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
                                 font_size=40,
-                                # font="Liberation Sans",
+                                font="Noto Sans",
                                 color=YELLOW,
                                 opacity=1,  # t.get_value()**2,
                                 alignment="center"
@@ -197,6 +198,7 @@ class FirstScene(Scene):
         tit.add_updater(title_updater)
 
         self.play(t.animate.set_value(1),
+                  # TODO What to do with the icon here?
                   FadeOut(icon),
                   run_time=7,
                   rate_func=linear)
@@ -236,28 +238,40 @@ class FirstScene(Scene):
         shz(e1, 5)
         self.play(FadeIn(e1))
         self.wait(1)
-        e2 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
-        shz(e2, 5)
-        self.play(Transform(e1, e2))
-        self.play(Transform(e2, e1))
-        ellc = Text("Elliptic curve")
+        ellc = Text("Elliptic curve", font="Noto Sans")
         ellc.next_to(e1, DOWN)
         self.play(FadeIn(ellc))
         self.wait(1)
 
         # plot elliptic curve, move equations out
-        axes = my_fading_numberplane()
-        shz(axes, 1)
-        self.add(axes)
+        grid = VGroup()
+        grid.add(my_fading_numberplane())
+        grid.add(Line(vec(-7.112,0), vec(7.112, 0), color=WHITE, stroke_width=2))
+        grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
+        shz(grid, 1)
+        self.add(grid)
+        axex = Arrow(start=vec(0,0),
+                     end=vec(6.5,0),
+                     buff=0,
+                     stroke_width=2,
+                     tip_length=0.2,
+                     color=WHITE)
+        axey = Arrow(start=vec(0, 0),
+                     end=vec(0, 3.5),
+                     buff=0,
+                     stroke_width=2,
+                     tip_length=0.2,
+                     color=WHITE)
+        shz(axex,1)
+        shz(axey, 1)
         E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         shz(curve, 5)
-        # self.add(e1)
         self.add(curve)
         ellc.add_updater(lambda m: m.next_to(e1, DOWN))
         self.play(Create(curve),
                   e1.animate.to_corner(UL),
-                  e2.animate.to_corner(UL),
+                  FadeIn(axex, axey),
                   run_time=1)
         self.wait(1)
 
@@ -268,11 +282,14 @@ class FirstScene(Scene):
 
         # merge to another curve
         E2 = sagemath.EllipticCurve([-7, 6])
-        curve2 = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        shz(curve2, 5)
+        new_curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(new_curve, 5)
+        new_e1 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
+        new_e1.to_corner(UL)
+        shz(new_e1, 5)
         self.play(
-            Transform(curve, curve2),
-            Transform(e1, e2),
+            Transform(curve, new_curve),
+            Transform(e1, new_e1),
             run_time=1
         )
         self.wait(1)
@@ -280,9 +297,8 @@ class FirstScene(Scene):
         # try to give lots of curves
         ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
         for A,B in ABs:
-            self.remove(e1, curve)
             E2 = sagemath.EllipticCurve([A, B])
-            curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+            new_curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
             shz(curve, 5)
             if A >= 0:
                 Astr = fr"+{A}\,"
@@ -292,9 +308,12 @@ class FirstScene(Scene):
                 Bstr = fr"+{B}"
             else:
                 Bstr = fr"-{-B}"
-            e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
-            e1.to_corner(UL)
-            self.add(curve, e1)
+            new_e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
+            new_e1.to_corner(UL)
+            self.play(
+                Transform(curve, new_curve),
+                Transform(e1, new_e1),
+                run_timr=10)
             self.wait(1)
 
 

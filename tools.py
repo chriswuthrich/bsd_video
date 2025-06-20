@@ -199,7 +199,41 @@ class MySurroundingRectangle(RoundedRectangle):
         self.buff = buff
         self.move_to(group)
 
-
+#
+#
+# class CurvyPointyTip(ArrowTip):
+#     def __init__(
+#         self,
+#         fill_opacity: float = 1,
+#         stroke_width: float = 3,
+#         length: float = DEFAULT_ARROW_TIP_LENGTH / 2,
+#         start_angle: float = PI,
+#         **kwargs: Any,
+#     ):
+#         self.start_angle = start_angle
+#         VMobject.__init__(
+#             self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
+#         )
+#
+#         self.set_points_as_corners(
+#             np.array(
+#                 [
+#                     [2, 0, 0],  # tip
+#                     [-1.2, 1.6, 0],
+#                     [0, 0, 0],  # base
+#                     [-1.2, -1.6, 0],
+#                     [2, 0, 0],  # close path, back to tip
+#                 ]
+#             )
+#         )
+#         self.scale(length / self.length)
+#     self.width = length
+#         path = [
+#           UP * length,
+#           ORIGIN,
+#           DOWN * length,
+#         ]
+#         self.set_points_smoothly(path)
 
 
 
@@ -226,8 +260,8 @@ class TestSome(Scene):
         self.wait(2)
 
         self.add(thought_bubble(ORIGIN, 1.3))
+        # self.add(Arrow(tip_shape=CurvyPointyTip))
         self.wait()
-
 
 if __name__ == "__main__":
     with tempconfig({"renderer": "opengl",  "quality": "medium_quality", "preview": True}):
