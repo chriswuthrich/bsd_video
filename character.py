@@ -12,8 +12,8 @@ from tools import shz
 
 class StudentChar(VGroup):
     """
-        This creates a little character that is a placeholder for the figures
-        height and width measure the bottom rectangular body part
+        This creates a little character that is a placeholder for the figure.
+        'height' and 'width' measure the bottom rectangular body part.
     """
 
     def __init__(self,
@@ -72,7 +72,7 @@ class StudentChar(VGroup):
         smile.set_stroke(WHITE, opacity=1)
         self.add(smile)
 
-        # non smile mouth -4
+        # non smiling mouth -4
         mouth = Line(h*UP+2*w/3*DOWN+w/3*LEFT, h*UP+2*w/3*DOWN+w/3*RIGHT)
         mouth.set_stroke(WHITE, opacity=0)  # invisible
         self.add(mouth)

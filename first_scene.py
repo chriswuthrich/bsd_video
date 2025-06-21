@@ -33,7 +33,7 @@ class FirstScene(Scene):
         bg_image = nature_background()
         self.add(bg_image)
 
-        # chars on path
+        # chars on stand on the path
         st = StudentChar()
         te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
         te.shift(vec(0, 0.1))  # aligned below
@@ -246,24 +246,37 @@ class FirstScene(Scene):
         # plot elliptic curve, move equations out
         grid = VGroup()
         grid.add(my_fading_numberplane())
-        grid.add(Line(vec(-7.112,0), vec(7.112, 0), color=WHITE, stroke_width=2))
         grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
+        # TODO This line does not show. Why?
+        xline = Line(vec(-7, 0), vec(7, 0), color=WHITE, stroke_width=2)
+        shz(xline,.1)
+        grid.add(xline)
         shz(grid, 1)
         self.add(grid)
+        # TODO tips are not yet nice
         axex = Arrow(start=vec(0,0),
                      end=vec(6.5,0),
                      buff=0,
                      stroke_width=2,
                      tip_length=0.2,
+                     tip_shape=CurvyPointyTip,
                      color=WHITE)
         axey = Arrow(start=vec(0, 0),
                      end=vec(0, 3.5),
                      buff=0,
                      stroke_width=2,
                      tip_length=0.2,
+                     tip_shape=CurvyPointyTip,
                      color=WHITE)
-        shz(axex,1)
-        shz(axey, 1)
+        label_x = MathTex(r"x")
+        label_x.scale(.8)
+        label_x.move_to(vec(6.5, -0.4))
+        label_y = MathTex(r"y")
+        label_y.scale(.8)
+        label_y.move_to(vec(0.4, 3.5))
+        labelled_axes = VGroup(axex, axey, label_x, label_y)
+        shz(labelled_axes,1)
+
         E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         shz(curve, 5)
@@ -271,7 +284,7 @@ class FirstScene(Scene):
         ellc.add_updater(lambda m: m.next_to(e1, DOWN))
         self.play(Create(curve),
                   e1.animate.to_corner(UL),
-                  FadeIn(axex, axey),
+                  FadeIn(labelled_axes),
                   run_time=1)
         self.wait(1)
 
@@ -295,6 +308,7 @@ class FirstScene(Scene):
         self.wait(1)
 
         # try to give lots of curves
+        # TODO This is not ok yet, needs better curves, equation wobbles and is not replacing
         ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
         for A,B in ABs:
             E2 = sagemath.EllipticCurve([A, B])
@@ -312,9 +326,26 @@ class FirstScene(Scene):
             new_e1.to_corner(UL)
             self.play(
                 Transform(curve, new_curve),
-                Transform(e1, new_e1),
-                run_timr=10)
+                FadeTransform(e1, new_e1),
+                run_time=4)
             self.wait(1)
+
+        # they are all symmetric ?
+        self.clear()
+        self.add(bgr, grid, labelled_axes)
+        self.remove(e1, new_e1, new_curve, curve, framebox1, framebox2)
+        E = sagemath.EllipticCurve([-4, 1])
+        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(curve, 5)
+        e1 = MathTex(r"(-y)^2 = y^2 = x^3", r"- 4\,", " x ", "+ 1")
+        e1.to_corner(UL)
+        ellc.next_to(e1, DOWN)
+        arrow_1 = Arrow(vec(-1, -1.8), vec(-1,1.8), stroke_width=3, buff=0)
+        arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0)
+        arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0)
+        arrow_2r = Arrow(vec(2.8, 3), vec(2.8, -3), stroke_width=3, buff=0)
+        self.add(curve, e1, arrow_1, arrow_2, arrow_1r, arrow_2r, te, st)
+        self.wait(2)
 
 
 # now render it

@@ -7,7 +7,7 @@ manim objects
 This is implemented in the function
 smanim( some Graphics )
 
-Remember to give sage objects colours that are visible on dark background.
+Remember to give sage objects colours that are visible on a dark background.
 
 Problems:
 implement more 2d objects
@@ -95,7 +95,7 @@ class Test_smanim(Scene):
         self.play(Create(li3))
         self.play(Wiggle(li3))
 
-        # test plot of elliptic curve
+        # test plot of an elliptic curve
         E = sagemath.EllipticCurve([sagemath.RR(-.25), sagemath.RR(0.01)])
         gr = E.plot(color="yellow", xmin=-7.1, xmax=7.1, ymin=-3.8, ymax=3.8)
         curve = smanim(gr)
