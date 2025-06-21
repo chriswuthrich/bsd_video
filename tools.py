@@ -1,7 +1,8 @@
 r"""
 Part of the bsd_video
 
-Common commands for useful for all parts
+Common commands
+useful for all parts
 
 """
 
@@ -14,8 +15,8 @@ def vec(x: float, y: float, z=0):
 
 def shz(m, z: float):
     r"""
-    To arrange object in z-levels
-    (since in opengl the set_z_level doesn't work)
+    To arrange objects in z-levels
+    (since in opengl the set_z_level doesn't work).
     We expect z to be integers between -100 and 100,
     this shifts by z/100
     Typically the background will be -10 and the most forefront +10
@@ -35,7 +36,7 @@ def subtitle(said):
         height=vt.height + 0.1,  # Add some padding around the text
         color=BLACK
     )
-    background_box.set_fill(BLACK, opacity=1)  # Set the fill color to black
+    background_box.set_fill(BLACK, opacity=1)  # Set the fill colour to black
 
     # add them together and shift to bottom of screen
     v = VGroup()
@@ -66,9 +67,9 @@ def my_background():
 
 def nature_background():
     r"""
-    Background picture for opening scene.
+    Background picture for the opening scene.
 
-    This is a placeholder
+    This is a placeholder.
     """
     bg_image = OpenGLImageMobject("pics/path.jpg")
     bg_image.scale_to_fit_height(config.frame_height)
@@ -130,8 +131,8 @@ def fading_line(y, stroke_width=4, **kwargs):
 
 def my_fading_numberplane(stroke_width=2):
     r"""
-    A version of NumberPlane, where the lines fade out to the left
-    currently not much can be configured as it is used in one form only
+    A version of NumberPlane, where the lines fade out to the left.
+    Currently little can be configured as it is used in one form only.
     """
     v = VGroup()
     for i in [1, 2, 3, 4, 5, 6, 7]:
@@ -183,10 +184,9 @@ class MySurroundingRectangle(RoundedRectangle):
     ) -> None:
         from manim.mobject.mobject import Group
 
+        # this is the text commented out to avoid opengl problems
         # if not all(isinstance(mob, Mobject) or for mob in mobjects):
-        #     raise TypeError(
-        #         "Expected all inputs for parameter mobjects to be a Mobjects"
-        #     )
+        #     raise TypeError("Expected all inputs for parameter mobjects to be a Mobjects")
 
         group = Group(*mobjects)
         super().__init__(
@@ -248,20 +248,14 @@ class TestSome(Scene):
     """
     def construct(self):
 
-        v = a_triangle()
         w = Arrow(start=vec(1,1), end=vec(2,3), tip_shape=CurvyPointyTip , buff =0)
-        wt = w.tip
-        # print(wt.tip_point, wt.base, wt.tip_angle, wt.length, wt.points )
-        w2 = Arrow(start=vec(-5, 0), end=vec(-3, 0), tip_shape=CurvyPointyTip,)
+        w2 = Arrow(start=vec(-5, 0), end=vec(-3, 0), tip_shape=CurvyPointyTip)
         w3 = Arrow(start=vec(-4, -3), end=vec(-4, 3))
-        # w4 = Arrow(start=vec(0, 0), end=vec(-2, 0), tip_shape=CurvyPointyTip)
         w5 = Arrow(start=vec(-1, -1.3), end=vec(-5, -1.3), tip_shape=CurvyPointyTip)
         w6 = Arrow(start=vec(-1, -1), end=vec(0, 0), tip_shape=CurvyPointyTip)
-        wt = w2.tip
-        # print(wt.tip_point, wt.base, wt.tip_angle, wt.length, wt.points)
-        self.add(v, w,w2,w3,w5,w6)
+        self.add(w, w2, w3, w5, w6)
         self.wait()
-        # self.clear()
+        self.clear()
         self.add(my_background())
         self.wait()
 
