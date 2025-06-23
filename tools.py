@@ -204,6 +204,9 @@ class CurvyPointyTip(ArrowTip):
     r"""
     My class for a tip that has inwards curved sides
 
+    side_angle : Is the angle between the base and the tangent of the curve to the tip
+    pointiness>0 : determines how pointy the tip is
+                   The higher the value the pointier.
     """
 
     def __init__(
@@ -214,7 +217,7 @@ class CurvyPointyTip(ArrowTip):
         width: float = DEFAULT_ARROW_TIP_LENGTH*.8,
         start_angle: float = PI,
         side_angle: float = PI/4,
-        pointiness: float = 1.3,
+        pointiness: float = 3,
         **kwargs
     ):
         self.start_angle = start_angle  # doesn't seem to change anything

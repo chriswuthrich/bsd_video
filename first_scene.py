@@ -49,6 +49,7 @@ class FirstScene(Scene):
         self.wait(1)
 
         # st thinks of zeta(s)
+        # ?? Should we add 1000000 $ ?
         cloud_centre = vec(-1, 2.6)
         thoughts = thought_bubble(cloud_centre, 0.85)
         # shift small bubbles a little
@@ -171,15 +172,6 @@ class FirstScene(Scene):
         thoughts.add_updater(lambda m: m.move_to(cloud_centre
                                                  + pa(t.get_value())
                                                  + vec(0, 0, z=1/100)))
-        # for thi in thoughts[1]:
-        #    thi.add_updater(lambda m: m.scale(op(t.get_value())))
-        #    thi.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-
-        # i_path = lambda tt : vec(5*tt,0)
-        # icon.add_updater(lambda m: m.move_to(cloud_centre
-        #                                      + i_path(t.get_value())
-        #                                      + vec(0, 0, z=5/100)))
-        #icon.add_updater(lambda m: m.set_opacity(1-t.get_value()))
         self.remove(thoughts[1])
 
         def title_updater(m):
@@ -248,8 +240,7 @@ class FirstScene(Scene):
         grid.add(my_fading_numberplane())
         grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
         # TODO This line does not show. Why?
-        xline = Line(vec(-7, 0), vec(7, 0), color=WHITE, stroke_width=2)
-        shz(xline,.1)
+        xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
         grid.add(xline)
         shz(grid, 1)
         self.add(grid)
@@ -262,7 +253,7 @@ class FirstScene(Scene):
                      tip_shape=CurvyPointyTip,
                      color=WHITE)
         axey = Arrow(start=vec(0, 0),
-                     end=vec(0, 3.5),
+                     end=vec(0, 3.7),
                      buff=0,
                      stroke_width=2,
                      tip_length=0.2,
@@ -288,7 +279,7 @@ class FirstScene(Scene):
                   run_time=1)
         self.wait(1)
 
-        # doesn't work yet? opengl problem?
+        #  opengl problem in SurroundingRectangle solved in tools
         framebox1 = MySurroundingRectangle(e1[1], color=YELLOW, buff=.1)
         framebox2 = MySurroundingRectangle(e1[3], color=YELLOW, buff=.1)
         self.add(framebox1, framebox2)
