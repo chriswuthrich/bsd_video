@@ -204,6 +204,8 @@ class CurvyPointyTip(ArrowTip):
     r"""
     My class for a tip that has inwards curved sides
 
+    It is not very neat and produces random errors
+
     side_angle : Is the angle between the base and the tangent of the curve to the tip
     pointiness>0 : determines how pointy the tip is
                    The higher the value the pointier.
@@ -217,7 +219,7 @@ class CurvyPointyTip(ArrowTip):
         width: float = DEFAULT_ARROW_TIP_LENGTH*.8,
         start_angle: float = PI,
         side_angle: float = PI/4,
-        pointiness: float = 3,
+        pointiness: float = 2,
         **kwargs
     ):
         self.start_angle = start_angle  # doesn't seem to change anything
@@ -243,6 +245,45 @@ class CurvyPointyTip(ArrowTip):
 
 
 
+class BetterCurvyPointyTip(ArrowTip):
+    r"""
+    My class for a tip that has inwards curved sides
+
+    It is not very neat and produces random errors
+    """
+
+    def __init__(
+        self,
+        fill_opacity: float = 1,
+        stroke_width: float = 3,
+        length: float = DEFAULT_ARROW_TIP_LENGTH,
+        width: float = DEFAULT_ARROW_TIP_LENGTH*.8,
+        start_angle: float = PI,
+        side_angle: float = PI/4,
+        **kwargs
+    ):
+        self.start_angle = start_angle  # doesn't seem to change anything
+
+        tip = vec(length,0)
+        upper_corner = vec(0, width/2)
+        lower_corner = vec(0, -width/2)
+
+        # Control points to curve the left and right sides inwards
+        cp1 = vec(length,0)
+        cp2 = upper_corner + length/3 * vec(np.sin(side_angle), -np.cos(side_angle))
+        cp3 = lower_corner + length/3 * vec(np.sin(side_angle), np.cos(side_angle))
+        cp4 = vec(length, 0)
+
+        OpenGLVMobject.__init__(
+            self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
+        )
+        self.start_new_path(tip)
+        self.add_cubic_bezier_curve_to(cp1, cp2, upper_corner)
+        self.add_cubic_bezier_curve_to(cp2, cp3, lower_corner)
+        self.add_cubic_bezier_curve_to(cp3, cp4, tip)
+        self.scale(length / self.length)
+
+
 class TestSome(Scene):
     """
     A placeholder character for the student
@@ -252,12 +293,17 @@ class TestSome(Scene):
     def construct(self):
 
         w = Arrow(start=vec(1,1), end=vec(2,3), tip_shape=CurvyPointyTip , buff =0)
-        w2 = Arrow(start=vec(-5, 0), end=vec(-3, 0), tip_shape=CurvyPointyTip)
+        w2 = Arrow(start=vec(-5, 0), end=vec(-3, 0), tip_shape=BetterCurvyPointyTip)
         w3 = Arrow(start=vec(-4, -3), end=vec(-4, 3))
         w5 = Arrow(start=vec(-1, -1.3), end=vec(-5, -1.3), tip_shape=CurvyPointyTip)
-        w6 = Arrow(start=vec(-1, -1), end=vec(0, 0), tip_shape=CurvyPointyTip)
+        w6 = Arrow(start=vec(-1, -1), end=vec(0, 0), tip_shape=BetterCurvyPointyTip)
         self.add(w, w2, w3, w5, w6)
         self.wait()
+        self.clear()
+        for j in range(-12,12):
+            i = j/4
+            self.play(FadeIn(Arrow(vec(-5, i), vec(i,4*i/3), tip_shape=BetterCurvyPointyTip , buff =0)))
+        self.wait(1)
         self.clear()
         self.add(my_background())
         self.wait()

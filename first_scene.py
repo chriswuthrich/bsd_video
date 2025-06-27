@@ -299,26 +299,25 @@ class FirstScene(Scene):
         self.wait(1)
 
         # try to give lots of curves
+        new_e1 = MathTex(r"y^2 = x^3", r" +A\,", " x ", " + B")
+        new_e1.to_corner(UL)
+        shz(new_e1, 5)
+        self.remove(framebox1, framebox2)
+        self.play(
+            FadeTransform(e1, new_e1),
+            run_time=1
+        )
         # TODO This is not ok yet, needs better curves, equation wobbles and is not replacing
         ABs = [(-7,6), (-4,1), (9,1), (0,2), (-3,-1)]
         for A,B in ABs:
             E2 = sagemath.EllipticCurve([A, B])
             new_curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
             shz(curve, 5)
-            if A >= 0:
-                Astr = fr"+{A}\,"
-            else:
-                Astr = fr"-{-A}\,"
-            if B >= 0:
-                Bstr = fr"+{B}"
-            else:
-                Bstr = fr"-{-B}"
-            new_e1 = MathTex(r"y^2 = x^3 ", Astr, " x ", Bstr)
+
             new_e1.to_corner(UL)
             self.play(
-                Transform(curve, new_curve),
-                FadeTransform(e1, new_e1),
-                run_time=4)
+                FadeIn(new_curve),
+                run_time=.5)
             self.wait(1)
 
         # they are all symmetric ?
@@ -331,10 +330,10 @@ class FirstScene(Scene):
         e1 = MathTex(r"(-y)^2 = y^2 = x^3", r"- 4\,", " x ", "+ 1")
         e1.to_corner(UL)
         ellc.next_to(e1, DOWN)
-        arrow_1 = Arrow(vec(-1, -1.8), vec(-1,1.8), stroke_width=3, buff=0)
-        arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0)
-        arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0)
-        arrow_2r = Arrow(vec(2.8, 3), vec(2.8, -3), stroke_width=3, buff=0)
+        arrow_1 = Arrow(vec(-1, -1.8), vec(-1,1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        arrow_2r = Arrow(vec(2.8, 3), vec(2.8, -3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         self.add(curve, e1, arrow_1, arrow_2, arrow_1r, arrow_2r, te, st)
         self.wait(2)
 
