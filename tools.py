@@ -234,9 +234,13 @@ class CurvyPointyTip(ArrowTip):
         cp3 = lower_corner + length/3 * vec(np.sin(side_angle), np.cos(side_angle))
         cp4 = vec(length/pointiness, 0)
 
-        OpenGLVMobject.__init__(
+        # OpenGLVMobject.__init__(
+        #     self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
+        # )
+        VMobject.__init__(
             self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
         )
+
         self.start_new_path(tip)
         self.add_cubic_bezier_curve_to(cp1, cp2, upper_corner)
         self.add_cubic_bezier_curve_to(upper_corner, lower_corner, lower_corner)
@@ -274,7 +278,10 @@ class BetterCurvyPointyTip(ArrowTip):
         cp3 = lower_corner + length/3 * vec(np.sin(side_angle), np.cos(side_angle))
         cp4 = vec(length, 0)
 
-        OpenGLVMobject.__init__(
+        # OpenGLVMobject.__init__(
+        #     self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
+        # )
+        VMobject.__init__(
             self, fill_opacity=fill_opacity, stroke_width=stroke_width, **kwargs
         )
         self.start_new_path(tip)
@@ -323,6 +330,6 @@ class TestSome(Scene):
         self.wait()
 
 if __name__ == "__main__":
-    with tempconfig({"renderer": "opengl",  "quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "cairo",  "quality": "medium_quality", "preview": True}):
         scene = TestSome()
         scene.render()
