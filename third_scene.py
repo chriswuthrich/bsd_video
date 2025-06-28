@@ -188,6 +188,6 @@ class ThirdScene(Scene):
 
 #  now render it
 if __name__ == "__main__":
-    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "cairo", "quality": "medium_quality", "preview": True}):
         scene = ThirdScene()
         scene.render()

@@ -71,7 +71,7 @@ def nature_background():
 
     This is a placeholder.
     """
-    bg_image = OpenGLImageMobject("pics/path.jpg")
+    bg_image = ImageMobject("pics/path.jpg")
     bg_image.scale_to_fit_height(config.frame_height)
     bg_image.scale_to_fit_width(config.frame_width)
     bg_image.move_to(ORIGIN)

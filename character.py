@@ -174,6 +174,6 @@ class MyChar(Scene):
 
 
 if __name__ == "__main__":
-    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "cairo", "quality": "medium_quality", "preview": True}):
         scene = MyChar()
         scene.render()

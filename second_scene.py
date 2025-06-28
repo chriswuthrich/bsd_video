@@ -58,7 +58,7 @@ def pt_with_label(R, dir=UR):
     return v, la
 
 def path(pts, colour=WHITE, **kwargs):
-    v = OpenGLVMobject(stroke_color=colour, **kwargs)
+    v = VMobject(stroke_color=colour, **kwargs)
     v.start_new_path(pts[0])
     v.add_points_as_corners(pts[1:])
     v.make_smooth()
@@ -218,6 +218,6 @@ class SecondScene(ThreeDScene):
 
 # now render it
 if __name__ == "__main__":
-    with tempconfig({"renderer": "opengl", "quality": "medium_quality", "preview": True}):
+    with tempconfig({"renderer": "cairo", "quality": "medium_quality", "preview": True}):
         scene = SecondScene()
         scene.render()
