@@ -200,6 +200,109 @@ class SecondScene(ThreeDScene):
         self.add(bgr, grid, labelled_axes, stte)
         self.add(e1, curve)
 
+        # 2.1 Rational points
+
+        # finds one rational point
+        # TODO: Points are not showing? z_level?
+        xyQ = MathTex(r"x,y\in\mathbb{Q}", color=YELLOW)
+        xyQ.next_to(e1, DOWN)
+        self.play(FadeIn(xyQ))
+        self.wait()
+        xyQ.set_color(WHITE)
+        pt = MathTex(r"x=0,\ y=\pm 1")
+        pt.next_to(xyQ, DOWN)
+        pointcolour = WHITE
+        pointradius = .07
+        P01 = Dot3D(vec(0, -1), color=pointcolour, radius=pointradius, z_index=10)
+        P02 = Dot3D(vec(0, 1), color=pointcolour, radius=pointradius, z_index=10)
+        self.add(pt)
+        self.play(Create(P01),
+                  FadeIn(P02),
+                  run_time=1)
+
+        self.play(Wiggle(pt),
+                  Flash(P02.get_center()),
+                  Flash(P01.get_center()),
+                  run_time=1)
+        self.wait(1)
+
+        # there are many more on this example
+        pt0 = MathTex(r"(0,\pm 1),")
+        pt1 = MathTex(r"(2,\pm 1)")
+        P11 = Dot3D(vec(2,1, .1), color=pointcolour, radius=pointradius, z_index=10)
+        shz(P11,10)
+        P12 = Dot3D(vec(2, -1, .2), color=pointcolour, radius=pointradius, z_index=10)
+        shz(P12,3)
+        pt2 = MathTex(r"(-1,\pm 2),")
+        P21 = Dot3D(vec(-1,2, .05), color=pointcolour, radius=pointradius, z_index=10)
+        P22 = Dot3D(vec(-1, -2, .02), color=pointcolour, radius=pointradius, z_index=10)
+        pt3 = MathTex(r"(-2,\pm 1)")
+        P31 = Dot3D(vec(-2,1), color=pointcolour, radius=pointradius, z_index=10)
+        P32 = Dot3D(vec(-2, -1), color=pointcolour, radius=pointradius, z_index=10)
+        pt4 = MathTex(r"(\tfrac{1}{4}, \pm\tfrac{1}{8}),")
+        P41 = Dot3D(vec(.25,.125), color=pointcolour, radius=pointradius, z_index=10)
+        P42 = Dot3D(vec(.25, -.125), color=pointcolour, radius=pointradius, z_index=10)
+        pt5 = MathTex(r"(-\tfrac{7}{4}, \pm\tfrac{13}{8})")
+        P51 = Dot3D(vec(-7./4,13./8), color=pointcolour, radius=pointradius, z_index=10)
+        P52 = Dot3D(vec(-7./4, -13/8.), color=pointcolour, radius=pointradius ,z_index=10)
+
+        pt0.next_to(e1, DOWN)
+        pt0.to_edge(LEFT)
+        pt1.next_to(pt0, RIGHT)
+        pt2.next_to(pt0, DOWN)
+        pt3.next_to(pt2, RIGHT)
+        pt4.next_to(pt2, DOWN)
+        pt5.next_to(pt4, RIGHT)
+
+        self.remove(pt, xyQ)
+        self.add(pt0, P01, P02)
+
+        self.add(pt1, P11, P12)
+        self.play(Flash(P11.get_center()),
+                 Flash(P12.get_center()),
+                  run_time=1)
+        self.wait(1)
+
+        self.add(pt2, P21, P22)
+        self.play(Flash(P21.get_center()),
+                  Flash(P22.get_center()),
+                  run_time=1)
+        self.add(P21,P22,pt3, P31, P32)
+        self.play(Flash(P31.get_center()),
+                  Flash(P32.get_center()),
+                  run_time=1)
+        self.add(pt4, P41, P42)
+        self.play(Flash(P41.get_center()),
+                  Flash(P42.get_center()),
+                  run_time=1)
+
+        self.add(pt5, P51, P52)
+        self.play(Flash(P51.get_center()),
+                  Flash(P52.get_center()),
+                  run_time=1)
+
+        # one really large height point
+        self.wait(1)
+        self.remove(pt0, pt1, pt2, pt3, pt4, pt5)
+        # (6250080/33884041 : 102194916251/197239002661 :1)
+        x_numerator = 6250080
+        x_denominator = 33884041
+        y_numerator = 102194916251
+        y_denominator = 197239002661
+        x_text = r"\tfrac{" + str(x_numerator) + r"}{" + str(x_denominator) + r"}"
+        y_text = r"\tfrac{" + str(y_numerator) + r"}{" + str(y_denominator) + r"}"
+        pt6 = MathTex(r"(" + x_text + r", \pm" + y_text + r")")
+        P61 = Dot(vec(x_numerator * 1. / x_denominator, y_numerator * 1. / y_denominator), color=pointcolour,
+                  radius=pointradius, z_index=10)
+        P62 = Dot(vec(x_numerator * 1. / x_denominator, -y_numerator * 1. / y_denominator), color=pointcolour,
+                  radius=pointradius, z_index=10)
+
+        pt6.next_to(e1,DOWN)
+        pt6.to_edge(LEFT)
+        self.add(pt6, P61, P62)
+        self.play(Flash(P61.get_center()),
+                  Flash(P62.get_center()),
+                  run_time=1)
 
 
 
@@ -220,8 +323,6 @@ class SecondScene(ThreeDScene):
 
         nu = my_numberplane()
         self.add(nu)
-        # self.add(smanim(E.plot(xmin=-3, xmax=1000, ymin=-1000, ymax=1000, color="yellow")))
-        # cu = curve_again()
         cu = dummy_curve()
         self.add(cu)
 
