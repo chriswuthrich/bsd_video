@@ -152,6 +152,58 @@ class SecondScene(ThreeDScene):
 
     def construct(self):
 
+        # copied from first scene:
+        bgr = my_background()
+        shz(bgr, -1)
+        st = StudentChar()
+        te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
+        st.scale(1)
+        te.scale(1)
+        stte = VGroup(st, te)
+        stte.arrange()
+        stte.to_corner(DL)
+        grid = VGroup()
+        grid.add(my_fading_numberplane())
+        grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
+        xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
+        grid.add(xline)
+        shz(grid, 1)
+        axex = Arrow(start=vec(0,0),
+                     end=vec(6.5,0),
+                     buff=0,
+                     stroke_width=2,
+                     tip_length=0.2,
+                     tip_shape=BetterCurvyPointyTip,
+                     color=WHITE)
+        axey = Arrow(start=vec(0, 0),
+                     end=vec(0, 3.7),
+                     buff=0,
+                     stroke_width=2,
+                     tip_length=0.2,
+                     tip_shape=BetterCurvyPointyTip,
+                     color=WHITE)
+        label_x = MathTex(r"x")
+        label_x.scale(.8)
+        label_x.move_to(vec(6.5, -0.4))
+        label_y = MathTex(r"y")
+        label_y.scale(.8)
+        label_y.move_to(vec(0.4, 3.5))
+        labelled_axes = VGroup(axex, axey, label_x, label_y)
+        shz(labelled_axes,1)
+        E = sagemath.EllipticCurve([-4, 1])
+        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(curve, 5)
+        e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
+        e1.to_corner(UL)
+        shz(e1, 5)
+
+        self.add(bgr, grid, labelled_axes, stte)
+        self.add(e1, curve)
+
+
+
+
+    def not_used_right_now(self):
         E, EQ = calc_curve()
         # phi = 0 from above theta = -90 gives 2d view
         # self.camera.frame.move_to((0,0,5))
