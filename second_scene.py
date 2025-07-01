@@ -202,8 +202,8 @@ class SecondScene(ThreeDScene):
 
         # 2.1 Rational points
 
+        self.next_section("2.1 Rational points")
         # finds one rational point
-        # TODO: Points are not showing? z_level?
         xyQ = MathTex(r"x,y\in\mathbb{Q}", color=YELLOW)
         xyQ.next_to(e1, DOWN)
         self.play(FadeIn(xyQ))
@@ -306,6 +306,7 @@ class SecondScene(ThreeDScene):
 
         # 2.2
         # Passage from affine to projective
+        self.next_section("2.2 Passage to projective equation")
         self.clear()
         self.add(bgr, e1, stte)
         ee1 = MathTex(r"y^2 = x^3", r"- 4\,", r" x ", r"+ 1")
@@ -332,7 +333,6 @@ class SecondScene(ThreeDScene):
         multby.next_to(ee2, RIGHT, buff=1)
         self.play(FadeIn(multby))
         self.play(Indicate(multby), run_time=1)
-
 
         ee3 = MathTex(r"Y^2 Z = X^3", r"- 4\,", r" XZ^2 ", r"+ Z^3")
         ee3.next_to(ee2, DOWN)

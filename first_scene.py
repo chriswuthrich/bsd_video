@@ -55,6 +55,7 @@ class FirstScene(Scene):
 
     def construct(self):
         # ##1.1
+        self.next_section("Walk on path")
         bg_image = nature_background()
         self.add(bg_image)
 
@@ -232,6 +233,7 @@ class FirstScene(Scene):
         # what are elliptic curves
         # TODO : Transition for the background. Maybe better in an editor?
         # or keep the bubble for later.
+        self.next_section("1.2 What are elliptic curves?")
         thoughts.clear_updaters()
         st.clear_updaters()
         te.clear_updaters()
