@@ -304,6 +304,23 @@ class SecondScene(ThreeDScene):
                   Flash(P62.get_center()),
                   run_time=1)
 
+        # 2.2
+        # Passage from affine to projective
+        self.clear()
+        self.add(bgr, e1, stte)
+        ee1 = MathTex(r"y^2 = x^3", r"- 4\,", r" x ", r"+ 1")
+        self.play(Transform(e1, ee1) ,run_time=.4)
+        varproj = MathTex(r"x=\frac{X}{Z}\ \ y = \frac{Y}{Z}\ \ X,Y,Z\in\mathbb{Z}")
+        self.wait(1)
+        self.play(FadeIn(varproj), run_time=1)
+        self.wait(1)
+
+        ee2 = MathTex(r"\frac{Y}{Z}^2 = \frac{X}{Z}^3", r"- 4\,", r" \frac{X}{Z} ", "+ 1")
+        ee2.next_to(ee1, DOWN)
+        ee3 = MathTex(r"Y^2 Z = X^3", r"- 4\,", r" XZ^2 ", r"+ Z^3")
+        ee3.next_to(ee2, DOWN)
+        self.add(ee1,ee2)
+        self.wait(1)
 
 
     def not_used_right_now(self):
