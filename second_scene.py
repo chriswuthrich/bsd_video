@@ -211,7 +211,7 @@ class SecondScene(ThreeDScene):
         xyQ.set_color(WHITE)
         pt = MathTex(r"x=0,\ y=\pm 1")
         pt.next_to(xyQ, DOWN)
-        pointcolour = ORANGE
+        pointcolour = BLUE_B
         pointradius = .07
         P01 = Dot3D(vec(0, -1), color=pointcolour, radius=pointradius, z_index=10)
         P02 = Dot3D(vec(0, 1), color=pointcolour, radius=pointradius, z_index=10)
@@ -332,7 +332,7 @@ class SecondScene(ThreeDScene):
         ee2.next_to(e1, 2*DOWN)
         self.play(FadeIn(ee2))
 
-        multby = MathTex(r"\vert\ \cdot Z^3")
+        multby = MathTex(r"\bigl\vert \cdot Z^3")
         multby.next_to(ee2, RIGHT, buff=1)
         self.play(FadeIn(multby))
         self.play(Indicate(multby), run_time=1)
@@ -351,7 +351,7 @@ class SecondScene(ThreeDScene):
 
         scalethrough = MathTex(r"(X,Y,Z)\sim (-X, -Y, -Z)")
         asinfraction = MathTex(r"x=\frac{X}{Z}=\frac{-X}{-Z}")
-        astext = Text("as")
+        astext = Text(":")
         scaling_text = VGroup(scalethrough,  astext, asinfraction)
         scaling_text.arrange(RIGHT, buff=.3)
         scaling_text.next_to(ee3, 1.5*DOWN)
@@ -365,7 +365,7 @@ class SecondScene(ThreeDScene):
         two_y = two.copy().move_to(scalethrough[0][12].get_center())
         two_z = two.copy().move_to(scalethrough[0][15].get_center())
         v = VGroup(two_top, two_bottom, two_x, two_y, two_z)
-        v.shift(.1*UP)
+        v.shift(.045*UP)
         self.wait()
         self.play(Transform(scalethrough[0][9], two_x),
                   Transform(scalethrough[0][12], two_y),
