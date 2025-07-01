@@ -211,7 +211,7 @@ class SecondScene(ThreeDScene):
         xyQ.set_color(WHITE)
         pt = MathTex(r"x=0,\ y=\pm 1")
         pt.next_to(xyQ, DOWN)
-        pointcolour = WHITE
+        pointcolour = ORANGE
         pointradius = .07
         P01 = Dot3D(vec(0, -1), color=pointcolour, radius=pointradius, z_index=10)
         P02 = Dot3D(vec(0, 1), color=pointcolour, radius=pointradius, z_index=10)
@@ -309,18 +309,45 @@ class SecondScene(ThreeDScene):
         self.clear()
         self.add(bgr, e1, stte)
         ee1 = MathTex(r"y^2 = x^3", r"- 4\,", r" x ", r"+ 1")
-        self.play(Transform(e1, ee1) ,run_time=.4)
-        varproj = MathTex(r"x=\frac{X}{Z}\ \ y = \frac{Y}{Z}\ \ X,Y,Z\in\mathbb{Z}")
-        self.wait(1)
-        self.play(FadeIn(varproj), run_time=1)
-        self.wait(1)
+        self.play(Transform(e1, ee1), run_time=.4)
 
-        ee2 = MathTex(r"\frac{Y}{Z}^2 = \frac{X}{Z}^3", r"- 4\,", r" \frac{X}{Z} ", "+ 1")
-        ee2.next_to(ee1, DOWN)
+        xyQ.to_corner(UL)
+        self.play(FadeIn(xyQ))
+        self.play(Indicate(xyQ), run_time=1)
+        quotsub = MathTex(r"x=\frac{X}{Z}\ \ y = \frac{Y}{Z}")
+        quotsub.next_to(xyQ, DOWN)
+        quotsub.to_edge(LEFT)
+        XYZ = MathTex(r"X,Y,Z\in\mathbb{Z}")
+        XYZ.next_to(quotsub, DOWN)
+        XYZ.to_edge(LEFT)
+        self.play(FadeIn(XYZ), FadeIn(quotsub), run_time=1)
+        self.play(Indicate(quotsub), FadeIn(XYZ), run_time=1)
+
+        self.play(e1.animate(run_time=1).move_to(UP))
+        ee2 = MathTex(r"\Bigl(\frac{Y}{Z}\Bigr)^2 = \Bigl(\frac{X}{Z}\Bigr)^3", r"- 4\,", r" \Bigl(\frac{X}{Z}\Bigr)", "+ 1")
+        ee2.next_to(e1, DOWN)
+        self.play(FadeIn(ee2))
+
+        multby = MathTex(r"\vert\ \cdot Z^3")
+        multby.next_to(ee2, RIGHT, buff=1)
+        self.play(FadeIn(multby))
+        self.play(Indicate(multby), run_time=1)
+
+
         ee3 = MathTex(r"Y^2 Z = X^3", r"- 4\,", r" XZ^2 ", r"+ Z^3")
         ee3.next_to(ee2, DOWN)
-        self.add(ee1,ee2)
+        self.play(FadeIn(ee3))
         self.wait(1)
+
+        self.play(FadeOut(ee2),
+                  FadeOut(multby),
+                  ee3.animate().next_to(e1, DOWN),
+                  run_time=2)
+        self.wait()
+        self.remove(ee2, multby)
+
+
+
 
 
     def not_used_right_now(self):
