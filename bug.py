@@ -28,7 +28,18 @@ class AnotherScene(ThreeDScene):
         self.wait(1)
 
 
+# no bug, it does cache Flash
+class IsThisNotCaching(Scene):
+    def construct(self):
+        self.add(Circle())
+        self.wait()
+        d = Dot()
+        self.add(d)
+        self.play(Flash(ORIGIN))
+        self.wait()
+
+
 if __name__ == "__main__":
     with tempconfig({"quality": "medium_quality", "preview": True}):
-        scene = AnotherScene()
+        scene = IsThisNotCaching()
         scene.render()

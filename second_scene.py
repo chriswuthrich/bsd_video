@@ -313,20 +313,23 @@ class SecondScene(ThreeDScene):
         self.play(Transform(e1, ee1), run_time=.4)
 
         xyQ.to_corner(UL)
+        xyQ.shift(0.2*RIGHT)
         self.play(FadeIn(xyQ))
         self.play(Indicate(xyQ), run_time=1)
         quotsub = MathTex(r"x=\frac{X}{Z}\ \ y = \frac{Y}{Z}")
         quotsub.next_to(xyQ, DOWN)
         quotsub.to_edge(LEFT)
+        quotsub.shift(.2*RIGHT)
         XYZ = MathTex(r"X,Y,Z\in\mathbb{Z}")
         XYZ.next_to(quotsub, DOWN)
         XYZ.to_edge(LEFT)
+        XYZ.shift(.2*RIGHT)
         self.play(FadeIn(XYZ), FadeIn(quotsub), run_time=1)
         self.play(Indicate(quotsub), FadeIn(XYZ), run_time=1)
 
         self.play(e1.animate(run_time=1).move_to(UP))
         ee2 = MathTex(r"\Bigl(\frac{Y}{Z}\Bigr)^2 = \Bigl(\frac{X}{Z}\Bigr)^3", r"- 4\,", r" \Bigl(\frac{X}{Z}\Bigr)", "+ 1")
-        ee2.next_to(e1, DOWN)
+        ee2.next_to(e1, 2*DOWN)
         self.play(FadeIn(ee2))
 
         multby = MathTex(r"\vert\ \cdot Z^3")
@@ -335,7 +338,7 @@ class SecondScene(ThreeDScene):
         self.play(Indicate(multby), run_time=1)
 
         ee3 = MathTex(r"Y^2 Z = X^3", r"- 4\,", r" XZ^2 ", r"+ Z^3")
-        ee3.next_to(ee2, DOWN)
+        ee3.next_to(ee2, 2*DOWN)
         self.play(FadeIn(ee3))
         self.wait(1)
 
@@ -345,6 +348,41 @@ class SecondScene(ThreeDScene):
                   run_time=2)
         self.wait()
         self.remove(ee2, multby)
+
+        scalethrough = MathTex(r"(X,Y,Z)\sim (-X, -Y, -Z)")
+        asinfraction = MathTex(r"x=\frac{X}{Z}=\frac{-X}{-Z}")
+        astext = Text("as")
+        scaling_text = VGroup(scalethrough,  astext, asinfraction)
+        scaling_text.arrange(RIGHT, buff=.3)
+        scaling_text.next_to(ee3, 1.5*DOWN)
+        self.play(FadeIn(scaling_text))
+        # self.add(index_labels(scalethrough[0])) # shows parts
+
+        two = MathTex(r"2")
+        two_top = two.copy().move_to(asinfraction[0][6].get_center())
+        two_bottom = two.copy().move_to(asinfraction[0][9].get_center())
+        two_x = two.copy().move_to(scalethrough[0][9].get_center())
+        two_y = two.copy().move_to(scalethrough[0][12].get_center())
+        two_z = two.copy().move_to(scalethrough[0][15].get_center())
+        self.wait()
+        self.play(Transform(scalethrough[0][9], two_x),
+                  Transform(scalethrough[0][12], two_y),
+                  Transform(scalethrough[0][15], two_z),
+                  Transform(asinfraction[0][6], two_top),
+                  Transform(asinfraction[0][9], two_bottom),
+                  run_time=1
+                  )
+        self.wait()
+
+        oo_x = MathTex(r"X=0,")
+        oo_y = MathTex(r"Y=1,")
+        oo_z = MathTex(r"Z=0,")
+        point_at_oo = VGroup(oo_x, oo_y, oo_z)
+        point_at_oo.arrange(RIGHT, buff=.4)
+        point_at_oo.next_to(scaling_text, DOWN)
+        self.play(FadeIn(point_at_oo))
+        self.wait()
+
 
 
 
