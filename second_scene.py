@@ -364,6 +364,8 @@ class SecondScene(ThreeDScene):
         two_x = two.copy().move_to(scalethrough[0][9].get_center())
         two_y = two.copy().move_to(scalethrough[0][12].get_center())
         two_z = two.copy().move_to(scalethrough[0][15].get_center())
+        v = VGroup(two_top, two_bottom, two_x, two_y, two_z)
+        v.shift(.1*UP)
         self.wait()
         self.play(Transform(scalethrough[0][9], two_x),
                   Transform(scalethrough[0][12], two_y),
@@ -376,7 +378,7 @@ class SecondScene(ThreeDScene):
 
         oo_x = MathTex(r"X=0,")
         oo_y = MathTex(r"Y=1,")
-        oo_z = MathTex(r"Z=0,")
+        oo_z = MathTex(r"Z=0")
         point_at_oo = VGroup(oo_x, oo_y, oo_z)
         point_at_oo.arrange(RIGHT, buff=.4)
         point_at_oo.next_to(scaling_text, DOWN)
