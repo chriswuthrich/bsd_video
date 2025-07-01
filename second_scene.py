@@ -344,7 +344,7 @@ class SecondScene(ThreeDScene):
 
         self.play(FadeOut(ee2),
                   FadeOut(multby),
-                  ee3.animate().next_to(e1, DOWN),
+                  ee3.animate().next_to(e1, 2*DOWN),
                   run_time=2)
         self.wait()
         self.remove(ee2, multby)
