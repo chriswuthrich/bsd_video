@@ -385,8 +385,15 @@ class SecondScene(ThreeDScene):
         self.play(FadeIn(point_at_oo))
         self.wait()
 
+        # print(f"{self.renderer.camera.phi=}, {self.renderer.camera.theta=}, {self.renderer.camera.frame_center=}")
+        # self.renderer.camera.phi=0, self.renderer.camera.theta=-1.5707963267948966, self.renderer.camera.frame_center=array([0., 0., 0.])
+        self.clear()
 
+        self.add(bgr, grid, labelled_axes, stte)
+        self.add(e1, curve, P12, P62)
 
+        self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
+        self.wait(1)
 
 
 
