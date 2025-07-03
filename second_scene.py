@@ -147,6 +147,15 @@ def curve_again():
     v = ParametricFunction(func, t_range=(-om1 / 2, om1 / 2)).set_color(RED_A)
     return v
 
+def fake_curve():
+
+    def f(x,y):
+        return 2500*x**3 - x*y**2 + 1843/80*y**3+200*x*y-9213/4*y**2-10000*x-75*y+2500
+
+    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,100], color=RED)
+    return v
+
+
 
 class SecondScene(ThreeDScene):
 
@@ -389,8 +398,12 @@ class SecondScene(ThreeDScene):
         # self.renderer.camera.phi=0, self.renderer.camera.theta=-1.5707963267948966, self.renderer.camera.frame_center=array([0., 0., 0.])
         self.clear()
 
-        self.add(bgr, grid, labelled_axes, stte)
-        self.add(e1, curve, P12, P62)
+        self.add(bgr)
+        newgrid = my_numberplane()
+        # axes =
+        self.add(newgrid, stte)
+        v = fake_curve()
+        self.add(e1, curve, v, P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62)
 
         self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
         self.wait(1)
