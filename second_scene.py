@@ -148,68 +148,48 @@ def curve_again():
     return v
 
 
-def fake_numberplane(colour=TEAL, thickness=0.001):
+def fake_numberplane():
     """
     Projective version of number plane for 3D view at infinity
     The point (0:1:0) is at (0,100),
     The point (0,0) is fixed and so is (0,4)
 
     """
+    colour = TEAL
+    colour2 = TEAL_A
+    thickness = 0.001
     v = VGroup()
-    ymin = -10  # don't draw behind camera.
+    ymin = -10  # don't draw behind the camera.
 
     # filled rectangle
-    yy = 100*99/(99+96)
-    v.add(Polygon(
+    nu2 = 70
+    yy = 100 * nu2/ (nu2 + 96)
+    p = Polygon(
         vec(-50, yy), vec(50, yy), vec(100, 100), vec(-100, 100),
-        fill_color=TEAL,
-        fill_opacity=1,
-        color=TEAL
-    ))
+        stroke_width=0,
+        fill_color=colour,
+        fill_opacity=.9,
+        color=colour)
+    shz(p,-1)
+    v.add(p)
 
-    # lines at distance 1
-    nu1 = 50
-    for xx in range(-nu1,nu1):
-        v.add(Line3D(
-            vec(xx*(1-ymin/100),ymin),
-            vec(0,100),
-            thickness=thickness,
-            color=colour if xx !=0 else WHITE))
-    nu2 = 100
+    # horizontal lines y=const
     for yy in range(ymin, nu2):
         y2 = 100*yy/(yy+96)
         v.add(Line3D(
             vec(-30, y2),
             vec(30, y2),
             thickness=thickness,
-            color=colour if yy!=0 else WHITE))
-    #
-    # # lines with distance 10
-    # nu3 = 20
-    # for k in range(nu3):
-    #     xx = nu1 + 10*k
-    #     v.add(Line3D(
-    #         vec(xx * (1 - ymin / 100), ymin),
-    #         vec(0, 100),
-    #         thickness=thickness,
-    #         color=colour))
-    #     xx = -nu1 - 10*k
-    #     v.add(Line3D(
-    #         vec(xx * (1 - ymin / 100), ymin),
-    #         vec(0, 100),
-    #         thickness=thickness,
-    #         color=colour))
-    #
-    # nu4 = 20
-    # for k in range(nu3):
-    #     yy = nu2 + 10*k
-    #     y2 = 100 * yy / (yy+96)
-    #     v.add(Line3D(
-    #         vec(-50, y2),
-    #         vec(50, y2),
-    #         thickness=thickness,
-    #         color=colour))
+            color=colour2 if yy!=0 else WHITE))
 
+    # lines x=const meeting at O
+    nu1 = 100
+    for xx in range(-nu1, nu1):
+        v.add(Line3D(
+            vec(xx * (1 - ymin / 100), ymin),
+            vec(0, 100),
+            thickness=thickness,
+            color=colour if xx != 0 else WHITE))
 
     # horizont line
     v.add(Line3D(
@@ -229,7 +209,7 @@ def fake_curve():
     def f(x,y):
         return 2500*x**3 - x*y**2 + 1843/80*y**3 + 200*x*y - 9213/4*y**2 - 10000*x - 75*y + 2500
 
-    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,100.2], color=RED, stroke_width=4)
+    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,100], color=YELLOW, stroke_width=6)
     return v
 
 
@@ -489,72 +469,11 @@ class SecondScene(ThreeDScene):
             P.move_to(vec(96*xP/(96+yP), 100*yP/(96+yP)))
             self.add(P)
 
-        self.move_camera(phi=PI/2, frame_center=(0, -10, 5), run_time=10)
+        self.move_camera(phi=PI/2,
+                         frame_center=(0, -10, 5),
+                         run_time=1)  #  will be slower later
         self.wait(3)
 
-
-
-    def not_used_right_now(self):
-        E, EQ = calc_curve()
-        # phi = 0 from above theta = -90 gives 2d view
-        # self.camera.frame.move_to((0,0,5))
-        # self.renderer.camera.set_camera_orientation(
-        #     phi=0,
-        #     theta=-PI/2,
-        #     frame_center=[0, 0, 5],
-        #     distance=5
-        # )  # self.set_camera_orientation(phi=0, theta=-PI/2, frame_center=(0,0,5), distance=5)
-        self.renderer.camera.phi = 0
-        self.renderer.camera.theta = -PI / 2
-        self.renderer.camera.distance = 5
-        self.renderer.camera.frame_center = [0, 0, 5]
-
-        nu = my_numberplane()
-        self.add(nu)
-        cu = dummy_curve()
-        self.add(cu)
-
-        for R in EQ[:5]:
-            v, la = pt_with_label(R)
-            self.add(v, la)
-            self.wait(1)
-            self.remove(la)
-
-        pts_in_pic = []
-        vpts = VGroup()
-        for R in EQ[:10]:  # do more but restrict better later
-            rr = vec(R[0], R[1])
-            pts_in_pic.append(rr)
-            vpts.add(Dot3D(rr))
-
-        self.add(vpts)
-        self.wait(2)
-        #
-        # number_of_grid_changes = 5
-        # y_grid_steps = [1, 2, 4, 8, 8]
-        # x_grid_steps = [1, 2, 2, 4, 4]
-        # for i in range(number_of_grid_changes):
-        #     self.remove(nu)
-        #     if i == 0:
-        #         rf = rate_functions.ease_in_sine
-        #     elif i == number_of_grid_changes - 1:
-        #         rf = rate_functions.ease_out_sine
-        #     else:
-        #         rf = rate_functions.linear
-        #     # nu = my_numberplane(
-        #     #            x_range=np.array([-50, 50, x_grid_steps[i]]),
-        #     #            y_range=np.array([-10, 100, y_grid_steps[i]]),
-        #     #            colour=TEAL,
-        #     #            thickness=0.01)
-        #     # self.add(nu)
-        #     phi_end = PI/2 * i/number_of_grid_changes
-        #     frame_centre = -10*i/number_of_grid_changes
-        #     self.move_camera(phi=phi_end, frame_center=(0, frame_centre, 5), rate_func=rf)
-
-        self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
-        self.wait(1)
-        self.play(Uncreate(vpts))
-        self.wait(2)
 
 
 # now render it
