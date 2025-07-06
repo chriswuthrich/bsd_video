@@ -147,12 +147,89 @@ def curve_again():
     v = ParametricFunction(func, t_range=(-om1 / 2, om1 / 2)).set_color(RED_A)
     return v
 
+
+def fake_numberplane(colour=TEAL, thickness=0.001):
+    """
+    Projective version of number plane for 3D view at infinity
+    The point (0:1:0) is at (0,100),
+    The point (0,0) is fixed and so is (0,4)
+
+    """
+    v = VGroup()
+    ymin = -10  # don't draw behind camera.
+
+    # filled rectangle
+    yy = 100*99/(99+96)
+    v.add(Polygon(
+        vec(-50, yy), vec(50, yy), vec(100, 100), vec(-100, 100),
+        fill_color=TEAL,
+        fill_opacity=1,
+        color=TEAL
+    ))
+
+    # lines at distance 1
+    nu1 = 50
+    for xx in range(-nu1,nu1):
+        v.add(Line3D(
+            vec(xx*(1-ymin/100),ymin),
+            vec(0,100),
+            thickness=thickness,
+            color=colour if xx !=0 else WHITE))
+    nu2 = 100
+    for yy in range(ymin, nu2):
+        y2 = 100*yy/(yy+96)
+        v.add(Line3D(
+            vec(-30, y2),
+            vec(30, y2),
+            thickness=thickness,
+            color=colour if yy!=0 else WHITE))
+    #
+    # # lines with distance 10
+    # nu3 = 20
+    # for k in range(nu3):
+    #     xx = nu1 + 10*k
+    #     v.add(Line3D(
+    #         vec(xx * (1 - ymin / 100), ymin),
+    #         vec(0, 100),
+    #         thickness=thickness,
+    #         color=colour))
+    #     xx = -nu1 - 10*k
+    #     v.add(Line3D(
+    #         vec(xx * (1 - ymin / 100), ymin),
+    #         vec(0, 100),
+    #         thickness=thickness,
+    #         color=colour))
+    #
+    # nu4 = 20
+    # for k in range(nu3):
+    #     yy = nu2 + 10*k
+    #     y2 = 100 * yy / (yy+96)
+    #     v.add(Line3D(
+    #         vec(-50, y2),
+    #         vec(50, y2),
+    #         thickness=thickness,
+    #         color=colour))
+
+
+    # horizont line
+    v.add(Line3D(
+        vec(-100,100),
+        vec(100, 100),
+        color=WHITE,
+        thickness = thickness))
+
+    return v
+
 def fake_curve():
-
+    """
+    Create a version of the elliptic curve y^2 = x^3-4x+1
+    in the fake number plane where (0:1:0) is at (0,100)
+    Calculations done in notebook
+    """
     def f(x,y):
-        return 2500*x**3 - x*y**2 + 1843/80*y**3+200*x*y-9213/4*y**2-10000*x-75*y+2500
+        return 2500*x**3 - x*y**2 + 1843/80*y**3 + 200*x*y - 9213/4*y**2 - 10000*x - 75*y + 2500
 
-    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,100], color=RED)
+    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,100.2], color=RED, stroke_width=4)
     return v
 
 
@@ -399,14 +476,21 @@ class SecondScene(ThreeDScene):
         self.clear()
 
         self.add(bgr)
-        newgrid = my_numberplane()
+        newgrid = fake_numberplane()
+        shz(newgrid, 1)
         # axes =
         self.add(newgrid, stte)
         v = fake_curve()
-        self.add(e1, curve, v, P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62)
+        self.add(curve, v, )
 
-        self.move_camera(phi=PI/2, frame_center=(0, -10, 5))
-        self.wait(1)
+        for P in [P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62]:
+            xP = P.get_center()[0]
+            yP = P.get_center()[1]
+            P.move_to(vec(96*xP/(96+yP), 100*yP/(96+yP)))
+            self.add(P)
+
+        self.move_camera(phi=PI/2, frame_center=(0, -10, 5), run_time=10)
+        self.wait(3)
 
 
 
