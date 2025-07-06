@@ -209,9 +209,23 @@ def fake_curve():
     def f(x,y):
         return 2500*x**3 - x*y**2 + 1843/80*y**3 + 200*x*y - 9213/4*y**2 - 10000*x - 75*y + 2500
 
-    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,100], color=YELLOW, stroke_width=6)
+    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,99], color=YELLOW, stroke_width=6)
+    # v.add_points_as_corners(vec(0,100))
+    # v.append_points([v.points[-1], v.points[-1], vec(0,100), vec(0,100)])
+    # print(v.points[-1], len(v.points))
+    v.add_line_to(vec(0,100))
+    # print(v.points[-20:])
+
+    # w = VGroup([v])
+    # w.add(Line3D(v.points[-100],vec(0,100), color=RED, stroke_width=6))
     return v
 
+class CheckCurve(ThreeDScene):
+    def construct(self):
+        self.add(fake_curve())
+        self.move_camera(phi=PI/2, frame_center=(0, -10, 5), run_time=3)
+        self.add(Dot3D(vec(0,100), radius=.5, color=YELLOW))
+        self.wait(3)
 
 
 class SecondScene(ThreeDScene):
@@ -454,20 +468,19 @@ class SecondScene(ThreeDScene):
         # print(f"{self.renderer.camera.phi=}, {self.renderer.camera.theta=}, {self.renderer.camera.frame_center=}")
         # self.renderer.camera.phi=0, self.renderer.camera.theta=-1.5707963267948966, self.renderer.camera.frame_center=array([0., 0., 0.])
         self.clear()
-
+        # TODO : point at infinity + label, cloud shaped background, grid on top
         self.add(bgr)
         newgrid = fake_numberplane()
         shz(newgrid, 1)
-        # axes =
         self.add(newgrid, stte)
-        v = fake_curve()
-        self.add(curve, v, )
+        self.add(fake_curve())
 
         for P in [P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62]:
             xP = P.get_center()[0]
             yP = P.get_center()[1]
             P.move_to(vec(96*xP/(96+yP), 100*yP/(96+yP)))
             self.add(P)
+        self.add(Dot3D(vec(0, 100), radius=.3, color=YELLOW))
 
         self.move_camera(phi=PI/2,
                          frame_center=(0, -10, 5),
