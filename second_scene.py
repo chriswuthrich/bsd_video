@@ -29,14 +29,14 @@ def fake_numberplane():
 
     # filled rectangle
     nu2 = 70
-    yy = 100 * nu2/ (nu2 + 96)
+    yy = 100 * nu2 / (nu2 + 96)
     p = Polygon(
         vec(-50, yy), vec(50, yy), vec(100, 100), vec(-100, 100),
         stroke_width=0,
         fill_color=colour,
         fill_opacity=.9,
         color=colour)
-    shz(p,-1)
+    shz(p, -1)
     v.add(p)
 
     # horizontal lines y=const
@@ -59,10 +59,10 @@ def fake_numberplane():
 
     # horizont line
     v.add(Line3D(
-        vec(-100,100),
+        vec(-100, 100),
         vec(100, 100),
         color=WHITE,
-        thickness = thickness))
+        thickness=thickness))
 
     # redraw axes
     v.add(Line3D(
@@ -78,20 +78,21 @@ def fake_numberplane():
 
     return v
 
+
 def fake_curve():
     """
     Create a version of the elliptic curve y^2 = x^3-4x+1
     in the fake number plane where (0:1:0) is at (0,100)
     Calculations done in notebook
     """
-    def f(x,y):
+    def f(x, y):
         return 2500*x**3 - x*y**2 + 1843/80*y**3 + 200*x*y - 9213/4*y**2 - 10000*x - 75*y + 2500
 
-    v = ImplicitFunction(f, x_range=[-15,15], y_range=[-10,99], color=YELLOW, stroke_width=6)
+    v = ImplicitFunction(f, x_range=[-15, 15], y_range=[-10, 99], color=YELLOW, stroke_width=6)
     # v.add_points_as_corners(vec(0,100))
     # v.append_points([v.points[-1], v.points[-1], vec(0,100), vec(0,100)])
     # print(v.points[-1], len(v.points))
-    v.add_line_to(vec(0,100))
+    v.add_line_to(vec(0, 100))
     # print(v.points[-20:])
 
     # w = VGroup([v])
@@ -119,8 +120,8 @@ class SecondScene(ThreeDScene):
         xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
         grid.add(xline)
         shz(grid, 1)
-        axex = Arrow(start=vec(0,0),
-                     end=vec(6.5,0),
+        axex = Arrow(start=vec(0, 0),
+                     end=vec(6.5, 0),
                      buff=0,
                      stroke_width=2,
                      tip_length=0.2,
@@ -140,7 +141,7 @@ class SecondScene(ThreeDScene):
         label_y.scale(.8)
         label_y.move_to(vec(0.4, 3.5))
         labelled_axes = VGroup(axex, axey, label_x, label_y)
-        shz(labelled_axes,1)
+        shz(labelled_axes, 1)
         E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         shz(curve, 5)
@@ -180,22 +181,22 @@ class SecondScene(ThreeDScene):
         # there are many more on this example
         pt0 = MathTex(r"(0,\pm 1),")
         pt1 = MathTex(r"(2,\pm 1)")
-        P11 = Dot3D(vec(2,1, .1), color=pointcolour, radius=pointradius, z_index=10)
-        shz(P11,10)
+        P11 = Dot3D(vec(2, 1, .1), color=pointcolour, radius=pointradius, z_index=10)
+        shz(P11, 10)
         P12 = Dot3D(vec(2, -1, .2), color=pointcolour, radius=pointradius, z_index=10)
-        shz(P12,3)
+        shz(P12, 3)
         pt2 = MathTex(r"(-1,\pm 2),")
-        P21 = Dot3D(vec(-1,2, .05), color=pointcolour, radius=pointradius, z_index=10)
+        P21 = Dot3D(vec(-1, 2, .05), color=pointcolour, radius=pointradius, z_index=10)
         P22 = Dot3D(vec(-1, -2, .02), color=pointcolour, radius=pointradius, z_index=10)
         pt3 = MathTex(r"(-2,\pm 1)")
-        P31 = Dot3D(vec(-2,1), color=pointcolour, radius=pointradius, z_index=10)
+        P31 = Dot3D(vec(-2, 1), color=pointcolour, radius=pointradius, z_index=10)
         P32 = Dot3D(vec(-2, -1), color=pointcolour, radius=pointradius, z_index=10)
         pt4 = MathTex(r"(\tfrac{1}{4}, \pm\tfrac{1}{8}),")
-        P41 = Dot3D(vec(.25,.125), color=pointcolour, radius=pointradius, z_index=10)
+        P41 = Dot3D(vec(.25, .125), color=pointcolour, radius=pointradius, z_index=10)
         P42 = Dot3D(vec(.25, -.125), color=pointcolour, radius=pointradius, z_index=10)
         pt5 = MathTex(r"(-\tfrac{7}{4}, \pm\tfrac{13}{8})")
-        P51 = Dot3D(vec(-7./4,13./8), color=pointcolour, radius=pointradius, z_index=10)
-        P52 = Dot3D(vec(-7./4, -13/8.), color=pointcolour, radius=pointradius ,z_index=10)
+        P51 = Dot3D(vec(-7./4, 13./8), color=pointcolour, radius=pointradius, z_index=10)
+        P52 = Dot3D(vec(-7./4, -13/8.), color=pointcolour, radius=pointradius, z_index=10)
 
         pt0.next_to(e1, DOWN)
         pt0.to_edge(LEFT)
@@ -210,7 +211,7 @@ class SecondScene(ThreeDScene):
 
         self.add(pt1, P11, P12)
         self.play(Flash(P11.get_center()),
-                 Flash(P12.get_center()),
+                  Flash(P12.get_center()),
                   run_time=1)
         self.wait(1)
 
@@ -218,7 +219,7 @@ class SecondScene(ThreeDScene):
         self.play(Flash(P21.get_center()),
                   Flash(P22.get_center()),
                   run_time=1)
-        self.add(P21,P22,pt3, P31, P32)
+        self.add(P21, P22, pt3, P31, P32)
         self.play(Flash(P31.get_center()),
                   Flash(P32.get_center()),
                   run_time=1)
@@ -248,7 +249,7 @@ class SecondScene(ThreeDScene):
         P62 = Dot(vec(x_numerator * 1. / x_denominator, -y_numerator * 1. / y_denominator), color=pointcolour,
                   radius=pointradius, z_index=10)
 
-        pt6.next_to(e1,DOWN)
+        pt6.next_to(e1, DOWN)
         pt6.to_edge(LEFT)
         self.add(pt6, P61, P62)
         self.play(Flash(P61.get_center()),
@@ -279,7 +280,8 @@ class SecondScene(ThreeDScene):
         self.play(Indicate(quotsub), FadeIn(XYZ), run_time=1)
 
         self.play(e1.animate(run_time=1).move_to(UP))
-        ee2 = MathTex(r"\Bigl(\frac{Y}{Z}\Bigr)^2 = \Bigl(\frac{X}{Z}\Bigr)^3", r"- 4\,", r" \Bigl(\frac{X}{Z}\Bigr)", "+ 1")
+        ee2 = MathTex(r"\Bigl(\frac{Y}{Z}\Bigr)^2 = \Bigl(\frac{X}{Z}\Bigr)^3",
+                      r"- 4\,", r" \Bigl(\frac{X}{Z}\Bigr)", "+ 1")
         ee2.next_to(e1, 2*DOWN)
         self.play(FadeIn(ee2))
 
@@ -337,7 +339,9 @@ class SecondScene(ThreeDScene):
         self.wait()
 
         # print(f"{self.renderer.camera.phi=}, {self.renderer.camera.theta=}, {self.renderer.camera.frame_center=}")
-        # self.renderer.camera.phi=0, self.renderer.camera.theta=-1.5707963267948966, self.renderer.camera.frame_center=array([0., 0., 0.])
+        # self.renderer.camera.phi=0,
+        # self.renderer.camera.theta=-1.5707963267948966,
+        # self.renderer.camera.frame_center=array([0., 0., 0.])
         self.clear()
         # TODO : point at infinity + label, cloud shaped background, grid on top
         self.add(bgr)
@@ -355,7 +359,7 @@ class SecondScene(ThreeDScene):
 
         self.move_camera(phi=PI/2,
                          frame_center=(0, -10, 5),
-                         run_time=1)  #  will be slower later
+                         run_time=1)  # will be slower later
         self.wait(3)
 
 
