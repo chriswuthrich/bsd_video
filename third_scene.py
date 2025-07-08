@@ -137,8 +137,18 @@ class ThirdScene(Scene):
                   ee.animate.to_corner(DR),
                   run_time=1)
         self.wait(1)
-        self.play(FadeOut(v1))
-        self.wait(1)
+        self.play(FadeOut(v1, bdt))
+
+        v1 = list_of_points(100)
+        v1.shift(DOWN)
+        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert\, \lvert Z\rvert < 100")
+        bdt.to_edge(UP)
+        self.play(FadeIn(v1),
+                  FadeIn(bdt),
+                  ee.animate.to_corner(DR),
+                  run_time=1)
+        self.wait()
+
         #
         # # box
         # mask_height = 6
