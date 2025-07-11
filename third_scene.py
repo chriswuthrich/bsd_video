@@ -21,18 +21,18 @@ import json
 def list_of_points(T, colour=WHITE):
     """
     Create a table of all points up to height T
-    with T in [ 10, 30, 50, 100, 200, 1000, 5000]
+    with T in [ 10, 100, 1000, 10000]
 
     returns a vgroup plaed on the left hand side,
     a list of points in form (X,Y,Z) and
     a list of indices to find the points in the vgroup
     """
     # points ordered by naive height(0, 1,0)
-    pts = [ (0, 1,0),
+    pts = [(0, 1,0),
             (0, 1,1),
             (-1, 2,1),
-            (-1, 2,1),
             (2, 1,1),
+            (-1, 2,1),
             (-2, 1,1),
             (3, 4,1),
             (4, 7,1),
@@ -58,43 +58,43 @@ def list_of_points(T, colour=WHITE):
             (-2728, 1021,1331),
             (705, 3592,27),
             (1045, 4306,6859)
-          ]
+           ]
 
     pts_str = \
-          [r"$(0$, & $1$, & $0)$",
-           r"$(0$, & $\pm 1$, & $1)$",
-           r"$(-1$, & $\pm 2$, & $1)$",
-           r"$(-1$, & $\pm 2$, & $1)$",
-           r"$(2$, & $\pm 1$, & $1)$",
-           r"$(-2$, & $\pm 1$, & $1)$",
-           r"$(3$, & $\pm 4$, & $1)$",
-           r"$(4$, & $\pm 7$, & $1)$",
-           r"$(2$, & $\pm 1$, & $8)$",
-           r"$(-14$, & $\pm 13$, & $8)$",
-           r"$(10$, & $\pm 31$, & $1)$",
-           r"$(-6$, & $\pm 37$, & $27)$",
-           r"$(12$, & $\pm 41$, & $1)$",
-           r"$(-24$, & $\pm 53$, & $27)$",
-           r"$(20$, & $\pm 89$, & $1)$",
-           r"$(30$, & $\pm 29$, & $125)$",
-           r"$(132$, & $\pm 79$, & $64)$",
-           r"$(132$, & $\pm 79$, & $64)$",
-           r"$(-80$, & $\pm 227$, & $125)$",
-           r"$(-630$, & $\pm 503$, & $343)$",
-           r"$(644$, & $\pm 113$, & $343)$",
-           r"$(455$, & $\pm 736$, & $125)$",
-           r"$(1160$, & $\pm 967$, & $512)$",
-           r"$(114$, & $\pm 1217$, & $1)$",
-           r"$(1386$, & $\pm 377$, & $729)$",
-           r"$(-130$, & $\pm 2443$, & $2197)$",
-           r"$(-1683$, & $\pm 2674$, & $1331)$",
-           r"$(-2728$, & $\pm 1021$, & $1331)$",
-           r"$(705$, & $\pm 3592$, & $27)$",
-           r"$(1045$, & $\pm 4306$, & $6859)$"
+          [r"$(0$, & $\pm 1$, & $0)$",
+            r"$(0$, & $\pm 1$, & $1)$",
+            r"$(-1$, & $\pm 2$, & $1)$",
+            r"$(2$, & $\pm 1$, & $1)$",
+            r"$(-1$, & $\pm 2$, & $1)$",
+            r"$(-2$, & $\pm 1$, & $1)$",
+            r"$(3$, & $\pm 4$, & $1)$",
+            r"$(4$, & $\pm 7$, & $1)$",
+            r"$(2$, & $\pm 1$, & $8)$",
+            r"$(-14$, & $\pm 13$, & $8)$",
+            r"$(10$, & $\pm 31$, & $1)$",
+            r"$(-6$, & $\pm 37$, & $27)$",
+            r"$(12$, & $\pm 41$, & $1)$",
+            r"$(-24$, & $\pm 53$, & $27)$",
+            r"$(20$, & $\pm 89$, & $1)$",
+            r"$(30$, & $\pm 29$, & $125)$",
+            r"$(132$, & $\pm 79$, & $64)$",
+            r"$(132$, & $\pm 79$, & $64)$",
+            r"$(-80$, & $\pm 227$, & $125)$",
+            r"$(-630$, & $\pm 503$, & $343)$",
+            r"$(644$, & $\pm 113$, & $343)$",
+            r"$(455$, & $\pm 736$, & $125)$",
+            r"$(1160$, & $\pm 967$, & $512)$",
+            r"$(114$, & $\pm 1217$, & $1)$",
+            r"$(1386$, & $\pm 377$, & $729)$",
+            r"$(-130$, & $\pm 2443$, & $2197)$",
+            r"$(-1683$, & $\pm 2674$, & $1331)$",
+            r"$(-2728$, & $\pm 1021$, & $1331)$",
+            r"$(705$, & $\pm 3592$, & $27)$",
+            r"$(1045$, & $\pm 4306$, & $6859)$"
            ]
     # lei[T] gives the number of items in
     # pts with height < T
-    lei = {10: 9, 30: 10, 50: 13, 100: 15, 200: 18, 1000: 22, 5000: 29}
+    lei = {10: 9, 100: 15, 1000: 22, 10000: 30}
 
     template = TexTemplate()
     template.add_to_preamble(r"\usepackage{booktabs}")
@@ -112,6 +112,7 @@ def list_of_points(T, colour=WHITE):
     v = Tex(tstr, tex_template=template, color=colour)
     v.scale(.5)
     v.move_to(vec(-5, 2))
+    v.to_edge(UP)
     # the top point is v[0][9:15] etc
     indices = [9,16,24,33,42,50,59,67,75,83,94,104,115,125,137,147]
     return v, pts[:n], indices
@@ -149,25 +150,7 @@ class ThirdScene(Scene):
         grid = VGroup()
         grid.add(my_fading_numberplane())
         grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
-        # xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
-        # grid.add(xline)
         shz(grid, 1)
-        # axex = Arrow(start=vec(0,0),
-        #              end=vec(6.5,0),
-        #              buff=0,
-        #              stroke_width=2,
-        #              tip_length=0.2,
-        #              tip_shape=BetterCurvyPointyTip,
-        #              color=WHITE)
-        # axey = Arrow(start=vec(0, 0),
-        #              end=vec(0, 3.7),
-        #              buff=0,
-        #              stroke_width=2,
-        #              tip_length=0.2,
-        #              tip_shape=BetterCurvyPointyTip,
-        #              color=WHITE)
-        # axes = VGroup(axex, axey)
-        # shz(axes,1)
         E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         shz(curve, 5)
@@ -221,7 +204,6 @@ class ThirdScene(Scene):
         self.play(FadeOut(v1, bdt))
 
         v1, more_pts, indices = list_of_points(100)
-        v1.shift(DOWN)
         bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 100")
         bdt.to_edge(UP)
         bdt.shift(vec(-.7, 0))
@@ -253,7 +235,57 @@ class ThirdScene(Scene):
             if point_outside_shows:
                 self.remove(point_outside)
 
-            self.wait(2)
+        self.play(FadeOut(v1, bdt))
+
+        v1, even_more_pts, indices = list_of_points(1000)
+        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 1000")
+        bdt.to_edge(UP)
+        bdt.shift(vec(-.7, 0))
+        v1[0][indices[len(more_pts)]:].set_opacity(0.2)
+        self.play(FadeIn(v1),
+                  FadeIn(bdt),
+                  Indicate(bdt[0][-1]),
+                  run_time=1)
+        self.wait()
+
+        # move up the list to reveal more points
+        t = ValueTracker(0)
+        start_v1 = v1.get_center()
+        end_v1 = start_v1 + vec(0,3)
+        v1.add_updater(lambda m: m.move_to(start_v1*(1-t.get_value()) + t.get_value()*end_v1 ))
+        # for i in range(len(more_pts), len(even_more_pts)):
+        #     v1[0][indices[i]:indices[i+1]].add_updater(lambda m: m.set_opacity(1-t.get_value()))
+
+        self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
+
+        self.wait()
+        self.add(index_labels(v1[0]))
+
+        # for i in range(len(pts), len(more_pts)):
+        #     P = more_pts[i]
+        #     P_str = v1[0][indices[i]:indices[i + 1]]
+        #     P_centre = vec(P[0] * 1. / P[2], P[1] * 1. / P[2]) + shift_grid
+        #     minus_P_centre = vec(P[0] * 1. / P[2], - P[1] * 1. / P[2]) + shift_grid
+        #     if P_centre[0] > 7.111 or P_centre[1] > 4:  # point outside screen
+        #         self.add(point_outside)
+        #         point_outside_shows = True
+        #         point_to_flash = vec(3.5, 3.6) + shift_grid
+        #         minus_point_to_flash = vec(3.5, 3.6) + shift_grid
+        #     else:
+        #         self.add(Dot3D(P_centre, color=pointcolour, radius=pointradius, z_index=10),
+        #                  Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
+        #         point_to_flash = P_centre
+        #         minus_point_to_flash = minus_P_centre
+        #
+        #     self.play(Indicate(P_str),
+        #               Flash(point_to_flash),
+        #               Flash(minus_point_to_flash),
+        #               runtime=.7)
+        #     self.wait(.1)
+        #     if point_outside_shows:
+        #         self.remove(point_outside)
+
+        self.wait(2)
 
 
 
