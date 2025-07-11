@@ -118,10 +118,14 @@ class ThirdScene(Scene):
 
         def list_of_points(T):
             n = lei[T]
-            tstr = r"\begin{tabular}{rcl} "
-            for P in pts[:n-1]:
+            tstr = r"\begin{tabular}{rcl}" + "\n"
+            tstr += r"\toprule" + "\n"
+            tstr += r"$(X$, & $Y$, & $Z)$ " + r"\\" + "\n"
+            tstr += r"\midrule" + "\n"
+            for P in pts[:n]:
                 tstr += P + r" \\ " + "\n"
-            tstr += pts[n-1]
+            # tstr += pts[n-1]
+            tstr += r"\bottomrule" + "\n"
             tstr += r"\end{tabular}"
             v = Tex(tstr, tex_template=template)
             v.scale(.5)
@@ -129,9 +133,9 @@ class ThirdScene(Scene):
             return v
 
         v1 = list_of_points(10)
-
-        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert\, \lvert Z\rvert < 10")
+        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 10")
         bdt.to_edge(UP)
+        bdt.shift(vec(-.7, 0))
         self.play(FadeIn(v1),
                   FadeIn(bdt),
                   ee.animate.to_corner(DR),
@@ -141,13 +145,14 @@ class ThirdScene(Scene):
 
         v1 = list_of_points(100)
         v1.shift(DOWN)
-        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert\, \lvert Z\rvert < 100")
+        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 100")
         bdt.to_edge(UP)
+        bdt.shift(vec(-.7, 0))
         self.play(FadeIn(v1),
                   FadeIn(bdt),
-                  ee.animate.to_corner(DR),
                   run_time=1)
         self.wait()
+        print(ee.get_center())
 
         #
         # # box
