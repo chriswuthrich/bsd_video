@@ -9,7 +9,7 @@ useful for all parts
 from manim import *
 from manim.opengl import *
 
-def vec(x: float, y: float, z=0):
+def vec(x, y, z=0):
     return np.array([x, y, z])
 
 

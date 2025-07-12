@@ -267,7 +267,6 @@ class ThirdScene(Scene):
             else:
                 return 1
 
-        # TODO : opacity doesn't work
         t = ValueTracker(0)
         start_v1 = vec(v1.get_center()[0], v1.get_center()[1])
         def place_v1(tt):
@@ -279,6 +278,8 @@ class ThirdScene(Scene):
                 # otherwise all updaters will take the last value of i
                 v1[0][j].add_updater(lambda m, i=i: m.set_opacity( op(i, t.get_value())))
         v1[0][-1].add_updater(lambda m, i=i: m.set_opacity( op(i, t.get_value())))
+        # this was used to print the value on screen,
+        # leave here if needed later elsewhere
         # temporary_t = DecimalNumber(
         #     t.get_value(),
         #     num_decimal_places=2,
@@ -294,32 +295,6 @@ class ThirdScene(Scene):
                   t.animate.set_value(1), run_time=3, rate_func=linear)
 
         self.wait(1)
-
-        # for i in range(len(pts), len(more_pts)):
-        #     P = more_pts[i]
-        #     P_str = v1[0][indices[i]:indices[i + 1]]
-        #     P_centre = vec(P[0] * 1. / P[2], P[1] * 1. / P[2]) + shift_grid
-        #     minus_P_centre = vec(P[0] * 1. / P[2], - P[1] * 1. / P[2]) + shift_grid
-        #     if P_centre[0] > 7.111 or P_centre[1] > 4:  # point outside screen
-        #         self.add(point_outside)
-        #         point_outside_shows = True
-        #         point_to_flash = vec(3.5, 3.6) + shift_grid
-        #         minus_point_to_flash = vec(3.5, 3.6) + shift_grid
-        #     else:
-        #         self.add(Dot3D(P_centre, color=pointcolour, radius=pointradius, z_index=10),
-        #                  Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
-        #         point_to_flash = P_centre
-        #         minus_point_to_flash = minus_P_centre
-        #
-        #     self.play(Indicate(P_str),
-        #               Flash(point_to_flash),
-        #               Flash(minus_point_to_flash),
-        #               runtime=.7)
-        #     self.wait(.1)
-        #     if point_outside_shows:
-        #         self.remove(point_outside)
-
-        self.wait(2)
 
 
 
