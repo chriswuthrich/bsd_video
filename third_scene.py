@@ -16,6 +16,15 @@ from msage import smanim
 from tools import *
 import json
 
+def my_point(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
+    """
+    replacement for Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
+    """
+    v1 = Circle(radius, stroke_width=0, fill_color=colour, fill_opacity=1, stroke_color=colour, z_index=z_index)
+    v2 = Circle(radius/3, stroke_width=0, fill_color=BLACK, fill_opacity=1, stroke_color=BLACK, z_index=z_index+.1)
+    v = VGroup(v1, v2)
+    v.move_to(centre)
+    return v
 
 
 def list_of_points(T, colour=WHITE):
@@ -28,12 +37,11 @@ def list_of_points(T, colour=WHITE):
     a list of indices to find the points in the vgroup
     """
     # points ordered by naive height(0, 1,0)
-    pts = [(0, 1,0),
+    pts = [ (0, 1,0),
             (0, 1,1),
+            (-2, 1,1),
             (-1, 2,1),
             (2, 1,1),
-            (-1, 2,1),
-            (-2, 1,1),
             (3, 4,1),
             (4, 7,1),
             (2, 1,8),
@@ -44,7 +52,6 @@ def list_of_points(T, colour=WHITE):
             (-24, 53,27),
             (20, 89,1),
             (30, 29,125),
-            (132, 79,64),
             (132, 79,64),
             (-80, 227,125),
             (-630, 503,343),
@@ -57,16 +64,18 @@ def list_of_points(T, colour=WHITE):
             (-1683, 2674,1331),
             (-2728, 1021,1331),
             (705, 3592,27),
-            (1045, 4306,6859)
+            (1045, 4306,6859),
+            (-16744, 24023,12167),
+            (1274, 45473,1)
            ]
 
+    # copied but O modified
     pts_str = \
-          [r"$(0$, & $\pm 1$, & $0)$",
+           [r"$(0$, & $1$, & $0)$",
             r"$(0$, & $\pm 1$, & $1)$",
+            r"$(-2$, & $\pm 1$, & $1)$",
             r"$(-1$, & $\pm 2$, & $1)$",
             r"$(2$, & $\pm 1$, & $1)$",
-            r"$(-1$, & $\pm 2$, & $1)$",
-            r"$(-2$, & $\pm 1$, & $1)$",
             r"$(3$, & $\pm 4$, & $1)$",
             r"$(4$, & $\pm 7$, & $1)$",
             r"$(2$, & $\pm 1$, & $8)$",
@@ -77,7 +86,6 @@ def list_of_points(T, colour=WHITE):
             r"$(-24$, & $\pm 53$, & $27)$",
             r"$(20$, & $\pm 89$, & $1)$",
             r"$(30$, & $\pm 29$, & $125)$",
-            r"$(132$, & $\pm 79$, & $64)$",
             r"$(132$, & $\pm 79$, & $64)$",
             r"$(-80$, & $\pm 227$, & $125)$",
             r"$(-630$, & $\pm 503$, & $343)$",
@@ -90,11 +98,13 @@ def list_of_points(T, colour=WHITE):
             r"$(-1683$, & $\pm 2674$, & $1331)$",
             r"$(-2728$, & $\pm 1021$, & $1331)$",
             r"$(705$, & $\pm 3592$, & $27)$",
-            r"$(1045$, & $\pm 4306$, & $6859)$"
+            r"$(1045$, & $\pm 4306$, & $6859)$",
+            r"$(-16744$, & $\pm 24023$, & $12167)$",
+            r"$(1274$, & $\pm 45473$, & $1)$"
            ]
     # lei[T] gives the number of items in
     # pts with height < T
-    lei = {10: 9, 100: 15, 1000: 22, 10000: 30}
+    lei = {10: 8, 100: 14, 1000: 20, 10000: 28}
 
     template = TexTemplate()
     template.add_to_preamble(r"\usepackage{booktabs}")
@@ -113,8 +123,9 @@ def list_of_points(T, colour=WHITE):
     v.scale(.5)
     v.move_to(vec(-5, 2))
     v.to_edge(UP)
-    # the top point is v[0][9:15] etc
-    indices = [9,16,24,33,42,50,59,67,75,83,94,104,115,125,137,147]
+    # the top point is v[0][10:15] etc
+    # use self.add(index_labels(v1[0])) to determine these
+    indices = [9,16,24,33,42,50,58,66,74,85,95,106,116,128,138,150,162,176,191,205,219]
     return v, pts[:n], indices
 
 
@@ -159,6 +170,7 @@ class ThirdScene(Scene):
         curvepic.shift(shift_grid)
         self.add(curvepic, stte)
 
+        # list points of height < 10
         v1, pts, indices = list_of_points(10)
         bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 10")
         bdt.to_edge(UP)
@@ -170,8 +182,8 @@ class ThirdScene(Scene):
         pointcolour = BLUE_B
         pointradius = .07
         point_outside = VGroup(
-            Dot3D(vec(3.5, 3.6) + shift_grid, color=pointcolour, radius=pointradius, z_index=10),
-            Dot3D(vec(3.5, -3.6) + shift_grid, color=pointcolour, radius=pointradius, z_index=10),
+            my_point(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
+            my_point(vec(3.5, -3.6) + shift_grid, radius=pointradius, colour=pointcolour),
             Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8,3.9) + shift_grid),
             Arrow(vec(3.7, -3.6) + shift_grid, vec(3.8,-3.9) + shift_grid),
             )
@@ -187,8 +199,8 @@ class ThirdScene(Scene):
                 point_to_flash = vec(3.5, 3.6) + shift_grid
                 minus_point_to_flash = vec(3.5, 3.6) + shift_grid
             else:
-                self.add(Dot3D(P_centre, color=pointcolour, radius=pointradius, z_index=10),
-                         Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
+                self.add(my_point(P_centre, colour=pointcolour, radius=pointradius),
+                      my_point(minus_P_centre, radius=pointradius, colour=pointcolour))
                 point_to_flash = P_centre
                 minus_point_to_flash = minus_P_centre
 
@@ -203,6 +215,7 @@ class ThirdScene(Scene):
 
         self.play(FadeOut(v1, bdt))
 
+        # now list them of height < 100
         v1, more_pts, indices = list_of_points(100)
         bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 100")
         bdt.to_edge(UP)
@@ -222,8 +235,8 @@ class ThirdScene(Scene):
                 point_to_flash = vec(3.5, 3.6) + shift_grid
                 minus_point_to_flash = vec(3.5, 3.6) + shift_grid
             else:
-                self.add(Dot3D(P_centre, color=pointcolour, radius=pointradius, z_index=10),
-                         Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
+                self.add(my_point(P_centre, colour=pointcolour, radius=pointradius, z_index=10),
+                         my_point(minus_P_centre, colour=pointcolour, radius=pointradius, z_index=10))
                 point_to_flash = P_centre
                 minus_point_to_flash = minus_P_centre
 
@@ -234,32 +247,55 @@ class ThirdScene(Scene):
             self.wait(.1)
             if point_outside_shows:
                 self.remove(point_outside)
-
         self.play(FadeOut(v1, bdt))
 
+        # list up to height 1000
         v1, even_more_pts, indices = list_of_points(1000)
         bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 1000")
         bdt.to_edge(UP)
         bdt.shift(vec(-.7, 0))
-        v1[0][indices[len(more_pts)]:].set_opacity(0.2)
+        #v1[0][indices[len(more_pts)]:].set_opacity(0)
         self.play(FadeIn(v1),
                   FadeIn(bdt),
-                  Indicate(bdt[0][-1]),
                   run_time=1)
         self.wait()
+        # self.add(index_labels(bdt[0]))
+        # self.wait()
 
         # move up the list to reveal more points
+        # opacity updater for new elements
+        def op(i, tt):
+            if tt<i/6:
+                return 0
+            elif tt<(i+1)/6:
+                return 6*tt-i
+            else:
+                return 1
+
+        # TODO : opacity doesn't work
         t = ValueTracker(0)
-        start_v1 = v1.get_center()
-        end_v1 = start_v1 + vec(0,3)
-        v1.add_updater(lambda m: m.move_to(start_v1*(1-t.get_value()) + t.get_value()*end_v1 ))
-        # for i in range(len(more_pts), len(even_more_pts)):
-        #     v1[0][indices[i]:indices[i+1]].add_updater(lambda m: m.set_opacity(1-t.get_value()))
+        start_v1 = vec(v1.get_center()[0], v1.get_center()[1])
+        def place_v1(tt):
+            return start_v1 + tt * vec(0,3)
+        v1.add_updater(lambda m: m.move_to(place_v1(t.get_value())))
+        for i in range(len(more_pts), len(even_more_pts)):
+            for j in range(indices[i], indices[i+1]):
+                v1[0][j].add_updater(lambda m: m.set_opacity(t.get_value()))  # op(i-len(more_pts), t.get_value())))
 
-        self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
+        # temporary_t = DecimalNumber(
+        #     t.get_value(),
+        #     num_decimal_places=2,
+        #     include_sign=False,
+        # ).scale(.4)
+        # temporary_t.add_updater(
+        #     lambda m: m.set_value(t.get_value())
+        # )
+        # temporary_t.to_corner(UR)
+        # self.add(temporary_t)
 
-        self.wait()
-        self.add(index_labels(v1[0]))
+        self.play(t.animate.set_value(1), run_time=3, rate_func=linear)
+
+        self.wait(1)
 
         # for i in range(len(pts), len(more_pts)):
         #     P = more_pts[i]
