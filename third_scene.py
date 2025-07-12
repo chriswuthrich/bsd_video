@@ -258,12 +258,12 @@ class ThirdScene(Scene):
         # move up the list to reveal more points
         # opacity updater for new elements
         def op(i, tt):
-            j = i - len(more_pts)
+            s = i - len(more_pts)
             n = len(even_more_pts) - len(more_pts)
-            if tt<j/n:
+            if tt<s/n:
                 return 0
-            elif tt<(j+1)/n:
-                return n*tt-i
+            elif tt<(s+1)/n:
+                return n*tt-s
             else:
                 return 1
 
@@ -275,8 +275,10 @@ class ThirdScene(Scene):
         v1.add_updater(lambda m: m.move_to(place_v1(t.get_value())))
         for i in range(len(more_pts), len(even_more_pts)):
             for j in range(indices[i], indices[i+1]):
-                v1[0][j].add_updater(lambda m: m.set_opacity( op(i, t.get_value())))
-        v1[0][-1].add_updater(lambda m: m.set_opacity( op(i, t.get_value())))
+                # in the following the "i=i" is there to avoid late binding
+                # otherwise all updaters will take the last value of i
+                v1[0][j].add_updater(lambda m, i=i: m.set_opacity( op(i, t.get_value())))
+        v1[0][-1].add_updater(lambda m, i=i: m.set_opacity( op(i, t.get_value())))
         # temporary_t = DecimalNumber(
         #     t.get_value(),
         #     num_decimal_places=2,
