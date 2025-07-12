@@ -254,14 +254,11 @@ class ThirdScene(Scene):
         bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 1000")
         bdt.to_edge(UP)
         bdt.shift(vec(-.7, 0))
-        #v1[0][indices[len(more_pts)]:].set_opacity(0)
-        # self.add(index_labels(bdt[0]))
-        # self.wait()
 
         # move up the list to reveal more points
         # opacity updater for new elements
         def op(i, tt):
-            j = i- len(more_pts)
+            j = i - len(more_pts)
             n = len(even_more_pts) - len(more_pts)
             if tt<j/n:
                 return 0
@@ -278,8 +275,8 @@ class ThirdScene(Scene):
         v1.add_updater(lambda m: m.move_to(place_v1(t.get_value())))
         for i in range(len(more_pts), len(even_more_pts)):
             for j in range(indices[i], indices[i+1]):
-                v1[0][j].add_updater(lambda m: m.set_opacity( op(i-len(more_pts), t.get_value())))
-        v1[0][-1].add_updater(lambda m: m.set_opacity( op(i-len(more_pts), t.get_value())))
+                v1[0][j].add_updater(lambda m: m.set_opacity( op(i, t.get_value())))
+        v1[0][-1].add_updater(lambda m: m.set_opacity( op(i, t.get_value())))
         # temporary_t = DecimalNumber(
         #     t.get_value(),
         #     num_decimal_places=2,
