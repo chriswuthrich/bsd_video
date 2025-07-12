@@ -255,20 +255,18 @@ class ThirdScene(Scene):
         bdt.to_edge(UP)
         bdt.shift(vec(-.7, 0))
         #v1[0][indices[len(more_pts)]:].set_opacity(0)
-        self.play(FadeIn(v1),
-                  FadeIn(bdt),
-                  run_time=1)
-        self.wait()
         # self.add(index_labels(bdt[0]))
         # self.wait()
 
         # move up the list to reveal more points
         # opacity updater for new elements
         def op(i, tt):
-            if tt<i/6:
+            j = i- len(more_pts)
+            n = len(even_more_pts) - len(more_pts)
+            if tt<j/n:
                 return 0
-            elif tt<(i+1)/6:
-                return 6*tt-i
+            elif tt<(j+1)/n:
+                return n*tt-i
             else:
                 return 1
 
@@ -280,8 +278,8 @@ class ThirdScene(Scene):
         v1.add_updater(lambda m: m.move_to(place_v1(t.get_value())))
         for i in range(len(more_pts), len(even_more_pts)):
             for j in range(indices[i], indices[i+1]):
-                v1[0][j].add_updater(lambda m: m.set_opacity(t.get_value()))  # op(i-len(more_pts), t.get_value())))
-
+                v1[0][j].add_updater(lambda m: m.set_opacity( op(i-len(more_pts), t.get_value())))
+        v1[0][-1].add_updater(lambda m: m.set_opacity( op(i-len(more_pts), t.get_value())))
         # temporary_t = DecimalNumber(
         #     t.get_value(),
         #     num_decimal_places=2,
@@ -292,8 +290,9 @@ class ThirdScene(Scene):
         # )
         # temporary_t.to_corner(UR)
         # self.add(temporary_t)
-
-        self.play(t.animate.set_value(1), run_time=3, rate_func=linear)
+        self.add(v1)
+        self.play(FadeIn(bdt),
+                  t.animate.set_value(1), run_time=3, rate_func=linear)
 
         self.wait(1)
 
