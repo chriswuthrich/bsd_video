@@ -209,7 +209,6 @@ class ThirdScene(Scene):
                       Flash(minus_point_to_flash),
                       runtime=.7)
             self.wait(.1)
-            # P_str.set_color(WHITE)
             if point_outside_shows:
                 self.remove(point_outside)
 
@@ -295,6 +294,43 @@ class ThirdScene(Scene):
                   t.animate.set_value(1), run_time=3, rate_func=linear)
 
         self.wait(1)
+
+
+        # Now define N and give a graph for this curve.
+        self.clear()
+        self.add(my_background(), stte)
+
+        nt = MathTex(r"\mathcal{N}(T) = \# \Bigl\{ P \in E(\mathbb{Q})\ : \ \lvert X\rvert,\,\lvert Y \rvert,\, \lvert Z\rvert \leqslant T \Bigr\}")
+        nt.to_edge(UP)
+        self.play(FadeIn(nt))
+        # self.add(index_labels(nt[0]))
+        self.wait(1)
+
+        with open('data/nt_graph.json', 'r') as file:
+            gra = json.load(file)
+
+        gra_axes = Axes(
+                        x_range=[0, 40, 10],
+                        y_range=[0, 25, 5],
+                        x_length=10,
+                        y_length=5,
+                        x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
+                        y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
+                        )
+
+        gra_nt = VMobject(color=YELLOW)
+        gra_nt.set_points_as_corners([gra_axes.c2p(x, y) for x, y in gra[:22] ])
+        gra_nt.set_style(stroke_width=2)
+        gra_origin = vec(1, 0)
+        gra_axes.shift(gra_origin)
+        gra_nt.shift(gra_origin)
+        self.add(gra_axes)
+
+        self.play(Create(gra_nt))
+        print(gra[:30])
+        self.wait()
+
+
 
 
 
