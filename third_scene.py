@@ -396,41 +396,49 @@ class ThirdScene(Scene):
         self.wait(.5)
 
         # equation in centre goes modulo
-        ee = MathTex(r"{{y^2}} {{=}} {{x^3- 4\,x - 2}}")
+        ee = MathTex(r"{{y^2}} {{=}} {{x^3- 4\,x + 1}}")
         self.add(ee)
-        eemod = MathTex(r"{{y^2}} {{\equiv}} {{x^3- 4\,x - 2}} \pmod{10}")
-        self.play(TransformMatchingTex(ee, eemod))
+        eemod = MathTex(r"{{y^2}} {{\equiv}} {{x^3- 4\,x +1}} \pmod{10}")
+        self.play(TransformMatchingTex(ee, eemod),
+                  FadeOut(tit, shift=DOWN * 2, scale=1.5))
         self.wait()
 
+        pts_mod_ten=\
+            [(0, 1, 1), (2, 1, 1), (8, 1, 1), (9, 2, 1), (4, 3, 1),
+             (3, 4, 1), (5, 4, 1), (7, 4, 1), (3, 6, 1), (5, 6, 1),
+             (7, 6, 1), (4, 7, 1), (9, 8, 1), (0, 9, 1), (2, 9, 1),
+             (8, 9, 1), (8, 1, 2), (0, 3, 2), (4, 3, 2), (6, 3, 2),
+             (0, 7, 2), (4, 7, 2), (6, 7, 2), (8, 9, 2), (0, 1, 5),
+             (5, 2, 5), (0, 1, 0)]
 
-        ptsmodten=\
-            [(0, 1, 1),
-             (2, 1, 1),
-             (8, 1, 1),
-             (9, 2, 1),
-             (4, 3, 1),
-             (3, 4, 1),
-             (5, 4, 1),
-             (7, 4, 1),
-             (3, 6, 1),
-             (5, 6, 1),
-             (7, 6, 1),
-             (4, 7, 1),
-             (9, 8, 1),
-             (0, 9, 1),
-             (2, 9, 1),
-             (8, 9, 1),
-             (8, 1, 2),
-             (0, 3, 2),
-             (4, 3, 2),
-             (6, 3, 2),
-             (0, 7, 2),
-             (4, 7, 2),
-             (6, 7, 2),
-             (8, 9, 2),
-             (0, 1, 5),
-             (5, 2, 5),
-             (0, 1, 0)]
+        affine_pts_mod_ten = [(x,y) for (x,y,z) in pts_mod_ten if z == 1]
+        pts_v = {(x, y, z): VGroup(MathTex(r"("+str(x)+r","+str(y)+r")"),
+                                   MathTex(r"("+str(x)+r","+str(y)+r",1)"))
+                 for (x,y,z) in pts_mod_ten}
+
+        for (x,y) in affine_pts_mod_ten:
+            pts_v[(x,y,1)].move_to(vec(x-3, (y-3)/2.))
+            self.add(pts_v[(x,y,1)][0])
+        self.play(eemod.animate.to_edge(DOWN))
+        self.wait(1)
+
+        emod = MathTex(r"X^2 Z \equiv X^3- 4\,XZ^2 + Z^3}} \pmod{10}")
+        equivmod = MathTex(r"(X,Y,Z)\sim ({{3}}X, {{3}}Y, {{3}}Z)")
+        emod.to_edge(DOWN)
+        equivmod.to_edge(DOWN).shift(.5*UP)
+
+        self.play(FadeTransform(eemod, emod))
+        self.add(equivmod)
+        self.wait(1)
+        for (x,y) in affine_pts_mod_ten:
+            self.play(FadeTransform(pts_v[(x,y,1)][0], pts_v[(x,y,1)][1]), run_time=0.01)
+        i = 0
+        for (x,y,z) in pts_mod_ten:
+            if z != 1:
+                pts_v[(x,y,z)].move_to(vec(-5, 3-i/2))
+                self.add(pts_v[(x,y,z)][1])
+                i += 1
+        self.wait()
 
 
 
