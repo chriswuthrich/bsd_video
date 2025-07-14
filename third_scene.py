@@ -5,8 +5,6 @@ Here the actual conjecture is
 explained and illustrated
 with graphs.
 
-TODO
-
 """
 
 from manim import *
@@ -15,6 +13,7 @@ from character import StudentChar
 from msage import smanim
 from tools import *
 import json
+
 
 def my_point(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
     """
@@ -32,7 +31,7 @@ def list_of_points(T, colour=WHITE):
     Create a table of all points up to height T
     with T in [ 10, 100, 1000, 10000]
 
-    returns a vgroup plaed on the left hand side,
+    returns a vgroup placed on the left hand side,
     a list of points in form (X,Y,Z) and
     a list of indices to find the points in the vgroup
     """
@@ -150,25 +149,81 @@ class ThirdScene(Scene):
         tit.shift(2*UP)
         self.play(GrowFromCenter(tit))
         self.wait(.5)
-        ee = MathTex(r"Y^2 Z = X^3- 4\,XZ^2+ Z^3")
-        ee.move_to(vec(3.6, -3.2))
-        shz(ee, 5)
-        self.add(ee)
-        self.play(FadeOut(tit, shift=DOWN * 2, scale=1.5))
-        self.wait(1)
 
-        # recreate curve
+        # For some curves like $y^2=x^3-4x-2$ there are only four points.
+        ee2 = MathTex(r"y^2 = x^3- 4\,x - 2")
+        ee2.to_corner(UL)
+        shz(ee2, 5)
+        self.add(ee2)
+        self.play(FadeOut(tit, shift=DOWN * 2, scale=1.5))
+        self.wait(.5)
+
+        # create curve
         grid = VGroup()
         grid.add(my_fading_numberplane())
         grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
         shz(grid, 1)
+        E = sagemath.EllipticCurve([-2, 1])
+        curve2 = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(curve2, 5)
+        curvepic2 = VGroup(grid, curve2)
+        shift_grid = vec(2,0)
+        curvepic2.shift(shift_grid)
+        self.add(curvepic2, stte)
+        self.wait(1)
+
+        pointcolour = BLUE_B
+        pointradius = .07
+        one_point_outside = VGroup(
+            my_point(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
+            Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8,3.9) + shift_grid)
+            )
+        pts = [((0, 1), r"(0,1)", vec(.5, .4)),
+               ((0, -1), r"(0,-1)", vec(.55, -.4)),
+               ((1, 0), r"(1,0)", vec(.7, .3)),
+               ((100, 100), r"(X=0,Y=1,Z=0)", vec(0, 0))]
+        all_pts_and_labels = VGroup()
+        self.add(all_pts_and_labels)
+        for P, Pstr, sh in pts:
+            P_centre = vec(P[0] * 1., P[1] * 1.) + shift_grid
+            P_label = MathTex(Pstr, color=YELLOW)
+            P_label.move_to(P_centre+sh)
+            if P[0] > 7.111 or P[1] > 4:  # point outside screen
+                v = one_point_outside
+                P_label.move_to(ORIGIN).to_edge(UP).shift(1.7*RIGHT)
+                point_to_flash = vec(3.5, 3.6) + shift_grid
+            else:
+                v = my_point(P_centre, colour=pointcolour, radius=pointradius, z_index=10)
+                point_to_flash = P_centre
+            all_pts_and_labels.add(v, P_label)
+            self.play(Indicate(P_label),
+                      Flash(point_to_flash),
+                      runtime=.7)
+            self.wait(.1)
+
+        # Back to favourite curve
+        self.remove(ee2, all_pts_and_labels)
         E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         shz(curve, 5)
         curvepic = VGroup(grid, curve)
-        shift_grid = vec(2,0)
         curvepic.shift(shift_grid)
-        self.add(curvepic, stte)
+        ee_affine = MathTex(r"{{y^2}}   = {{x}}^3- 4\, {{x}} +  {{1}}")
+        shz(ee_affine, 5)
+        ee_affine.to_corner(UL)
+        self.add(ee_affine)
+        self.play(Transform(curvepic2, curvepic),
+                  run_time=1
+                  )
+        self.wait(.5)
+        ee = MathTex(r"{{Y^2 Z}} = {{X}}^3- 4\,{{XZ^2}}+ {{Z^3}}")
+        shz(ee, 5)
+        ee.to_corner(UL)
+        self.play(Succession(TransformMatchingTex(ee_affine, ee),
+                  ee.animate.move_to(vec(0, -3.2)),
+                  ))
+        self.wait(1)
+
 
         # list points of height < 10
         v1, pts, indices = list_of_points(10)
@@ -317,19 +372,21 @@ class ThirdScene(Scene):
                         x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
                         y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
                         )
-
+        label_x = MathTex(r"T")
+        label_x.move_to(vec(5, -3.4))
         gra_nt = VMobject(color=YELLOW)
-        gra_nt.set_points_as_corners([gra_axes.c2p(x, y) for x, y in gra[:22] ])
+        gra_nt.set_points_as_corners([gra_axes.c2p(x, y) for x, y in gra[:40] ])
         gra_nt.set_style(stroke_width=2)
-        gra_origin = vec(1, 0)
-        gra_axes.shift(gra_origin)
-        gra_nt.shift(gra_origin)
-        self.add(gra_axes)
+        gra_shift = vec(1, 0)
+        gra_axes.shift(gra_shift)
+        gra_nt.shift(gra_shift)
+        self.add(gra_axes, label_x)
 
-        self.play(Create(gra_nt))
-        print(gra[:30])
+        self.play(Create(gra_nt), run_time=3, rate_func=linear)
         self.wait()
 
+
+        # example with finitely many points
 
 
 
