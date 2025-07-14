@@ -385,7 +385,52 @@ class ThirdScene(Scene):
         self.wait()
 
         # 3.2 Counting modulo
+        #
+        self.clear()
+        self.add(my_background(), stte)
 
+        # Title comes in
+        tit = Text("Counting points modulo", color=YELLOW)
+        tit.shift(2*UP)
+        self.play(GrowFromCenter(tit))
+        self.wait(.5)
+
+        # equation in centre goes modulo
+        ee = MathTex(r"{{y^2}} {{=}} {{x^3- 4\,x - 2}}")
+        self.add(ee)
+        eemod = MathTex(r"{{y^2}} {{\equiv}} {{x^3- 4\,x - 2}} \pmod{10}")
+        self.play(TransformMatchingTex(ee, eemod))
+        self.wait()
+
+
+        ptsmodten=\
+            [(0, 1, 1),
+             (2, 1, 1),
+             (8, 1, 1),
+             (9, 2, 1),
+             (4, 3, 1),
+             (3, 4, 1),
+             (5, 4, 1),
+             (7, 4, 1),
+             (3, 6, 1),
+             (5, 6, 1),
+             (7, 6, 1),
+             (4, 7, 1),
+             (9, 8, 1),
+             (0, 9, 1),
+             (2, 9, 1),
+             (8, 9, 1),
+             (8, 1, 2),
+             (0, 3, 2),
+             (4, 3, 2),
+             (6, 3, 2),
+             (0, 7, 2),
+             (4, 7, 2),
+             (6, 7, 2),
+             (8, 9, 2),
+             (0, 1, 5),
+             (5, 2, 5),
+             (0, 1, 0)]
 
 
 
