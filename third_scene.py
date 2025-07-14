@@ -219,9 +219,8 @@ class ThirdScene(Scene):
         ee = MathTex(r"{{Y^2 Z}} = {{X}}^3- 4\,{{XZ^2}}+ {{Z^3}}")
         shz(ee, 5)
         ee.to_corner(UL)
-        self.play(Succession(TransformMatchingTex(ee_affine, ee),
-                  ee.animate.move_to(vec(0, -3.2)),
-                  ))
+        self.play(TransformMatchingTex(ee_affine, ee))
+        self.play(ee.animate.move_to(vec(0, -3.2)))
         self.wait(1)
 
 
@@ -252,7 +251,7 @@ class ThirdScene(Scene):
                 self.add(point_outside)
                 point_outside_shows = True
                 point_to_flash = vec(3.5, 3.6) + shift_grid
-                minus_point_to_flash = vec(3.5, 3.6) + shift_grid
+                minus_point_to_flash = vec(3.5, -3.6) + shift_grid
             else:
                 self.add(my_point(P_centre, colour=pointcolour, radius=pointradius),
                       my_point(minus_P_centre, radius=pointradius, colour=pointcolour))
@@ -287,7 +286,7 @@ class ThirdScene(Scene):
                 self.add(point_outside)
                 point_outside_shows = True
                 point_to_flash = vec(3.5, 3.6) + shift_grid
-                minus_point_to_flash = vec(3.5, 3.6) + shift_grid
+                minus_point_to_flash = vec(3.5, -3.6) + shift_grid
             else:
                 self.add(my_point(P_centre, colour=pointcolour, radius=pointradius, z_index=10),
                          my_point(minus_P_centre, colour=pointcolour, radius=pointradius, z_index=10))
@@ -373,7 +372,7 @@ class ThirdScene(Scene):
                         y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
                         )
         label_x = MathTex(r"T")
-        label_x.move_to(vec(5, -3.4))
+        label_x.move_to(vec(5.5, -3))
         gra_nt = VMobject(color=YELLOW)
         gra_nt.set_points_as_corners([gra_axes.c2p(x, y) for x, y in gra[:40] ])
         gra_nt.set_style(stroke_width=2)
@@ -385,8 +384,7 @@ class ThirdScene(Scene):
         self.play(Create(gra_nt), run_time=3, rate_func=linear)
         self.wait()
 
-
-        # example with finitely many points
+        # 3.2 Counting modulo
 
 
 
