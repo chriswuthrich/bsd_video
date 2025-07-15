@@ -454,6 +454,39 @@ class ThirdScene(Scene):
                 i += 1
         self.wait()
 
+        # graph the number of points modulo Q
+        self.clear()
+        self.add(my_background(), stte)
+        mu = MathTex(r"\mathcal{M}(U) = \# E\bigl({}^{\mathbb{Z}}\!/\!{}_{U \mathbb{Z}}\bigr)")
+        mu_text = MathTex(r"= \text{ number of solutions modulo }U.")
+        mu_group= VGroup(mu, mu_text).arrange(RIGHT)
+        mu_group.to_edge(UP)
+        self.play(FadeIn(mu_group))
+        self.wait(1)
+
+        mu_graph = [[2, 3], [3, 7], [4, 8], [5, 9], [6, 21], [7, 12], [8, 24],
+                    [9, 21], [10, 27], [11, 15], [12, 56], [13, 18], [14, 36],
+                    [15, 63], [16, 48], [17, 25], [18, 63], [19, 25], [20, 72],
+                    [21, 84], [22, 45], [23, 30], [24, 168], [25, 45], [26, 54],
+                    [27, 63], [28, 96], [29, 22], [30, 189]]
+
+        mu_val = [m[1] for m in mu_graph]
+        mu_labels = [ str(m[0]) if m[0]%5==0 else "" for m in mu_graph]
+        bc = BarChart(mu_val,
+                      bar_names = mu_labels,
+                      y_range=[0, 200, 50],
+                      y_length=5,
+                      tips=True,
+                      x_axis_config={"tip_shape": BetterCurvyPointyTip, "tip_height": 0.2 },
+                      y_axis_config={"tip_shape": BetterCurvyPointyTip}
+                      )
+        bc.scale(.8)
+        bc.shift(vec(1, 0))
+        u_label = MathTex(r"U")
+        u_label.move_to(vec(6.4,-2.3))
+        self.add(u_label)
+        self.play(Create(bc))
+        self.wait()
 #
 
 #  now render it
