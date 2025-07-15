@@ -36,36 +36,36 @@ def list_of_points(T, colour=WHITE):
     a list of indices to find the points in the vgroup
     """
     # points ordered by naive height(0, 1,0)
-    pts = [ (0, 1,0),
-            (0, 1,1),
-            (-2, 1,1),
-            (-1, 2,1),
-            (2, 1,1),
-            (3, 4,1),
-            (4, 7,1),
-            (2, 1,8),
-            (-14, 13,8),
-            (10, 31,1),
-            (-6, 37,27),
-            (12, 41,1),
-            (-24, 53,27),
-            (20, 89,1),
-            (30, 29,125),
-            (132, 79,64),
-            (-80, 227,125),
-            (-630, 503,343),
-            (644, 113,343),
-            (455, 736,125),
-            (1160, 967,512),
-            (114, 1217,1),
-            (1386, 377,729),
-            (-130, 2443,2197),
-            (-1683, 2674,1331),
-            (-2728, 1021,1331),
-            (705, 3592,27),
-            (1045, 4306,6859),
-            (-16744, 24023,12167),
-            (1274, 45473,1)
+    pts = [(0, 1, 0),
+           (0, 1, 1),
+           (-2, 1, 1),
+           (-1, 2, 1),
+           (2, 1, 1),
+           (3, 4, 1),
+           (4, 7, 1),
+           (2, 1, 8),
+           (-14, 13, 8),
+           (10, 31, 1),
+           (-6, 37, 27),
+           (12, 41, 1),
+           (-24, 53, 27),
+           (20, 89, 1),
+           (30, 29, 125),
+           (132, 79, 64),
+           (-80, 227, 125),
+           (-630, 503, 343),
+           (644, 113, 343),
+           (455, 736, 125),
+           (1160, 967, 512),
+           (114, 1217, 1),
+           (1386, 377, 729),
+           (-130, 2443, 2197),
+           (-1683, 2674, 1331),
+           (-2728, 1021, 1331),
+           (705, 3592, 27),
+           (1045, 4306, 6859),
+           (-16744, 24023, 12167),
+           (1274, 45473, 1)
            ]
 
     # copied but O modified
@@ -100,7 +100,7 @@ def list_of_points(T, colour=WHITE):
             r"$(1045$, & $\pm 4306$, & $6859)$",
             r"$(-16744$, & $\pm 24023$, & $12167)$",
             r"$(1274$, & $\pm 45473$, & $1)$"
-           ]
+            ]
     # lei[T] gives the number of items in
     # pts with height < T
     lei = {10: 8, 100: 14, 1000: 20, 10000: 28}
@@ -124,7 +124,10 @@ def list_of_points(T, colour=WHITE):
     v.to_edge(UP)
     # the top point is v[0][10:15] etc
     # use self.add(index_labels(v1[0])) to determine these
-    indices = [9,16,24,33,42,50,58,66,74,85,95,106,116,128,138,150,162,176,191,205,219]
+    indices = [9, 16, 24, 33, 42, 50, 58,
+               66, 74, 85, 95, 106, 116,
+               128, 138, 150, 162, 176,
+               191, 205, 219]
     return v, pts[:n], indices
 
 
@@ -167,7 +170,7 @@ class ThirdScene(Scene):
         curve2 = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         shz(curve2, 5)
         curvepic2 = VGroup(grid, curve2)
-        shift_grid = vec(2,0)
+        shift_grid = vec(2, 0)
         curvepic2.shift(shift_grid)
         self.add(curvepic2, stte)
         self.wait(1)
@@ -176,7 +179,7 @@ class ThirdScene(Scene):
         pointradius = .07
         one_point_outside = VGroup(
             my_point(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
-            Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8,3.9) + shift_grid)
+            Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8, 3.9) + shift_grid)
             )
         pts = [((0, 1), r"(0,1)", vec(.5, .4)),
                ((0, -1), r"(0,-1)", vec(.55, -.4)),
@@ -223,7 +226,6 @@ class ThirdScene(Scene):
         self.play(ee.animate.move_to(vec(0, -3.2)))
         self.wait(1)
 
-
         # list points of height < 10
         v1, pts, indices = list_of_points(10)
         bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 10")
@@ -238,8 +240,8 @@ class ThirdScene(Scene):
         point_outside = VGroup(
             my_point(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
             my_point(vec(3.5, -3.6) + shift_grid, radius=pointradius, colour=pointcolour),
-            Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8,3.9) + shift_grid),
-            Arrow(vec(3.7, -3.6) + shift_grid, vec(3.8,-3.9) + shift_grid),
+            Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8, 3.9) + shift_grid),
+            Arrow(vec(3.7, -3.6) + shift_grid, vec(3.8, -3.9) + shift_grid),
             )
         point_outside_shows = False
         for i in range(1, len(pts)):
@@ -254,7 +256,7 @@ class ThirdScene(Scene):
                 minus_point_to_flash = vec(3.5, -3.6) + shift_grid
             else:
                 self.add(my_point(P_centre, colour=pointcolour, radius=pointradius),
-                      my_point(minus_P_centre, radius=pointradius, colour=pointcolour))
+                         my_point(minus_P_centre, radius=pointradius, colour=pointcolour))
                 point_to_flash = P_centre
                 minus_point_to_flash = minus_P_centre
 
@@ -313,24 +315,26 @@ class ThirdScene(Scene):
         def op(i, tt):
             s = i - len(more_pts)
             n = len(even_more_pts) - len(more_pts)
-            if tt<s/n:
+            if tt < s/n:
                 return 0
-            elif tt<(s+1)/n:
+            elif tt < (s+1)/n:
                 return n*tt-s
             else:
                 return 1
 
         t = ValueTracker(0)
         start_v1 = vec(v1.get_center()[0], v1.get_center()[1])
+
         def place_v1(tt):
-            return start_v1 + tt * vec(0,3)
+            return start_v1 + tt * vec(0, 3)
+
         v1.add_updater(lambda m: m.move_to(place_v1(t.get_value())))
         for i in range(len(more_pts), len(even_more_pts)):
             for j in range(indices[i], indices[i+1]):
                 # in the following the "i=i" is there to avoid late binding
                 # otherwise all updaters will take the last value of i
-                v1[0][j].add_updater(lambda m, i=i: m.set_opacity( op(i, t.get_value())))
-        v1[0][-1].add_updater(lambda m, i=i: m.set_opacity( op(i, t.get_value())))
+                v1[0][j].add_updater(lambda m, i=i: m.set_opacity(op(i, t.get_value())))
+        v1[0][-1].add_updater(lambda m, i=i: m.set_opacity(op(i, t.get_value())))
         # this was used to print the value on screen,
         # leave here if needed later elsewhere
         # temporary_t = DecimalNumber(
@@ -349,12 +353,12 @@ class ThirdScene(Scene):
 
         self.wait(1)
 
-
         # Now define N and give a graph for this curve.
         self.clear()
         self.add(my_background(), stte)
 
-        nt = MathTex(r"\mathcal{N}(T) = \# \Bigl\{ P \in E(\mathbb{Q})\ : \ \lvert X\rvert,\,\lvert Y \rvert,\, \lvert Z\rvert \leqslant T \Bigr\}")
+        nt = MathTex(r"\mathcal{N}(T) = \# \Bigl\{ P \in E(\mathbb{Q})\ : " +
+                     r"\ \lvert X\rvert,\,\lvert Y \rvert,\, \lvert Z\rvert \leqslant T \Bigr\}")
         nt.to_edge(UP)
         self.play(FadeIn(nt))
         # self.add(index_labels(nt[0]))
@@ -374,7 +378,7 @@ class ThirdScene(Scene):
         label_x = MathTex(r"T")
         label_x.move_to(vec(5.5, -3))
         gra_nt = VMobject(color=YELLOW)
-        gra_nt.set_points_as_corners([gra_axes.c2p(x, y) for x, y in gra[:40] ])
+        gra_nt.set_points_as_corners([gra_axes.c2p(x, y) for x, y in gra[:40]])
         gra_nt.set_style(stroke_width=2)
         gra_shift = vec(1, 0)
         gra_axes.shift(gra_shift)
@@ -411,14 +415,14 @@ class ThirdScene(Scene):
              (0, 7, 2), (4, 7, 2), (6, 7, 2), (8, 9, 2), (0, 1, 5),
              (5, 2, 5), (0, 1, 0)]
 
-        affine_pts_mod_ten = [(x,y) for (x,y,z) in pts_mod_ten if z == 1]
+        affine_pts_mod_ten = [(x, y) for (x, y, z) in pts_mod_ten if z == 1]
         pts_v = {(x, y, z): VGroup(MathTex(r"("+str(x)+r","+str(y)+r")"),
                                    MathTex(r"("+str(x)+r","+str(y)+r",1)"))
-                 for (x,y,z) in pts_mod_ten}
+                 for (x, y, z) in pts_mod_ten}
 
-        for (x,y) in affine_pts_mod_ten:
-            pts_v[(x,y,1)].move_to(vec(x-3, (y-3)/2.))
-            self.add(pts_v[(x,y,1)][0])
+        for (x, y) in affine_pts_mod_ten:
+            pts_v[(x, y, 1)].move_to(vec(x-3, (y-3)/2.))
+            self.add(pts_v[(x, y, 1)][0])
         self.play(eemod.animate.to_edge(DOWN))
         self.wait(1)
 
@@ -430,17 +434,17 @@ class ThirdScene(Scene):
         self.play(FadeTransform(eemod, emod))
         self.add(equivmod)
         self.wait(1)
-        for (x,y) in affine_pts_mod_ten:
-            self.play(FadeTransform(pts_v[(x,y,1)][0], pts_v[(x,y,1)][1]), run_time=0.01)
+        for (x, y) in affine_pts_mod_ten:
+            self.play(FadeTransform(pts_v[(x, y, 1)][0], pts_v[(x, y, 1)][1]), run_time=0.01)
         i = 0
-        for (x,y,z) in pts_mod_ten:
+        for (x, y, z) in pts_mod_ten:
             if z != 1:
-                pts_v[(x,y,z)].move_to(vec(-5, 3-i/2))
-                self.add(pts_v[(x,y,z)][1])
+                pts_v[(x, y, z)].move_to(vec(-5, 3-i/2))
+                self.add(pts_v[(x, y, z)][1])
                 i += 1
         self.wait()
 
-
+#
 
 #  now render it
 if __name__ == "__main__":
