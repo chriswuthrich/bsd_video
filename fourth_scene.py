@@ -11,7 +11,7 @@ import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
 from first_scene import subtitle
-from tools import my_background, BetterCurvyPointyTip
+from tools import *
 import json
 
 
@@ -82,8 +82,21 @@ def mu():
 class FourthScene(Scene):
 
     def construct(self):
-        gradient_rect = my_background()
-        self.add(gradient_rect)
+
+        # 4 The conjecture
+        # 4.1 State the conjecture
+
+        # recreate background
+        self.add(my_background())
+        st = StudentChar()
+        te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
+        st.scale(1)
+        te.scale(1)
+        stte = VGroup(st, te)
+        stte.arrange()
+        stte.to_corner(DL)
+        shz(stte, 10)
+        self.add(stte)
 
         # define N(T)
         te_defnt = Tex(r"$\mathcal{N}(T) = " +
@@ -181,17 +194,22 @@ class FourthScene(Scene):
         self.wait(1)
 
         self.remove(te_mu, te_ut, te_nt)
-        self.play(te_lim.animate.move_to(ORIGIN), run_time=1)
+        self.play(te_lim.animate.move_to(vec(2,1)), run_time=1)
         self.wait(1)
 
         te_con = Text("Conjecture", color=YELLOW)
         te_con.shift(2.5*UP+4*LEFT)
         self.add(te_con)
-        te_conv = Text("converges to a positive real number.")
+        te_conv1 = Text("converges to a")
+        te_conv2 = Text("positive real number.")
+        te_conv = VGroup(te_conv1, te_conv2)
+        te_conv.arrange(DOWN, align=LEFT)
         te_conv.shift(2.5*DOWN)
         self.add(te_conv)
         self.wait(2)
 
+        # 4.2
+        # Evidence
         self.clear()
         gradient_rect = my_background()
         self.add(gradient_rect)
@@ -269,6 +287,9 @@ class FourthScene(Scene):
         # play from 10^3 to 10^(9)
         self.play(t.animate.set_value(9), run_time=15, rate_func=linear)
         self.wait(2)
+
+        # compare to other curves
+
         self.clear()
         # plot several in logarithmic coordinates
         new_axes = Axes(
