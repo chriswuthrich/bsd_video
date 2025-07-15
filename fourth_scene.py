@@ -11,7 +11,7 @@ import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
 from first_scene import subtitle
-from tools import my_background
+from tools import my_background, BetterCurvyPointyTip
 import json
 
 
@@ -56,28 +56,28 @@ def limit_expression():
     return v
 
 
-def mq():
+def mu():
     r"""
-    Writes M(Q) = # solutions modulo Q
+    Writes M(U) = # solutions modulo U
 
     """
-    te_mq1a = Tex(r"$\mathcal{M}($")
-    te_mq1b = Tex("$Q$")
-    te_mq1c = Tex(r"$)$")
-    te_mq1d = Tex(r"$= \# $")
-    te_mq1 = VGroup(te_mq1a, te_mq1b, te_mq1c, te_mq1d)
-    te_mq1.arrange(RIGHT, buff=0.1)
-    te_mq2 = Text("solutions").scale(0.8)
-    te_mq3 = Text("modulo ").scale(.8)
-    te_mq4 = Tex(r"$Q$")
-    te_mqa = VGroup(te_mq3, te_mq4)
-    te_mqa.arrange(RIGHT, buff=.2)
-    te_mqa[1].shift(0.05 * DOWN)
-    te_mqb = VGroup(te_mq2, te_mqa)
-    te_mqb.arrange(DOWN, buff=0.1, aligned_edge=LEFT)
-    te_mq = VGroup(te_mq1, te_mqb)
-    te_mq.arrange(RIGHT, buff=0.2)
-    return te_mq
+    te_mu1a = Tex(r"$\mathcal{M}($")
+    te_mu1b = Tex("$U$")
+    te_mu1c = Tex(r"$)$")
+    te_mu1d = Tex(r"$= \# $")
+    te_mu1 = VGroup(te_mu1a, te_mu1b, te_mu1c, te_mu1d)
+    te_mu1.arrange(RIGHT, buff=0.1)
+    te_mu2 = Text("solutions").scale(0.8)
+    te_mu3 = Text("modulo ").scale(.8)
+    te_mu4 = Tex(r"$U$")
+    te_mua = VGroup(te_mu3, te_mu4)
+    te_mua.arrange(RIGHT, buff=.2)
+    te_mua[1].shift(0.05 * DOWN)
+    te_mub = VGroup(te_mu2, te_mua)
+    te_mub.arrange(DOWN, buff=0.1, aligned_edge=LEFT)
+    te_mu = VGroup(te_mu1, te_mub)
+    te_mu.arrange(RIGHT, buff=0.2)
+    return te_mu
 
 class FourthScene(Scene):
 
@@ -94,13 +94,13 @@ class FourthScene(Scene):
         # now add an animation counting points
         self.wait(2)
 
-        te_defmq = Tex(r"$\mathcal{M}(Q) = \# E\bigl({}^{\mathbb{Z}}\!/\!{}_{Q\mathbb{Z}}\bigr)$")
+        te_defmu = Tex(r"$\mathcal{M}(U) = \# E\bigl({}^{\mathbb{Z}}\!/\!{}_{U\mathbb{Z}}\bigr)$")
         self.remove(te_defnt)
-        self.add(te_defmq)
+        self.add(te_defmu)
         # add an animation counting points modulo increasing T
         self.wait(2)
 
-        self.remove(te_defmq)
+        self.remove(te_defmu)
         te_compare = Text("Compare")
         te_compare.shift(2*LEFT)
 
@@ -111,23 +111,23 @@ class FourthScene(Scene):
         te_nt = VGroup(te_nt1, te_nt2, te_nt3)
         te_nt.arrange(RIGHT, buff=0.2)
 
-        te_mq = mq()  # M(Q) = # solutions modulo Q
+        te_mu = mu()  # M(U) = # solutions modulo U
 
-        te_qt = Tex(r"$Q = T! = 1 \cdot 2 \cdots T$")
-        rhs.add(te_nt, te_mq, te_qt)
+        te_ut = Tex(r"$U = T! = 1 \cdot 2 \cdots T$")
+        rhs.add(te_nt, te_mu, te_ut)
         rhs.arrange(DOWN, buff=1.1, aligned_edge=LEFT)
         rhs.shift(3.5*RIGHT)
         self.add(rhs)
 
-        # change Q to T!
-        new_te_mq4 = Tex(r"$T!$")
-        te_mq4 = te_mq[1][1][1]
-        new_te_mq4.shift(te_mq4.get_center())
-        new_te_mq0 = Tex(r"$T!$")
-        te_mq0 = te_mq[0][1]
-        new_te_mq0.shift(te_mq0.get_center())
-        self.play(Transform(te_mq4, new_te_mq4),
-                  Transform(te_mq0, new_te_mq0),
+        # change U to T!
+        new_te_mu4 = Tex(r"$T!$")
+        te_mu4 = te_mu[1][1][1]
+        new_te_mu4.shift(te_mu4.get_center())
+        new_te_mu0 = Tex(r"$T!$")
+        te_mu0 = te_mu[0][1]
+        new_te_mu0.shift(te_mu0.get_center())
+        self.play(Transform(te_mu4, new_te_mu4),
+                  Transform(te_mu0, new_te_mu0),
                   run_time=1)
         self.wait(2)
 
@@ -162,7 +162,7 @@ class FourthScene(Scene):
 
         # move the M(T!) to the fraction
         te_mt1 = te_lim[1][2]  # M(T!) target
-        te_mt2 = VGroup(te_mq[0][0], new_te_mq0, te_mq[0][2]).copy()
+        te_mt2 = VGroup(te_mu[0][0], new_te_mu0, te_mu[0][2]).copy()
         path_mt = ArcBetweenPoints(te_mt2.get_center(), te_mt1.get_center(), angle=- PI / 5)
 
         def updater_mt(mob, alpha):
@@ -180,7 +180,7 @@ class FourthScene(Scene):
         self.add(te_lim[0])   # lim
         self.wait(1)
 
-        self.remove(te_mq, te_qt, te_nt)
+        self.remove(te_mu, te_ut, te_nt)
         self.play(te_lim.animate.move_to(ORIGIN), run_time=1)
         self.wait(1)
 
@@ -232,7 +232,7 @@ class FourthScene(Scene):
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False},  # , 'tip_shape': StealthTip,
+                        x_axis_config={"include_numbers": False, 'tip_shape': BetterCurvyPointyTip},
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
             ft = sagemath.floor(t.get_value())
