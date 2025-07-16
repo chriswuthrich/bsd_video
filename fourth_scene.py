@@ -273,6 +273,7 @@ class FourthScene(Scene):
         # compare to other curves
 
         self.clear()
+        self.add(my_background(), stte)
         # plot several in logarithmic coordinates
         new_axes = Axes(
                         x_range=[3, 9, 1],
@@ -280,12 +281,15 @@ class FourthScene(Scene):
                         x_length=10,
                         y_length=5,
                         x_axis_config={"include_numbers": False, 'tip_shape': BetterCurvyPointyTip},
-                        y_axis_config={"include_numbers": True, 'include_tip': False}
+                        y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
                         )
-        for i in range(9):
+        for i in range(3, 9):
             label = MathTex(f"10^{str(i)}").scale(0.5)
             label.next_to(new_axes.c2p(i, 0), DOWN)
             new_axes.add(label)
+
+        gra_shift = vec(1, 1)
+        new_axes.shift(gra_shift)
         self.add(new_axes)
 
         # first draw usual curve
@@ -293,8 +297,13 @@ class FourthScene(Scene):
         graa = VMobject(color=YELLOW)
         graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
         graa.set_style(stroke_width=1)
-        self.add(graa)
+        # graa.shift(gra_shift)
+        eqaa = MathTex(r"y^2 = x^3 - 4\,x + 1 ")
+        eqaa.to_edge(DOWN)
+        self.add(graa, eqaa)
         last_graa = graa
+        self.wait(1)
+        self.remove(eqaa)
 
         # for each A draw the new draw and fade the old
         for aa in [-3, -2, -1, 0, 1, 2, 3, 4]:
@@ -302,6 +311,7 @@ class FourthScene(Scene):
             graa = VMobject(color=YELLOW)
             graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
             graa.set_style(stroke_width=1)
+            #graa.shift(gra_shift)
             if aa < 0:
                 eqaa = MathTex(f"y^2 = x^3 - {-aa} \\,x + 1 ")
             elif aa == 0:
@@ -312,8 +322,11 @@ class FourthScene(Scene):
             self.add(eqaa)
             self.play(Create(graa),
                       FadeOut(last_graa),
+                      Indicate(eqaa),
                       run_time=2)
+            self.remove(eqaa)
             last_graa = graa
+
 
         self.wait(1)
 
