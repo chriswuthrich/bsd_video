@@ -3,6 +3,9 @@ Part of the bsd_video
 
 Here we illustrate the conjectures with moving graphs
 
+The points forming the graphs are precalculated in
+create_data_for_plots_of_conjectured_limit.ipynb
+
 """
 
 from manim import *
@@ -85,7 +88,7 @@ class FourthScene(Scene):
 
         # 4 The conjecture
         # 4.1 State the conjecture
-
+        self.next_section("4.1 State the conjecture")
         # recreate background
         self.add(my_background())
         st = StudentChar()
@@ -210,6 +213,7 @@ class FourthScene(Scene):
 
         # 4.2
         # Evidence shown in graphs of the limit
+        self.next_section("4.2 Show evidence")
         self.clear()
         gradient_rect = my_background()
         self.add(gradient_rect)

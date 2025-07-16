@@ -5,6 +5,9 @@ This will contain the intro
 of projective coordinates
 by going to a 3D scene.
 
+The change of coordinates for the
+fake projective curve is done in
+calculation_for_fake_projective_curve.ipynb
 
 """
 
@@ -103,6 +106,8 @@ def fake_curve():
 class SecondScene(ThreeDScene):
 
     def construct(self):
+
+        # 2 Rational points on projective curves
 
         # copied from first scene:
         bgr = my_background()

@@ -35,6 +35,8 @@ def list_of_points(T, colour=WHITE):
     a list of points in form (X,Y,Z) and
     a list of indices to find the points in the vgroup
     """
+    # this list comes from
+    # basic_calculation_with_favourite_elliptic_curve.ipynb
     # points ordered by naive height(0, 1,0)
     pts = [(0, 1, 0),
            (0, 1, 1),
@@ -136,6 +138,7 @@ class ThirdScene(Scene):
     def construct(self):
 
         # 3.1 Count global points
+        self.next_section("3.1 Count global points")
         self.add(my_background())
         st = StudentChar()
         te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
@@ -390,6 +393,7 @@ class ThirdScene(Scene):
 
         # 3.2 Counting modulo
         #
+        self.next_section("3.2 Counting points modulo")
         self.clear()
         self.add(my_background(), stte)
 
@@ -409,6 +413,7 @@ class ThirdScene(Scene):
         self.play(eemod.animate.move_to(vec(1.4, -3.219)))
         self.wait(.5)
 
+        # points from basic_calculation_with_favourite_elliptic_curve.ipynb
         pts_mod_ten = [(0, 1, 1), (2, 1, 1), (8, 1, 1), (9, 2, 1), (4, 3, 1),
                        (3, 4, 1), (5, 4, 1), (7, 4, 1), (3, 6, 1), (5, 6, 1),
                        (7, 6, 1), (4, 7, 1), (9, 8, 1), (0, 9, 1), (2, 9, 1),

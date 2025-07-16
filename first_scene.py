@@ -4,14 +4,23 @@ Part of the bsd_video
 This uses the characters and introduces
 elliptic curves with some 2d pictures.
 
+Many things are precalculated in
+basic_calculation_with_favourite_elliptic_curve.ipynb
+
+TODO:
+* The cloud should grow to a certain size and then this
+is the background in all other scenes including the 3D one.
+* Switch back to original curve and variation through
+examples is not done yet
+
 """
 
 from manim import *
-from manim.opengl import *
 import sage.all as sagemath
 from character import StudentChar
 from msage import smanim
 from tools import *
+
 
 def little_curve():
     # the svg file is a simplified output from
@@ -25,9 +34,13 @@ def little_curve():
     v.scale(.5)
     return v
 
+
 def ABlist():
     """
     A list of (A,B) with -4,1 the first and then slowly moving to a connected one.
+
+    This data comes from basic_calculation_with_favourite_elliptic_curve.ipynb
+
     """
     return [(-4.00000000000000, 1.0000000000000),
             (-3.82866991924311, 1.08033557600431),
@@ -54,7 +67,10 @@ def ABlist():
 class FirstScene(Scene):
 
     def construct(self):
-        # ##1.1
+
+        # 1
+        ## 1.1 From real to maths world
+
         self.next_section("Walk on path")
         bg_image = nature_background()
         self.add(bg_image)
@@ -112,6 +128,8 @@ class FirstScene(Scene):
             """
             bouncing function cooked up with cubic splines
             """
+            # this was created in
+            # bump_rate_function_for_first_scene.ipynb
             if tt < 0.4:
                 return 12.5*tt**3 - 3.75*tt**2
             elif tt < 0.5:
