@@ -203,41 +203,19 @@ class FourthScene(Scene):
         te_conv1 = Text("converges to a")
         te_conv2 = Text("positive real number.")
         te_conv = VGroup(te_conv1, te_conv2)
-        te_conv.arrange(DOWN, align=LEFT)
+        te_conv.arrange(DOWN, aligned_edge=LEFT)
         te_conv.shift(2.5*DOWN)
         self.add(te_conv)
         self.wait(2)
 
         # 4.2
-        # Evidence
+        # Evidence shown in graphs of the limit
         self.clear()
         gradient_rect = my_background()
         self.add(gradient_rect)
 
-        li = load_list("data/plotpts_curve_aa4_up_to_9.json")
-
-        # axes = Axes(
-        #     x_range=[0, 10000, 1000],
-        #     y_range=[0, 10],
-        #     x_axis_config = {
-        #         "include_numbers" : False,
-        #     },
-        #     axis_config={"color": WHITE},
-        # )
-        #
-        # # Add custom x-axis labels at powers of 10
-        # for val in [10, 100, 1000]:
-        #     label = MathTex(str(val)).scale(0.4)
-        #     label.next_to(axes.c2p(val, 0), DOWN)
-        #     axes.add(label)
-        # self.add(axes)
-        #
-        # gr = VMobject(color=YELLOW)
-        # gr.set_points_as_corners([axes.c2p(x, y) for x, y in li])
-        # self.play(Create(gr), run_time=3)
-
-        # self.wait(1)
-        # self.remove(gr, axes)
+        # data created in illustrate_conj_plots.ipynb
+        li = load_list("data/plotpts_curve_aa-4_up_to_9.json")
 
         # ValueTracker to animate max x-value
         t = ValueTracker(3)  # start at 1000 = 10^3
@@ -297,25 +275,41 @@ class FourthScene(Scene):
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False},  # 'tip_shape': StealthTip,
+                        x_axis_config={"include_numbers": False, 'tip_shape': BetterCurvyPointyTip},
                         y_axis_config={"include_numbers": True, 'include_tip': False}
                         )
         for i in range(9):
             label = MathTex(f"10^{str(i)}").scale(0.5)
             label.next_to(new_axes.c2p(i, 0), DOWN)
             new_axes.add(label)
-
         self.add(new_axes)
-        colours = {-4: "#FF6B6B", -3: "#FFB86B", -2: "#FFD66B",
-                   -1: "#C2FF6B", 0: "#6BFF8E", 1: "#6BFFEF",
-                   2: "#6BD4FF", 3: "#6B8CFF", 4: "#B66BFF"}
 
-        for aa in [-4, -3, -2, -1, 0, 1, 2, 3, 4]:
+        # first draw usual curve
+        li = load_list(f"data/plotpts_curve_aa-4_up_to_9.json")
+        graa = VMobject(color=YELLOW)
+        graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
+        graa.set_style(stroke_width=1)
+        self.add(graa)
+        last_graa = graa
+
+        # for each A draw the new draw and fade the old
+        for aa in [-3, -2, -1, 0, 1, 2, 3, 4]:
             li = load_list(f"data/plotpts_curve_aa{aa}_up_to_9.json")
-            graa = VMobject(color=colours[aa])
+            graa = VMobject(color=YELLOW)
             graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
             graa.set_style(stroke_width=1)
-            self.play(Create(graa))
+            if aa < 0:
+                eqaa = MathTex(f"y^2 = x^3 - {-aa} \\,x + 1 ")
+            elif aa == 0:
+                eqaa = MathTex(r"y^2 = x^3 \phantom{-4\,x}+ 1 ")
+            else:
+                eqaa = MathTex(f"y^2 = x^3 + {aa} \\,x + 1 ")
+            eqaa.to_edge(DOWN)
+            self.add(eqaa)
+            self.play(Create(graa),
+                      FadeOut(last_graa),
+                      run_time=2)
+            last_graa = graa
 
         self.wait(1)
 
