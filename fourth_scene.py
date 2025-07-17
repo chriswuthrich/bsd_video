@@ -200,14 +200,15 @@ class FourthScene(Scene):
         self.play(te_lim.animate.move_to(vec(2,1)), run_time=1)
         self.wait(1)
 
-        te_con = Text("Conjecture", color=YELLOW)
+        te_con = Text("Conjecture:", color=YELLOW)
         te_con.shift(2.5*UP+4*LEFT)
         self.add(te_con)
         te_conv1 = Text("converges to a")
         te_conv2 = Text("positive real number.")
-        te_conv = VGroup(te_conv1, te_conv2)
+        te_conv = VGroup(te_lim, te_conv1, te_conv2)
         te_conv.arrange(DOWN, aligned_edge=LEFT)
-        te_conv.shift(2.5*DOWN)
+        te_conv1.shift(.5*DOWN)
+        te_conv2.shift(.5*DOWN)
         self.add(te_conv)
         self.wait(2)
 
@@ -216,7 +217,7 @@ class FourthScene(Scene):
         self.next_section("4.2 Show evidence")
         self.clear()
         gradient_rect = my_background()
-        self.add(gradient_rect)
+        self.add(gradient_rect, stte)
 
         # data created in illustrate_conj_plots.ipynb
         li = load_list("data/plotpts_curve_aa-4_up_to_9.json")
@@ -232,9 +233,20 @@ class FourthScene(Scene):
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False, 'tip_shape': BetterCurvyPointyTip},
-                        y_axis_config={"include_numbers": True, 'include_tip': False}
+                        x_axis_config={"include_numbers": False, "include_tip": False},
+                        y_axis_config={"include_numbers": True, "include_tip": False}
                         )
+
+            # Create and add a custom tip for the x-axis
+            x_tip = BetterCurvyPointyTip().scale(0.3)
+            x_tip.next_to(axes.x_axis.get_end(), RIGHT, buff=0)
+            axes.x_axis.add(x_tip)
+
+            # Create and add a custom tip for the y-axis
+            y_tip = ArrowSquareTip().scale(0.3)
+            y_tip.next_to(axes.y_axis.get_end(), UP, buff=0)
+            axes.y_axis.add(y_tip)
+
             ft = sagemath.floor(t.get_value())
             i = 10**ft
             label = MathTex(f"10^{str(ft)}").scale(0.8)
@@ -250,6 +262,7 @@ class FourthScene(Scene):
             label2 = MathTex(f"5\\cdot 10^{str(i)}").scale(0.8)
             label2.next_to(axes.c2p(5*10**i, 0), DOWN)
             axes.add(label2)
+            axes.shift(vec(1, 0))
             return axes
 
         axes = always_redraw(get_axes)
@@ -267,7 +280,7 @@ class FourthScene(Scene):
         self.wait(2)
 
         # play from 10^3 to 10^(9)
-        self.play(t.animate.set_value(9), run_time=15, rate_func=linear)
+        self.play(t.animate.set_value(9), run_time=15, rate_func=rate_functions.ease_in_out_sine)
         self.wait(2)
 
         # compare to other curves
@@ -284,7 +297,7 @@ class FourthScene(Scene):
                         y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
                         )
         for i in range(3, 9):
-            label = MathTex(f"10^{str(i)}").scale(0.5)
+            label = MathTex(f"10^{str(i)}").scale(0.7)
             label.next_to(new_axes.c2p(i, 0), DOWN)
             new_axes.add(label)
 
@@ -296,13 +309,12 @@ class FourthScene(Scene):
         li = load_list(f"data/plotpts_curve_aa-4_up_to_9.json")
         graa = VMobject(color=YELLOW)
         graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
-        graa.set_style(stroke_width=1)
-        # graa.shift(gra_shift)
+        graa.set_style(stroke_width=2)
         eqaa = MathTex(r"y^2 = x^3 - 4\,x + 1 ")
         eqaa.to_edge(DOWN)
         self.add(graa, eqaa)
         last_graa = graa
-        self.wait(1)
+        self.wait(2)
         self.remove(eqaa)
 
         # for each A draw the new draw and fade the old
@@ -310,25 +322,29 @@ class FourthScene(Scene):
             li = load_list(f"data/plotpts_curve_aa{aa}_up_to_9.json")
             graa = VMobject(color=YELLOW)
             graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
-            graa.set_style(stroke_width=1)
-            #graa.shift(gra_shift)
-            if aa < 0:
+            graa.set_style(stroke_width=2)
+            if aa < -1:
                 eqaa = MathTex(f"y^2 = x^3 - {-aa} \\,x + 1 ")
+            elif aa == -1:
+                eqaa = MathTex(r"y^2 = x^3 \ - x + 1 ")
             elif aa == 0:
                 eqaa = MathTex(r"y^2 = x^3 \phantom{-4\,x}+ 1 ")
+            elif aa == 1:
+                eqaa = MathTex(r"y^2 = x^3 \ + x + 1 ")
             else:
                 eqaa = MathTex(f"y^2 = x^3 + {aa} \\,x + 1 ")
             eqaa.to_edge(DOWN)
             self.add(eqaa)
             self.play(Create(graa),
-                      FadeOut(last_graa),
+                      FadeOut(last_graa, rate_func=rate_functions.ease_out_circ),
                       Indicate(eqaa),
                       run_time=2)
             self.remove(eqaa)
             last_graa = graa
 
-
         self.wait(1)
+
+
 
 
 #  now render it
