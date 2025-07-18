@@ -305,7 +305,7 @@ class FourthScene(Scene):
         new_axes.shift(gra_shift)
         self.add(new_axes)
 
-        # first draw usual curve
+        # first draw the usual curve
         li = load_list(f"data/plotpts_curve_aa-4_up_to_9.json")
         graa = VMobject(color=YELLOW)
         graa.set_points_as_corners([new_axes.c2p(np.log10(x), y) for x, y in li if x > 1000])
@@ -343,6 +343,46 @@ class FourthScene(Scene):
             last_graa = graa
 
         self.wait(1)
+
+        # point out the jumps in the last one
+        pt1 = MathTex(r"\bigl(\tfrac{2664}{49}, \pm \tfrac{137593}{343}\bigr)")
+        pt2 = MathTex(r"\bigl(-\tfrac{4319}{21904}, \pm\tfrac{1462833}{3241792}\bigr)")
+        pt12 = VGroup(pt1, pt2)
+        pt12.arrange(RIGHT, buff=1)
+        pt12.to_edge(DOWN)
+        pt12.shift(vec(1.5, 0))
+        xpt1 = new_axes.c2p(np.log10(137593), 0)[0]
+        xpt2 = new_axes.c2p(np.log10(3241792), 0)[0]
+        point_out_pt1 = Arrow(vec(xpt1 - 1.5, 2), vec(xpt1 - 0.02, 0.4), tip_shape=BetterCurvyPointyTip, color=WHITE)
+        point_out_pt2 = Arrow(vec(xpt2 - 1.5, 2), vec(xpt2 - 0.02, 0.4), tip_shape=BetterCurvyPointyTip, color=WHITE)
+        dashed_line_down_1 = DashedLine(vec(xpt1, .4),
+                                        new_axes.c2p(np.log10(137593), 0),
+                                        stroke_width=1.5,
+                                        color=WHITE,
+                                        dash_length=.1)
+        dashed_line_down_2 = DashedLine(vec(xpt2, .4),
+                                        new_axes.c2p(np.log10(3241792), 0),
+                                        stroke_width=1.5,
+                                        color=WHITE,
+                                        dash_length=.1)
+        small_height1 = MathTex(r"137\,593", color=WHITE)
+        small_height1.scale(.5).move_to(new_axes.c2p(np.log10(137593), 0) + vec(.45,.25))
+        small_height2 = MathTex(r"3\,241\,792", color=WHITE)
+        small_height2.scale(.5).move_to(new_axes.c2p(np.log10(3241792), 0) + vec(.55, .25))
+
+        self.play(Succession(FadeIn(point_out_pt1),
+                             FadeIn(dashed_line_down_1),
+                             FadeIn(small_height1),
+                             FadeIn(pt1)),
+                  run_time=1 )
+        self.wait(.5)
+        self.play(Succession(FadeIn(point_out_pt2),
+                             FadeIn(dashed_line_down_2),
+                             FadeIn(small_height2),
+                             FadeIn(pt2)),
+                  run_time=2 )
+
+        self.wait()
 
 
 
