@@ -34,35 +34,22 @@ def little_curve():
     v.scale(.5)
     return v
 
+def family_of_curve(tt):
+    if tt == .5:
+        ttt = sagemath.RR(.49)
+    else:
+        ttt = sagemath.RR(tt)
 
-def ABlist():
-    """
-    A list of (A,B) with -4,1 the first and then slowly moving to a connected one.
+    E = sagemath.EllipticCurve([2*ttt-4,2*ttt+1])
+    v = smanim(E.plot(color=rgb_to_color([255, 255*(1-tt), 0]),
+                                       thickness=2,
+                                       alpha=0.3,
+                                       xmax=7,
+                                       ymin=-5,
+                                       ymax=5))
+    shz(v, 5)
+    return v
 
-    This data comes from basic_calculation_with_favourite_elliptic_curve.ipynb
-
-    """
-    return [(-4.00000000000000, 1.0000000000000),
-            (-3.82866991924311, 1.08033557600431),
-            (-3.66108983848622, 1.15394394460660),
-            (-3.49725975772934, 1.22100060580692),
-            (-3.33717967697245, 1.28168105960526),
-            (-3.18084959621556, 1.33616080600163),
-            (-3.02826951545867, 1.38461534499601),
-            (-2.87943943470179, 1.42722017658842),
-            (-2.73435935394490, 1.46415080077886),
-            (-2.59302927318801, 1.49558271756731),
-            (-2.45544919243112, 1.52169142695379),
-            (-2.32161911167423, 1.54265242893830),
-            (-2.19153903091735, 1.55864122352083),
-            (-2.06520895016046, 1.56983331070138),
-            (-1.94262886940357, 1.57640419047995),
-            (-1.82379878864668, 1.57852936285655),
-            (-1.70871870788980, 1.57638432783117),
-            (-1.59738862713291, 1.57014458540381),
-            (-1.48980854637602, 1.55998563557448),
-            (-1.38597846561913, 1.54608297834317),
-            (-1.28589838486225, 1.52861211370989)]
 
 class FirstScene(Scene):
 
@@ -288,19 +275,19 @@ class FirstScene(Scene):
         grid.add(xline)
         shz(grid, 1)
         self.add(grid)
-        # TODO tips are not yet nice
+
         axex = Arrow(start=vec(0,0),
                      end=vec(6.5,0),
                      buff=0,
                      stroke_width=2,
-                     tip_length=0.2,
+                     tip_length=0.3,
                      tip_shape=BetterCurvyPointyTip,
                      color=WHITE)
         axey = Arrow(start=vec(0, 0),
                      end=vec(0, 3.7),
                      buff=0,
                      stroke_width=2,
-                     tip_length=0.2,
+                     tip_length=0.3,
                      tip_shape=BetterCurvyPointyTip,
                      color=WHITE)
         label_x = MathTex(r"x")
@@ -341,6 +328,7 @@ class FirstScene(Scene):
             Transform(e1, new_e1),
             run_time=1
         )
+        self.remove(curve)
         self.wait(1)
 
         # switch back
@@ -353,31 +341,14 @@ class FirstScene(Scene):
             Transform(new_curve, old_curve),
             run_time=1
         )
+        curve = old_curve
 
         # now run through a family of curves
-        # TODO: maybe transform is better than hopping from curve to curve.
-        ABs = ABlist()
-        self.remove(new_curve)
-        k = 0
-        for A, B in ABs:
-            AA = sagemath.RR(A)
-            BB = sagemath.RR(B)
-            E2 = sagemath.EllipticCurve([AA, BB])
-            new_curve = smanim(E2.plot(color=rgb_to_color([255, 255*(1-k/len(ABs)), 0]),
-                                       thickness=2,
-                                       alpha=0.3,
-                                       xmax=7,
-                                       ymin=-5,
-                                       ymax=5))
-            shz(curve, 5)
-
-            # new_e1.to_corner(UL)
-            self.play(
-                FadeOut(old_curve),
-                FadeIn(new_curve),
-                run_time=.2)
-            old_curve = new_curve
-            k += 1
+        self.remove(curve, new_curve, old_curve)
+        t = ValueTracker(0)
+        curve.add_updater(lambda m:m.become(family_of_curve(t.get_value())))
+        self.add(curve)
+        self.play(t.animate.set_value(1), run_time=10, rate_func=rate_functions.there_and_back)
 
         self.wait(1)
 
