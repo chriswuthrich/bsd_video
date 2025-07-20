@@ -384,7 +384,11 @@ class FourthScene(Scene):
 
         self.wait()
 
+        # now point out that singular curves behave differently
+        # first show the family again, halting at the singular curve.
 
+
+        # then show that the graph drops quickly for the singular curve.
 
 
 #  now render it
