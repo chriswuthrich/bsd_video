@@ -168,7 +168,7 @@ class FourthScene(Scene):
 
         self.remove(te_compare)
         te_lim = limit_expression()
-        te_lim.scale(2)
+        te_lim.scale(1.7)
         te_lim.shift(3*LEFT)
         self.add(te_lim[1][1])  # ---
         self.wait(1)
@@ -530,6 +530,23 @@ class FourthScene(Scene):
         self.play(FadeIn(graa),
                   FadeIn(eqaa))
         self.wait(2)
+
+        # restate conjecture
+        self.clear()
+        self.add(my_background(), stte)
+        te_con.to_corner(UL)
+        self.add(te_lim, te_con, te_conv)
+        te_cond_1 = Text("If").next_to(te_con, RIGHT, buff=1)
+        te_cond_2 = MathTex(r"A^3+27B^2\neq 0").scale(1.3)
+        te_cond_2.next_to(te_cond_1, RIGHT)
+        te_cond_3 = Text(", then")
+        te_cond_3.next_to(te_cond_2, RIGHT, buff=0.1)
+        te_cond_1.shift(vec(0, .09))
+        te_cond_2.shift(vec(0, .04))
+        te_cond_3.shift(vec(0, .03))
+        self.add(te_cond_1, te_cond_2, te_cond_3)
+        self.wait(1)
+
 
 
 

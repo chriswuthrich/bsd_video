@@ -108,7 +108,7 @@ def fading_line(y, stroke_width=4, **kwargs):
     """
     helper for my_fading_number_plane
     """
-    eps = vec(0.005, 0) # to avoid overlap
+    # eps = vec(0.005, 0) # to avoid overlap
     v = VGroup()
     start = vec(-7.112, y)
     end = vec(7.112, y)
@@ -121,7 +121,7 @@ def fading_line(y, stroke_width=4, **kwargs):
         else:
             opacity = 1
         segment = Line(i*le+start,
-                       (i+1)*le+start-eps,
+                       (i+1)*le+start,  # -eps,
                        stroke_opacity=opacity,
                        stroke_width=stroke_width,
                        **kwargs)
