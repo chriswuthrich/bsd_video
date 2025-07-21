@@ -441,31 +441,46 @@ class FourthScene(Scene):
         E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
 
-        # TODO Add equation to it and explain Delta
+
         t = ValueTracker(0)
-        curve.add_updater(lambda m:m.become(shorter_family_of_curve(t.get_value())))
-        self.add(curve)
+
+        eq = always_redraw(
+            lambda: MathTex(
+                f"y^2 = x^3 - {4-t.get_value():.2f}x + {t.get_value()+1:.2f}",
+                color=YELLOW
+            ).to_corner(UL)
+        )
+
+        shz(eq, 5)
+        curve.add_updater(lambda m: m.become(shorter_family_of_curve(t.get_value())))
+        self.add(curve, eq)
+
         self.play(t.animate.set_value(1), run_time=2, rate_func=rate_functions.ease_in_out_sine)
+        self.remove_updater(eq)
+        sing_eq = MathTex(r"y^2 = x^3 - 3\,x + 2 ", color=YELLOW)
+        sing_eq.to_corner(UL)
+        self.play(FadeOut(eq), FadeIn(sing_eq))
+        self.wait(1)
+        gen_eq = MathTex(r"y^2 = x^3 + A x + B ", color=YELLOW)
+        gen_eq.to_corner(UL)
+        eq_delta = MathTex(r"4\,A^3+27\,B^2=0")
+        eq_delta.next_to(eq, DOWN, aligned_edge=LEFT)
+        self.play(Transform(sing_eq, gen_eq),
+                  FadeIn(eq_delta),
+                  run_time=0.5)
         self.wait(1)
 
-
         # then show that the graph drops quickly for the singular curve.
-        # TODO : Change coordinates
         self.clear()
         self.add(my_background(), stte)
         new_axes = Axes(
-                        x_range=[3, 9, 1],
-                        y_range=[0, 7, 1],
+                        x_range=[0, 1000, 200],
+                        y_range=[0, 2, 1],
                         x_length=10,
                         y_length=5,
                         x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
                         y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
                         )
-        # for i in range(3, 9):
-        #     label = MathTex(f"10^{str(i)}").scale(0.7)
-        #     label.next_to(new_axes.c2p(i, 0), DOWN)
-        #     new_axes.add(label)
-
         gra_shift = vec(1, 1)
         new_axes.shift(gra_shift)
         self.add(new_axes)
@@ -473,14 +488,48 @@ class FourthScene(Scene):
         # first draw the usual curve
         li = load_list(f"data/singular_plot_points.json")
         graa = VMobject(color=YELLOW)
-        graa.set_points_as_corners([new_axes.c2p(x, y) for x, y in li])
+        graa.set_points_as_corners([new_axes.c2p(x, y) for x, y in li if x>10])
         graa.set_style(stroke_width=2)
+
         eqaa = MathTex(r"y^2 = x^3 - 3\,x + 2 ")
         eqaa.to_edge(DOWN)
-        self.add(graa, eqaa)
-        last_graa = graa
+        self.play(FadeIn(graa),
+                  FadeIn(eqaa))
         self.wait(2)
 
+        self.clear()
+        self.add(my_background(), stte)
+        new_axes = Axes(
+                        x_range=[0, 1000, 200],
+                        y_range=[0, 10, 2],
+                        x_length=10,
+                        y_length=5,
+                        x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
+                        y_axis_config={"include_numbers": False, 'tip_shape': BetterCurvyPointyTip}
+                        )
+        gra_shift = vec(1, 1)
+        label = MathTex("1").scale(.7)
+        label.next_to(new_axes.c2p(0, 8), LEFT)
+        new_axes.add(label)
+        for i in range(1, 5):
+            s = str(10*i-50)
+            label = MathTex(r"10^{" + s + "}").scale(0.7)
+            label.next_to(new_axes.c2p(0, 2*i-2), LEFT)
+            new_axes.add(label)
+        new_axes.shift(gra_shift)
+        self.add(new_axes)
+
+        # first draw the usual curve
+        li = load_list(f"data/singular_plot_points.json")
+        graa = VMobject(color=YELLOW)
+        graa.set_points_as_corners([new_axes.c2p(x, np.log(y)/np.log(10)/5 + 8) for x, y in li if x>10])
+        graa.set_style(stroke_width=2)
+
+        eqaa = MathTex(r"y^2 = x^3 - 3\,x + 2 ")
+        eqaa.to_edge(DOWN)
+        self.play(FadeIn(graa),
+                  FadeIn(eqaa))
+        self.wait(2)
 
 
 
