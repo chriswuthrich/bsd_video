@@ -82,6 +82,25 @@ def mu():
     te_mu.arrange(RIGHT, buff=0.2)
     return te_mu
 
+
+def shorter_family_of_curve(tt):
+    if tt == 1:
+        ttt = sagemath.RR(0.999)
+    else:
+        ttt = sagemath.RR(tt)
+
+    E = sagemath.EllipticCurve([ttt-4,ttt+1])
+    v = smanim(E.plot(color=rgb_to_color([255, 255*(1-tt/2), 0]),
+                                       thickness=2,
+                                       alpha=0.3,
+                                       xmax=7,
+                                       ymin=-5,
+                                       ymax=5))
+    shz(v, 5)
+    return v
+
+
+
 class FourthScene(Scene):
 
     def construct(self):
@@ -386,9 +405,83 @@ class FourthScene(Scene):
 
         # now point out that singular curves behave differently
         # first show the family again, halting at the singular curve.
+        self.clear()
+        self.add(my_background(), stte)
+        grid = VGroup()
+        grid.add(my_fading_numberplane())
+        grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
+        xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
+        grid.add(xline)
+        shz(grid, 1)
+        self.add(grid)
+
+        axex = Arrow(start=vec(0,0),
+                     end=vec(6.5,0),
+                     buff=0,
+                     stroke_width=2,
+                     tip_length=0.3,
+                     tip_shape=BetterCurvyPointyTip,
+                     color=WHITE)
+        axey = Arrow(start=vec(0, 0),
+                     end=vec(0, 3.7),
+                     buff=0,
+                     stroke_width=2,
+                     tip_length=0.3,
+                     tip_shape=BetterCurvyPointyTip,
+                     color=WHITE)
+        label_x = MathTex(r"x")
+        label_x.scale(.8)
+        label_x.move_to(vec(6.5, -0.4))
+        label_y = MathTex(r"y")
+        label_y.scale(.8)
+        label_y.move_to(vec(0.4, 3.5))
+        labelled_axes = VGroup(axex, axey, label_x, label_y)
+        shz(labelled_axes,1)
+
+        E = sagemath.EllipticCurve([-4, 1])
+        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+
+        # TODO Add equation to it and explain Delta
+        t = ValueTracker(0)
+        curve.add_updater(lambda m:m.become(shorter_family_of_curve(t.get_value())))
+        self.add(curve)
+        self.play(t.animate.set_value(1), run_time=2, rate_func=rate_functions.ease_in_out_sine)
+        self.wait(1)
 
 
         # then show that the graph drops quickly for the singular curve.
+        # TODO : Change coordinates
+        self.clear()
+        self.add(my_background(), stte)
+        new_axes = Axes(
+                        x_range=[3, 9, 1],
+                        y_range=[0, 7, 1],
+                        x_length=10,
+                        y_length=5,
+                        x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
+                        y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
+                        )
+        # for i in range(3, 9):
+        #     label = MathTex(f"10^{str(i)}").scale(0.7)
+        #     label.next_to(new_axes.c2p(i, 0), DOWN)
+        #     new_axes.add(label)
+
+        gra_shift = vec(1, 1)
+        new_axes.shift(gra_shift)
+        self.add(new_axes)
+
+        # first draw the usual curve
+        li = load_list(f"data/singular_plot_points.json")
+        graa = VMobject(color=YELLOW)
+        graa.set_points_as_corners([new_axes.c2p(x, y) for x, y in li])
+        graa.set_style(stroke_width=2)
+        eqaa = MathTex(r"y^2 = x^3 - 3\,x + 2 ")
+        eqaa.to_edge(DOWN)
+        self.add(graa, eqaa)
+        last_graa = graa
+        self.wait(2)
+
+
 
 
 #  now render it
