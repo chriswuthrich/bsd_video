@@ -52,23 +52,6 @@ def subtitle(said):
     shz(v, 10)
     return v
 
-# TODO make cloud one
-def my_background():
-    r"""
-    A gradient background
-    """
-    gradient_rect = Rectangle(
-        width=config.frame_height,
-        height=config.frame_width,
-        fill_opacity=1,
-    )
-    gradient_rect.set_fill(
-        color=[rgb_to_color([0.0, 0.0, 0.3]), BLACK],
-        opacity=1
-    )
-    gradient_rect.rotate(PI/2)
-    shz(gradient_rect, -10)
-    return gradient_rect
 
 
 def natural_initial_background():
@@ -95,7 +78,7 @@ def thought_bubble(centre, size=1.):
                         stroke_width=8
                         )
     bubble.scale(1.5*size)
-    bubble.set_fill([rgb_to_color([0.0, 0.0, 0.3]), BLACK], opacity=1)
+    bubble.set_fill([BLACK, rgb_to_color([0.0, 0.0, 0.5])], opacity=1)
     bubble.shift(centre)
 
     c = Circle(radius=0.08,
@@ -108,6 +91,32 @@ def thought_bubble(centre, size=1.):
     small_bubbles.arrange(DOWN).next_to(bubble, DOWN, buff=0.3)
     v = VGroup(bubble, small_bubbles)
     return v
+
+
+def my_background():
+    r"""
+    This creates the bubble as it is at the end of its
+    scaling in # 1.1
+    """
+    return thought_bubble(ORIGIN, size=7.48)
+
+# TODO make cloud one
+def my_old_background():
+    r"""
+    A gradient background
+    """
+    gradient_rect = Rectangle(
+        width=config.frame_height,
+        height=config.frame_width,
+        fill_opacity=1,
+    )
+    gradient_rect.set_fill(
+        color=[rgb_to_color([0.0, 0.0, 0.3]), BLACK],
+        opacity=1
+    )
+    gradient_rect.rotate(PI/2)
+    shz(gradient_rect, -10)
+    return gradient_rect
 
 
 def fading_line(y, stroke_width=4, **kwargs):

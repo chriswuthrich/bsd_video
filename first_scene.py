@@ -159,12 +159,11 @@ class FirstScene(Scene):
         original_cloud = thoughts[0].copy()
         self.remove(thoughts[1])
 
-        # TODO adjust not too large
         def scale_cloud_updater(m):
             if t.get_value() < .72:
                 scale_factor = 1 + 9*t.get_value()
             else:
-                scale_factor = 1+9*.72
+                scale_factor = 7.48  # value at .72
             mo = original_cloud.copy().scale(scale_factor)
             m.become(mo)
 
