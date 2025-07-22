@@ -154,6 +154,7 @@ def two_characters_standing_next_to_each_other(to_corner=True, scale=1):
     te.shift(vec(0, 0.06))  # aligned below
     if to_corner:
         v.to_corner(DL)
+        # print(v.get_center(), st.get_center(), te.get_center())
     return v
 
 

@@ -17,7 +17,7 @@ examples is not done yet
 
 from manim import *
 import sage.all as sagemath
-from character import StudentChar
+from character import StudentChar, two_characters_standing_next_to_each_other
 from msage import smanim
 from tools import *
 
@@ -63,27 +63,21 @@ class FirstScene(Scene):
         self.add(background_image)
 
         # chars on stand on the path
-        st = StudentChar()
-        te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
-        te.shift(vec(0, 0.1))  # aligned below
-        st.scale(1)
-        te.scale(1)
-        st_start = vec(1.8, -.5)
-        te_start = vec(.5,-.5)
-        st.shift(st_start)
-        te.shift(te_start)
-        shz(st, 10)
-        shz(te, 10)
-        self.add(st, te)
+        stte = two_characters_standing_next_to_each_other(to_corner=False)
+        stte_start = vec(1.2, -0.415)
+        stte.move_to(stte_start)
+        st = stte[0]
+        te = stte[1]
+        self.add(stte)
         self.wait(1)
 
         # st thinks of zeta(s)
-        # ?? Should we add 1000000 $ ?
+        # TODO: Should we add 1000000 $ ?
         cloud_centre = vec(-1, 2.6)
         thoughts = thought_bubble(cloud_centre, 0.85)
         # shift small bubbles a little
         thoughts[1][0].shift(vec(0, 0.2))
-        thoughts[1][1].shift(vec(0.2, 0.2))  # shift middle little bubble
+        thoughts[1][1].shift(vec(0.2, 0.2))
         thoughts[1][2].shift(vec(0.6, 0.4))
         shz(thoughts[0], 1)
 
@@ -103,7 +97,7 @@ class FirstScene(Scene):
 
         # the little elliptic curve appears
         icon = little_curve_icon()
-        icon.move_to(cloud_centre+vec(1.3, 0))
+        icon.move_to(cloud_centre + vec(1.3, 0))
         shz(icon, 5)
         self.play(FadeIn(icon))
         self.wait(.3)
@@ -111,7 +105,8 @@ class FirstScene(Scene):
         # and the curve kicks out the zeta
         t = ValueTracker(0)
 
-        def ple(tt):
+        # the elliptic curve icon moves and changes colour
+        def icon_movement(tt):
             """
             bouncing function cooked up with cubic splines
             """
@@ -130,107 +125,118 @@ class FirstScene(Scene):
 
         icon.add_updater(lambda m: m.move_to(cloud_centre
                                              + vec(1.3, 0, z=5/100)
-                                             - vec(ple(t.get_value()), 0)))
+                                             - vec(icon_movement(t.get_value()), 0)))
         # white goes to yellow:
         icon.add_updater(lambda m: m.set_color(rgb_to_color([255, 255, 255 * (1 - t.get_value())])))
 
-        def plz(tt):
+        # the zeta gets kicked out and vanishes
+        def zeta_movement(tt):
             if tt < 0.5:
                 return 0
             else:
                 return 6 * (tt - 0.5)
 
-        def opz(tt):
+        def zeta_opacity(tt):
             if tt < 0.5:
                 return 1
             else:
                 return 2 * (1 - tt)
 
-        # TODO check there is no little jump anymore in zeta before move.
         zeta.add_updater(lambda m: m.move_to(cloud_centre
-                                             - vec(plz(t.get_value()), 0)))
-        zeta.add_updater(lambda m: m.set_opacity(opz(t.get_value())))
+                                             - vec(zeta_movement(t.get_value()), 0)))
+        zeta.add_updater(lambda m: m.set_opacity(zeta_opacity(t.get_value())))
 
         self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
         self.play(icon.animate.move_to(cloud_centre), run_time=0.3)
         self.wait(.7)
-
-        # title appears
-        tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
-                        font_size=40,
-                        font="Noto Sans",
-                        color=YELLOW,
-                        opacity=1,
-                        alignment="center"
-                        )
-
-        tit.move_to(vec(-1, 3))
-        shz(tit, 5)
-        # self.play(Write(tit))
-        # self.wait(.5)
-
-        # as the walk to the forefront, the bubble increases
         self.remove(zeta)
-        thoughts.clear_updaters()
-        icon.clear_updaters()
-        self.remove(thoughts, icon, tit, st, te, background_image)
-        self.add(background_image, thoughts, tit, icon, st, te)  # put in the correct order
 
+        # bubble grows, title appears, and characters move to the lower left corner
         t = ValueTracker(0)
-        pa = lambda tt: vec(-6*tt**2, -2.5*tt)
 
-        def op(tt):
-            if tt < .5:
-                return 1-2*tt
-            else:
-                return 0
-
+        # bubble grows
+        thoughts.clear_updaters()
         original_cloud = thoughts[0].copy()
+        self.remove(thoughts[1])
 
+        # TODO adjust not too large
         def scale_cloud_updater(m):
-            scale_factor = 1 + 9*t.get_value()
+            if t.get_value() < .72:
+                scale_factor = 1 + 9*t.get_value()
+            else:
+                scale_factor = 1+9*.72
             mo = original_cloud.copy().scale(scale_factor)
             m.become(mo)
 
-        thoughts[0].add_updater(scale_cloud_updater)
+        # move to the centre
+        def cloud_movement(tt):
+            s = (1-tt) * cloud_centre
+            s += vec(0, 0, 1/100)
+            return s
 
-        te.add_updater(lambda m: m.move_to(te_start
-                                           + pa(t.get_value())
-                                           + vec(0,0, z=10/100)))
-        st.add_updater(lambda m: m.move_to(st_start
-                                           + pa(t.get_value())
-                                           + vec(0,0, z=10/100)))
-        thoughts.add_updater(lambda m: m.move_to(cloud_centre
-                                                 + pa(t.get_value())
-                                                 + vec(0, 0, z=1/100)))
-        self.remove(thoughts[1])
+        thoughts.add_updater(lambda m: m.move_to(cloud_movement(t.get_value())))
+        thoughts.add_updater(scale_cloud_updater)
+
+        # title
+        title = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
+                          font_size=40,
+                          color=YELLOW,
+                          opacity=1,
+                          alignment="center"
+                          )
+        title.move_to(vec(-1, 3))
+        shz(title, 5)
 
         def title_updater(m):
-            new_tit = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
-                                font_size=40,
-                                font="Noto Sans",
-                                color=YELLOW,
-                                opacity=1,  # t.get_value()**2,
-                                alignment="center"
-                                )
-            new_tit.scale(0.1 + t.get_value())
-            new_tit.move_to((1 - t.get_value()) * vec(-1, 3))
-            shz(new_tit, 5)
-            m.become(new_tit)
+            new_title = Paragraph("The Birch and Swinnerton-Dyer", "conjecture",
+                                  font_size=40,
+                                  color=YELLOW,
+                                  opacity=1,
+                                  alignment="center"
+                                  )
+            new_title.scale(0.1 + t.get_value())
+            new_title.move_to((1 - t.get_value()) * vec(-1, 3))
+            shz(new_title, 5)
+            m.become(new_title)
 
-        tit.add_updater(title_updater)
+        title.add_updater(title_updater)
+
+        # characters move
+        stte_target_position = two_characters_standing_next_to_each_other(to_corner=True).get_center()
+
+        def stte_movement(tt):
+            s = stte_start
+            s += vec(0, 0, 10/100)
+            a = stte_target_position[0] - stte_start[0]
+            b = stte_target_position[1] - stte_start[1]
+            s += vec(a * tt ** 2, b * tt)
+            return s
+
+        stte.add_updater(lambda m: m.move_to(stte_movement(t.get_value())))
+
+        # the icon moves out quickly
+        icon.clear_updaters()  # not needed
+        icon_start = icon.get_center()
+
+        def icon_movement(tt):
+            s = icon_start
+            s += vec(0, tt**2)
+            return s
+
+        icon.add_updater(lambda m : m.move_to(icon_movement(t.get_value())))
+
+        # put in the correct order
+        self.remove(thoughts, icon, title, stte, background_image)
+        self.add(background_image, thoughts, title, icon, stte)
 
         self.play(t.animate.set_value(1),
-                  # TODO What to do with the icon here?
-                  FadeOut(icon),
                   run_time=7,
-                  rate_func=linear)
+                  rate_func=rate_functions.ease_in_out_sine)
         self.wait(1)
 
-        self.remove(tit, icon, background_image)
         self.clear()
         self.add(thoughts[0])
-        self.add(st, te)
+        self.add(stte)
 
 # -------------------------------------------
 

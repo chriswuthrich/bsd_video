@@ -52,7 +52,7 @@ def subtitle(said):
     shz(v, 10)
     return v
 
-
+# TODO make cloud one
 def my_background():
     r"""
     A gradient background
@@ -84,7 +84,7 @@ def natural_initial_background():
     shz(bg_image, -10)
     return bg_image
 
-
+# TODO change colour to work with background
 def thought_bubble(centre, size=1.):
     r"""
     A cloud shape together with little dots below.
