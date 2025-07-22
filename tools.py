@@ -58,7 +58,7 @@ def shz(m, z: float):
     Typically the background will be -10 and the most forefront +10
     """
     # This is the version for opengl
-    # return m.shift(np.array([0, 0, z/100]))
+    m.shift(np.array([0, 0, z/100]))
     return m.set_z_index(z)
 
 
@@ -306,6 +306,17 @@ def standard_curve():
     curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
     shz(curve, 5)
     return curve
+
+
+def dot_on_curve(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
+    """
+    replacement for Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
+    """
+    v1 = Circle(radius, stroke_width=0, fill_color=colour, fill_opacity=1, stroke_color=colour, z_index=z_index)
+    v2 = Circle(radius/3, stroke_width=0, fill_color=BLACK, fill_opacity=1, stroke_color=BLACK, z_index=z_index+.1)
+    v = VGroup(v1, v2)
+    v.move_to(centre)
+    return v
 
 
 class CurvyPointyTip(ArrowTip):

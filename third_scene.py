@@ -15,15 +15,6 @@ from tools import *
 import json
 
 
-def my_point(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
-    """
-    replacement for Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
-    """
-    v1 = Circle(radius, stroke_width=0, fill_color=colour, fill_opacity=1, stroke_color=colour, z_index=z_index)
-    v2 = Circle(radius/3, stroke_width=0, fill_color=BLACK, fill_opacity=1, stroke_color=BLACK, z_index=z_index+.1)
-    v = VGroup(v1, v2)
-    v.move_to(centre)
-    return v
 
 
 def list_of_points(T, colour=WHITE):
@@ -181,7 +172,7 @@ class ThirdScene(Scene):
         pointcolour = BLUE_B
         pointradius = .07
         one_point_outside = VGroup(
-            my_point(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
+            dot_on_curve(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
             Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8, 3.9) + shift_grid)
             )
         pts = [((0, 1), r"(0,1)", vec(.5, .4)),
@@ -199,7 +190,7 @@ class ThirdScene(Scene):
                 P_label.move_to(ORIGIN).to_edge(UP).shift(1.7*RIGHT)
                 point_to_flash = vec(3.5, 3.6) + shift_grid
             else:
-                v = my_point(P_centre, colour=pointcolour, radius=pointradius, z_index=10)
+                v = dot_on_curve(P_centre, colour=pointcolour, radius=pointradius, z_index=10)
                 point_to_flash = P_centre
             all_pts_and_labels.add(v, P_label)
             self.play(Indicate(P_label),
@@ -241,8 +232,8 @@ class ThirdScene(Scene):
         pointcolour = BLUE_B
         pointradius = .07
         point_outside = VGroup(
-            my_point(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
-            my_point(vec(3.5, -3.6) + shift_grid, radius=pointradius, colour=pointcolour),
+            dot_on_curve(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
+            dot_on_curve(vec(3.5, -3.6) + shift_grid, radius=pointradius, colour=pointcolour),
             Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8, 3.9) + shift_grid),
             Arrow(vec(3.7, -3.6) + shift_grid, vec(3.8, -3.9) + shift_grid),
             )
@@ -258,8 +249,8 @@ class ThirdScene(Scene):
                 point_to_flash = vec(3.5, 3.6) + shift_grid
                 minus_point_to_flash = vec(3.5, -3.6) + shift_grid
             else:
-                self.add(my_point(P_centre, colour=pointcolour, radius=pointradius),
-                         my_point(minus_P_centre, radius=pointradius, colour=pointcolour))
+                self.add(dot_on_curve(P_centre, colour=pointcolour, radius=pointradius),
+                         dot_on_curve(minus_P_centre, radius=pointradius, colour=pointcolour))
                 point_to_flash = P_centre
                 minus_point_to_flash = minus_P_centre
 
@@ -293,8 +284,8 @@ class ThirdScene(Scene):
                 point_to_flash = vec(3.5, 3.6) + shift_grid
                 minus_point_to_flash = vec(3.5, -3.6) + shift_grid
             else:
-                self.add(my_point(P_centre, colour=pointcolour, radius=pointradius, z_index=10),
-                         my_point(minus_P_centre, colour=pointcolour, radius=pointradius, z_index=10))
+                self.add(dot_on_curve(P_centre, colour=pointcolour, radius=pointradius, z_index=10),
+                         dot_on_curve(minus_P_centre, colour=pointcolour, radius=pointradius, z_index=10))
                 point_to_flash = P_centre
                 minus_point_to_flash = minus_P_centre
 
