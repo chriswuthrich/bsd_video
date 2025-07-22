@@ -12,14 +12,27 @@ import sage.all as sagemath
 
 
 def bsd_tex_template():
-    bsd_tex_preamble = "\n\\usepackage[british]{babel}\n"\
-                   "\\usepackage[utf8]{inputenc}\n"\
-                   "\\usepackage[T1]{fontenc}\n"\
-                   "\\usepackage{lmodern}\n"\
-                   "\\usepackage{mathtools}\n"\
-                   "\\usepackage{amssymb}\n"\
-                   "\\usepackage{mathrsfs}\n"
-    return TexTemplate(preamble=bsd_tex_preamble)
+    
+    common_preamble = ("\n\\usepackage[british]{babel}\n" +
+                       "\\usepackage[utf8]{inputenc}\n" +
+                       "\\usepackage[T1]{fontenc}\n" +
+                       "\\usepackage{lmodern}\n" +
+                       "\\usepackage{mathtools}\n" +
+                       "\\usepackage{amssymb}\n" +
+                       "\\usepackage{mathrsfs}\n")
+    
+    bsd_tex_preamble_1 = (common_preamble +
+                          "\\usepackage[scaled]{helvet}\n" +
+                          "\\usepackage{fourier}\n" +
+                          "\\renewcommand{\\rmdefault}{phv}\n" +
+                          "\\usepackage[italic,defaultmathsizes,noasterisk]{mathastext}")
+
+    bsd_tex_preamble_2 = (common_preamble +
+                          "\\usepackage[default]{droidsans}\n" +
+                          "\\usepackage[LGRgreek,defaultmathsizes,italic]{mathastext}\n" +
+                          "\\renewcommand{\\varphi}{\\phi}\n")
+
+    return TexTemplate(preamble=bsd_tex_preamble_2)
 
 
 Text.set_default(font="Noto Sans")
