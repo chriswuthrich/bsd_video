@@ -5,7 +5,6 @@ Here the actual conjecture is
 explained and illustrated
 with graphs.
 
-TODO: list up to 1000 doesn't shift correctly
 """
 
 from manim import *
@@ -288,7 +287,7 @@ class ThirdScene(Scene):
             self.wait(.1)
             if point_outside_shows:
                 self.remove(point_outside)
-        self.play(FadeOut(table_up_to_10, eq_XYZ_less_10))
+        self.play(FadeOut(table_up_to_100, eq_XYZ_less_100))
 
         # list up to height 1000
         table_up_to_1000, points_up_to_1000, indices = list_of_points(1000)
