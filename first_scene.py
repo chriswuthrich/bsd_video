@@ -233,9 +233,7 @@ class FirstScene(Scene):
                   rate_func=rate_functions.ease_in_out_sine)
         self.wait(1)
 
-        self.clear()
-        self.add(thoughts[0])
-        self.add(stte)
+
 
 # -------------------------------------------
 
@@ -244,136 +242,96 @@ class FirstScene(Scene):
         # TODO : Transition for the background. Maybe better in an editor?
         # or keep the bubble for later.
         self.next_section("1.2 What are elliptic curves?")
+        self.clear()
         thoughts.clear_updaters()
-        st.clear_updaters()
-        te.clear_updaters()
-        bgr = my_background()
-        shz(bgr, -1)
-        shz(thoughts, -1)
-        t = ValueTracker(0)
-        bgr.add_updater(lambda m: m.set_opacity(op(t.get_value())))
-        thoughts.add_updater(lambda m: m.set_opacity(1-t.get_value()))
-        self.play(t.animate.set_value(1), run_time=1, rate_func=linear)
-
-        self.remove(thoughts)
-        bgr.set_opacity(1)
-        bgr.clear_updaters()
-        self.add(bgr)
-        self.add(st, te)
+        stte.clear_updaters()
+        background = cloud_background()
+        shz(background, -1)
+        self.add(background, stte)
         self.wait(.2)
 
         # equations appear central
-        e1 = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
-        shz(e1, 5)
-        self.play(FadeIn(e1))
+        eq_standard_curve = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
+        shz(eq_standard_curve, 5)
+        self.play(FadeIn(eq_standard_curve))
         self.wait(1)
-        ellc = Text("Elliptic curve", font="Noto Sans")
-        ellc.next_to(e1, DOWN)
-        self.play(FadeIn(ellc))
+        text_elliptic_curve = Text("Elliptic curve", font="Noto Sans")
+        text_elliptic_curve.next_to(eq_standard_curve, DOWN)
+        self.play(FadeIn(text_elliptic_curve))
         self.wait(1)
 
         # plot elliptic curve, move equations out
-        grid = VGroup()
-        grid.add(my_fading_numberplane())
-        grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
-        xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
-        grid.add(xline)
-        shz(grid, 1)
-        self.add(grid)
-
-        axex = Arrow(start=vec(0,0),
-                     end=vec(6.5,0),
-                     buff=0,
-                     stroke_width=2,
-                     tip_length=0.3,
-                     tip_shape=BetterCurvyPointyTip,
-                     color=WHITE)
-        axey = Arrow(start=vec(0, 0),
-                     end=vec(0, 3.7),
-                     buff=0,
-                     stroke_width=2,
-                     tip_length=0.3,
-                     tip_shape=BetterCurvyPointyTip,
-                     color=WHITE)
-        label_x = MathTex(r"x")
-        label_x.scale(.8)
-        label_x.move_to(vec(6.5, -0.4))
-        label_y = MathTex(r"y")
-        label_y.scale(.8)
-        label_y.move_to(vec(0.4, 3.5))
-        labelled_axes = VGroup(axex, axey, label_x, label_y)
-        shz(labelled_axes,1)
-
-        E = sagemath.EllipticCurve([-4, 1])
-        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        shz(curve, 5)
+        grid = fading_numberplane(x_tip=True,
+                                  y_tip=True,
+                                  x_label=True,
+                                  y_label=True,
+                                  axes_fading=False)
+        curve = standard_curve()
         self.add(curve)
-        ellc.add_updater(lambda m: m.next_to(e1, DOWN))
+
+        text_elliptic_curve.add_updater(lambda m: m.next_to(eq_standard_curve, DOWN))
+
         self.play(Create(curve),
-                  e1.animate.to_corner(UL),
-                  FadeIn(labelled_axes),
+                  eq_standard_curve.animate.to_corner(UL),
+                  FadeIn(grid),
                   run_time=1)
         self.wait(1)
 
         #  opengl problem in SurroundingRectangle solved in tools
-        framebox1 = MySurroundingRectangle(e1[1], color=YELLOW, buff=.1)
-        framebox2 = MySurroundingRectangle(e1[3], color=YELLOW, buff=.1)
+        framebox1 = MySurroundingRectangle(eq_standard_curve[1], color=YELLOW, buff=.1)
+        framebox2 = MySurroundingRectangle(eq_standard_curve[3], color=YELLOW, buff=.1)
         self.add(framebox1, framebox2)
 
         # merge to another curve
-        E2 = sagemath.EllipticCurve([-7, 6])
-        new_curve = smanim(E2.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        shz(new_curve, 5)
-        new_e1 = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
-        new_e1.to_corner(UL)
-        shz(new_e1, 5)
+        second_E = sagemath.EllipticCurve([-7, 6])
+        second_curve = smanim(second_E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(second_curve, 5)
+        eq_second_curve = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
+        eq_second_curve.to_corner(UL)
+        shz(eq_second_curve, 5)
         old_curve = curve.copy()
         self.play(
-            Transform(curve, new_curve),
-            Transform(e1, new_e1),
+            Transform(curve, second_curve),
+            Transform(eq_standard_curve, eq_second_curve),
             run_time=1
         )
-        self.remove(curve)
+        # self.remove(curve)
         self.wait(1)
 
         # switch back
-        new_e1 = MathTex(r"y^2 = x^3", r" +A\,", " x ", " + B")
-        new_e1.to_corner(UL)
-        shz(new_e1, 5)
+        eq_general_curve = MathTex(r"y^2 = x^3", r" +A\,", " x ", " + B")
+        eq_general_curve.to_corner(UL)
+        shz(eq_general_curve, 5)
         self.remove(framebox1, framebox2)
         self.play(
-            FadeTransform(e1, new_e1),
-            Transform(new_curve, old_curve),
+            FadeTransform(eq_standard_curve, eq_general_curve),
+            Transform(second_curve, old_curve),
             run_time=1
         )
         curve = old_curve
 
         # now run through a family of curves
-        self.remove(curve, new_curve, old_curve)
+        self.remove(curve, second_curve, old_curve)
         t = ValueTracker(0)
         curve.add_updater(lambda m:m.become(family_of_curves(t.get_value())))
         self.add(curve)
-        self.play(t.animate.set_value(1), run_time=10, rate_func=rate_functions.there_and_back)
-
+        self.play(t.animate.set_value(1),
+                  run_time=10,
+                  rate_func=rate_functions.there_and_back)
         self.wait(1)
 
-        # they are all symmetric ?
+        # they are all symmetric
         self.clear()
-        self.add(bgr, grid, labelled_axes, te, st)
-        self.remove(e1, new_e1, new_curve, curve, framebox1, framebox2)
-        E = sagemath.EllipticCurve([-4, 1])
-        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        shz(curve, 5)
-        e1 = MathTex(r"(-y)^2 = y^2 = x^3", r"- 4\,", " x ", "+ 1")
-        e1.to_corner(UL)
-        ellc.next_to(e1, DOWN)
-        arrow_1 = Arrow(vec(-1, -1.8), vec(-1,1.8), stroke_width=3, buff=0, tip_shape=BetterCurvyPointyTip)
-        arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0, tip_shape=BetterCurvyPointyTip)
-        arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0, tip_shape=BetterCurvyPointyTip)
-        arrow_2r = Arrow(vec(2.8, 3), vec(2.8, -3), stroke_width=3, buff=0, tip_shape=BetterCurvyPointyTip)
-        self.play(Create(curve),
-                  Create(e1),
-                  run_time=.3)
+        self.add(background, grid, stte, curve)
+
+        text_elliptic_curve.next_to(eq_standard_curve, DOWN)
+        arrow_1 = Arrow(vec(-1, -1.8), vec(-1,1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        arrow_2r = Arrow(vec(2.8, 3), vec(2.8, -3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        # self.play(Create(curve),
+        #          Create(eq_standard_curve),
+        #          run_time=.3)
         self.play(Create(arrow_1),
                   Create(arrow_1r),
                   FadeIn(arrow_2),

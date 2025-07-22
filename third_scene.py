@@ -139,7 +139,7 @@ class ThirdScene(Scene):
 
         # 3.1 Count global points
         self.next_section("3.1 Count global points")
-        self.add(my_background())
+        self.add(cloud_background())
         st = StudentChar()
         te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
         st.scale(1)
@@ -166,7 +166,7 @@ class ThirdScene(Scene):
 
         # create curve
         grid = VGroup()
-        grid.add(my_fading_numberplane())
+        grid.add(fading_numberplane())
         grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
         shz(grid, 1)
         E = sagemath.EllipticCurve([-2, 1])
@@ -358,7 +358,7 @@ class ThirdScene(Scene):
 
         # Now define N and give a graph for this curve.
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
 
         nt = MathTex(r"\mathcal{N}(T) = \# \Bigl\{ P \in E(\mathbb{Q})\ : " +
                      r"\ \lvert X\rvert,\,\lvert Y \rvert,\, \lvert Z\rvert \leqslant T \Bigr\}")
@@ -375,8 +375,8 @@ class ThirdScene(Scene):
                         y_range=[0, 25, 5],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
-                        y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
+                        x_axis_config={"include_numbers": True, 'tip_shape': CurvyPointyTip},
+                        y_axis_config={"include_numbers": True, 'tip_shape': CurvyPointyTip}
                         )
         label_x = MathTex(r"T")
         label_x.move_to(vec(5.5, -3))
@@ -395,7 +395,7 @@ class ThirdScene(Scene):
         #
         self.next_section("3.2 Counting points modulo")
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
 
         # Title comes in
         tit = Text("Counting points modulo", color=YELLOW)
@@ -461,7 +461,7 @@ class ThirdScene(Scene):
 
         # graph the number of points modulo Q
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
         mu = MathTex(r"\mathcal{M}(U) = \# E\bigl({}^{\mathbb{Z}}\!/\!{}_{U \mathbb{Z}}\bigr)")
         mu_text = MathTex(r"= \text{ number of solutions modulo }U.")
         mu_group= VGroup(mu, mu_text).arrange(RIGHT)
@@ -482,8 +482,8 @@ class ThirdScene(Scene):
                       y_range=[0, 200, 50],
                       y_length=5,
                       tips=True,
-                      x_axis_config={"tip_shape": BetterCurvyPointyTip, "tip_height": 0.2 },
-                      y_axis_config={"tip_shape": BetterCurvyPointyTip}
+                      x_axis_config={"tip_shape": CurvyPointyTip, "tip_height": 0.2},
+                      y_axis_config={"tip_shape": CurvyPointyTip}
                       )
         bc.scale(.8)
         bc.shift(vec(1, 0))

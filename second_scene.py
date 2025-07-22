@@ -110,7 +110,7 @@ class SecondScene(ThreeDScene):
         # 2 Rational points on projective curves
 
         # copied from first scene:
-        bgr = my_background()
+        bgr = cloud_background()
         shz(bgr, -1)
         st = StudentChar()
         te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
@@ -120,7 +120,7 @@ class SecondScene(ThreeDScene):
         stte.arrange()
         stte.to_corner(DL)
         grid = VGroup()
-        grid.add(my_fading_numberplane())
+        grid.add(fading_numberplane())
         grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
         xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
         grid.add(xline)
@@ -130,14 +130,14 @@ class SecondScene(ThreeDScene):
                      buff=0,
                      stroke_width=2,
                      tip_length=0.2,
-                     tip_shape=BetterCurvyPointyTip,
+                     tip_shape=CurvyPointyTip,
                      color=WHITE)
         axey = Arrow(start=vec(0, 0),
                      end=vec(0, 3.7),
                      buff=0,
                      stroke_width=2,
                      tip_length=0.2,
-                     tip_shape=BetterCurvyPointyTip,
+                     tip_shape=CurvyPointyTip,
                      color=WHITE)
         label_x = MathTex(r"x")
         label_x.scale(.8)

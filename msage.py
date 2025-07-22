@@ -16,7 +16,6 @@ implement more 2d objects
 
 
 from manim import *
-from manim.opengl import *
 import sage.all as sagemath
 #from sage.schemes.elliptic_curves.constructor import EllipticCurve
 from sage.plot.line import Line as sagemathLine

@@ -109,7 +109,7 @@ class FourthScene(Scene):
         # 4.1 State the conjecture
         self.next_section("4.1 State the conjecture")
         # recreate background
-        self.add(my_background())
+        self.add(cloud_background())
         st = StudentChar()
         te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
         st.scale(1)
@@ -235,7 +235,7 @@ class FourthScene(Scene):
         # Evidence shown in graphs of the limit
         self.next_section("4.2 Show evidence")
         self.clear()
-        gradient_rect = my_background()
+        gradient_rect = cloud_background()
         self.add(gradient_rect, stte)
 
         # data created in illustrate_conj_plots.ipynb
@@ -257,7 +257,7 @@ class FourthScene(Scene):
                         )
 
             # Create and add a custom tip for the x-axis
-            x_tip = BetterCurvyPointyTip().scale(0.3)
+            x_tip = CurvyPointyTip().scale(0.3)
             x_tip.next_to(axes.x_axis.get_end(), RIGHT, buff=0)
             axes.x_axis.add(x_tip)
 
@@ -305,15 +305,15 @@ class FourthScene(Scene):
         # compare to other curves
 
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
         # plot several in logarithmic coordinates
         new_axes = Axes(
                         x_range=[3, 9, 1],
                         y_range=[0, 7, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": False, 'tip_shape': BetterCurvyPointyTip},
-                        y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
+                        x_axis_config={"include_numbers": False, 'tip_shape': CurvyPointyTip},
+                        y_axis_config={"include_numbers": True, 'tip_shape': CurvyPointyTip}
                         )
         for i in range(3, 9):
             label = MathTex(f"10^{str(i)}").scale(0.7)
@@ -372,8 +372,8 @@ class FourthScene(Scene):
         pt12.shift(vec(1.5, 0))
         xpt1 = new_axes.c2p(np.log10(137593), 0)[0]
         xpt2 = new_axes.c2p(np.log10(3241792), 0)[0]
-        point_out_pt1 = Arrow(vec(xpt1 - 1.5, 2), vec(xpt1 - 0.02, 0.4), tip_shape=BetterCurvyPointyTip, color=WHITE)
-        point_out_pt2 = Arrow(vec(xpt2 - 1.5, 2), vec(xpt2 - 0.02, 0.4), tip_shape=BetterCurvyPointyTip, color=WHITE)
+        point_out_pt1 = Arrow(vec(xpt1 - 1.5, 2), vec(xpt1 - 0.02, 0.4), tip_shape=CurvyPointyTip, color=WHITE)
+        point_out_pt2 = Arrow(vec(xpt2 - 1.5, 2), vec(xpt2 - 0.02, 0.4), tip_shape=CurvyPointyTip, color=WHITE)
         dashed_line_down_1 = DashedLine(vec(xpt1, .4),
                                         new_axes.c2p(np.log10(137593), 0),
                                         stroke_width=1.5,
@@ -406,9 +406,9 @@ class FourthScene(Scene):
         # now point out that singular curves behave differently
         # first show the family again, halting at the singular curve.
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
         grid = VGroup()
-        grid.add(my_fading_numberplane())
+        grid.add(fading_numberplane())
         grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
         xline = Line(vec(-7, 0, .1), vec(7, 0, .1), color=WHITE, stroke_width=2)
         grid.add(xline)
@@ -420,14 +420,14 @@ class FourthScene(Scene):
                      buff=0,
                      stroke_width=2,
                      tip_length=0.3,
-                     tip_shape=BetterCurvyPointyTip,
+                     tip_shape=CurvyPointyTip,
                      color=WHITE)
         axey = Arrow(start=vec(0, 0),
                      end=vec(0, 3.7),
                      buff=0,
                      stroke_width=2,
                      tip_length=0.3,
-                     tip_shape=BetterCurvyPointyTip,
+                     tip_shape=CurvyPointyTip,
                      color=WHITE)
         label_x = MathTex(r"x")
         label_x.scale(.8)
@@ -472,14 +472,14 @@ class FourthScene(Scene):
 
         # then show that the graph drops quickly for the singular curve.
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
         new_axes = Axes(
                         x_range=[0, 1000, 200],
                         y_range=[0, 2, 1],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
-                        y_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip}
+                        x_axis_config={"include_numbers": True, 'tip_shape': CurvyPointyTip},
+                        y_axis_config={"include_numbers": True, 'tip_shape': CurvyPointyTip}
                         )
         gra_shift = vec(1, 1)
         new_axes.shift(gra_shift)
@@ -498,14 +498,14 @@ class FourthScene(Scene):
         self.wait(2)
 
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
         new_axes = Axes(
                         x_range=[0, 1000, 200],
                         y_range=[0, 10, 2],
                         x_length=10,
                         y_length=5,
-                        x_axis_config={"include_numbers": True, 'tip_shape': BetterCurvyPointyTip},
-                        y_axis_config={"include_numbers": False, 'tip_shape': BetterCurvyPointyTip}
+                        x_axis_config={"include_numbers": True, 'tip_shape': CurvyPointyTip},
+                        y_axis_config={"include_numbers": False, 'tip_shape': CurvyPointyTip}
                         )
         gra_shift = vec(1, 1)
         label = MathTex("1").scale(.7)
@@ -533,7 +533,7 @@ class FourthScene(Scene):
 
         # restate conjecture
         self.clear()
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
         te_con.to_corner(UL)
         self.add(te_lim, te_con, te_conv)
         te_cond_1 = Text("If").next_to(te_con, RIGHT, buff=1)

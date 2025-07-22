@@ -33,7 +33,7 @@ class FifthScene(Scene):
         stte.arrange()
         stte.to_corner(DL)
         shz(stte, 10)
-        self.add(my_background(), stte)
+        self.add(cloud_background(), stte)
 
         # state Theorem
         thm_tit = Text("Theorem:", color=YELLOW)
