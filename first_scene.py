@@ -17,7 +17,7 @@ examples is not done yet
 
 from manim import *
 import sage.all as sagemath
-from character import StudentChar, two_characters_standing_next_to_each_other
+from character import two_characters_standing_next_to_each_other
 from msage import smanim
 from tools import *
 
@@ -66,8 +66,6 @@ class FirstScene(Scene):
         stte = two_characters_standing_next_to_each_other(to_corner=False)
         stte_start = vec(1.2, -0.415)
         stte.move_to(stte_start)
-        st = stte[0]
-        te = stte[1]
         self.add(stte)
         self.wait(1)
 
@@ -234,8 +232,6 @@ class FirstScene(Scene):
         self.remove(icon)
         self.wait(1)
 
-        # TODO icon comes back?
-
 # -------------------------------------------
 
         # # 1.2
@@ -336,6 +332,8 @@ class FirstScene(Scene):
                   run_time=1)
         self.wait(2)
 
+
+#
 
 # now render it
 if __name__ == "__main__":
