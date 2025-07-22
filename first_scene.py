@@ -219,7 +219,7 @@ class FirstScene(Scene):
 
         def icon_movement(tt):
             s = icon_start
-            s += vec(0, tt**2)
+            s += vec(0, np.sqrt(tt))
             return s
 
         icon.add_updater(lambda m : m.move_to(icon_movement(t.get_value())))
@@ -231,16 +231,15 @@ class FirstScene(Scene):
         self.play(t.animate.set_value(1),
                   run_time=7,
                   rate_func=rate_functions.ease_in_out_sine)
+        self.remove(icon)
         self.wait(1)
 
-
+        # TODO icon comes back?
 
 # -------------------------------------------
 
         # # 1.2
         # what are elliptic curves
-        # TODO : Transition for the background. Maybe better in an editor?
-        # or keep the bubble for later.
         self.next_section("1.2 What are elliptic curves?")
         self.clear()
         thoughts.clear_updaters()
@@ -282,36 +281,32 @@ class FirstScene(Scene):
         framebox2 = MySurroundingRectangle(eq_standard_curve[3], color=YELLOW, buff=.1)
         self.add(framebox1, framebox2)
 
-        # merge to another curve
+        # merge to another curve and come back
         second_E = sagemath.EllipticCurve([-7, 6])
         second_curve = smanim(second_E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
         shz(second_curve, 5)
         eq_second_curve = MathTex(r"y^2 = x^3", r" - 7\,", " x ", " + 6")
         eq_second_curve.to_corner(UL)
         shz(eq_second_curve, 5)
-        old_curve = curve.copy()
-        self.play(
-            Transform(curve, second_curve),
-            Transform(eq_standard_curve, eq_second_curve),
-            run_time=1
+
+        self.play(Transform(curve, second_curve),
+                  Transform(eq_standard_curve, eq_second_curve),
+                  run_time=2,
+                  rate_func=rate_functions.there_and_back_with_pause
         )
-        # self.remove(curve)
         self.wait(1)
+        self.remove(framebox1, framebox2)
 
         # switch back
         eq_general_curve = MathTex(r"y^2 = x^3", r" +A\,", " x ", " + B")
         eq_general_curve.to_corner(UL)
         shz(eq_general_curve, 5)
-        self.remove(framebox1, framebox2)
-        self.play(
-            FadeTransform(eq_standard_curve, eq_general_curve),
-            Transform(second_curve, old_curve),
-            run_time=1
-        )
-        curve = old_curve
+        self.play(FadeOut(eq_standard_curve),
+                  FadeIn(eq_general_curve),
+                  run_time=1)
+        self.wait(1)
 
-        # now run through a family of curves
-        self.remove(curve, second_curve, old_curve)
+        # run through a family of curves
         t = ValueTracker(0)
         curve.add_updater(lambda m:m.become(family_of_curves(t.get_value())))
         self.add(curve)
@@ -323,8 +318,10 @@ class FirstScene(Scene):
         # they are all symmetric
         self.clear()
         self.add(background, grid, stte, curve)
-
-        text_elliptic_curve.next_to(eq_standard_curve, DOWN)
+        eq_symmetric = MathTex(r"(-y)^2 = y^2 = x^3+A\,x+B")
+        eq_symmetric.to_corner(UL)
+        self.add(eq_symmetric)
+        # text_elliptic_curve.next_to(eq_standard_curve, DOWN)
         arrow_1 = Arrow(vec(-1, -1.8), vec(-1,1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
@@ -336,7 +333,7 @@ class FirstScene(Scene):
                   Create(arrow_1r),
                   FadeIn(arrow_2),
                   FadeIn(arrow_2r),
-                  run_time=.4)
+                  run_time=1)
         self.wait(2)
 
 
