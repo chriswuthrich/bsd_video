@@ -5,15 +5,15 @@ Here the actual conjecture is
 explained and illustrated
 with graphs.
 
+TODO: list up to 1000 doesn't shift correctly
 """
 
 from manim import *
 import sage.all as sagemath
-from character import StudentChar
+from character import two_characters_standing_next_to_each_other
 from msage import smanim
 from tools import *
 import json
-
 
 
 
@@ -62,7 +62,7 @@ def list_of_points(T, colour=WHITE):
            ]
 
     # copied but O modified
-    pts_str = \
+    pts_strings = \
            [r"$(0$, & $1$, & $0)$",
             r"$(0$, & $\pm 1$, & $1)$",
             r"$(-2$, & $\pm 1$, & $1)$",
@@ -94,24 +94,20 @@ def list_of_points(T, colour=WHITE):
             r"$(-16744$, & $\pm 24023$, & $12167)$",
             r"$(1274$, & $\pm 45473$, & $1)$"
             ]
-    # lei[T] gives the number of items in
+    # number_of_points_below_powers_of_ten[T] gives the number of items in
     # pts with height < T
-    lei = {10: 8, 100: 14, 1000: 20, 10000: 28}
+    number_of_points_below_powers_of_ten = {10: 8, 100: 14, 1000: 20, 10000: 28}
 
-    template = TexTemplate()
-    template.add_to_preamble(r"\usepackage{booktabs}")
-
-    n = lei[T]
-    tstr = r"\begin{tabular}{rcl}" + "\n"
-    tstr += r"\toprule" + "\n"
-    tstr += r"$(X$, & $Y$, & $Z)$ " + r"\\" + "\n"
-    tstr += r"\midrule" + "\n"
-    for P in pts_str[:n]:
-        tstr += P + r" \\ " + "\n"
-    # tstr += pts[n-1]
-    tstr += r"\bottomrule" + "\n"
-    tstr += r"\end{tabular}"
-    v = Tex(tstr, tex_template=template, color=colour)
+    n = number_of_points_below_powers_of_ten[T]
+    tabular_string = r"\begin{tabular}{rcl}" + "\n"
+    tabular_string += r"\toprule" + "\n"
+    tabular_string += r"$(X$, & $Y$, & $Z)$ " + r"\\" + "\n"
+    tabular_string += r"\midrule" + "\n"
+    for P in pts_strings[:n]:
+        tabular_string += P + r" \\ " + "\n"
+    tabular_string += r"\bottomrule" + "\n"
+    tabular_string += r"\end{tabular}"
+    v = Tex(tabular_string, color=colour)
     v.scale(.5)
     v.move_to(vec(-5, 2))
     v.to_edge(UP)
@@ -131,116 +127,112 @@ class ThirdScene(Scene):
         # 3.1 Count global points
         self.next_section("3.1 Count global points")
         self.add(cloud_background())
-        st = StudentChar()
-        te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
-        st.scale(1)
-        te.scale(1)
-        stte = VGroup(st, te)
-        stte.arrange()
-        stte.to_corner(DL)
-        shz(stte, 10)
+        stte = two_characters_standing_next_to_each_other()
         self.add(stte)
 
         # Title comes in
-        tit = Text("Counting rational points", color=YELLOW)
-        tit.shift(2*UP)
-        self.play(GrowFromCenter(tit))
+        title_counting_rational_points = Text("Counting rational points", color=YELLOW)
+        title_counting_rational_points.shift(2*UP)
+        self.play(GrowFromCenter(title_counting_rational_points))
         self.wait(.5)
 
         # For some curves like $y^2=x^3-4x-2$ there are only four points.
-        ee2 = MathTex(r"y^2 = x^3- 4\,x - 2")
-        ee2.to_corner(UL)
-        shz(ee2, 5)
-        self.add(ee2)
-        self.play(FadeOut(tit, shift=DOWN * 2, scale=1.5))
+        eq_curve_of_rank_0 = MathTex(r"y^2 = x^3 - 4\,x - 2")
+        eq_curve_of_rank_0.to_corner(UL)
+        shz(eq_curve_of_rank_0, 5)
+        self.add(eq_curve_of_rank_0)
+        self.play(FadeOut(title_counting_rational_points, shift=DOWN * 2, scale=1.5))
         self.wait(.5)
 
         # create curve
-        grid = VGroup()
-        grid.add(fading_numberplane())
-        grid.add(Line(vec(0, -4), vec(0, 4), color=WHITE, stroke_width=2))
+        grid = fading_numberplane(x_tip=True,
+                                  y_tip=True,
+                                  x_label=False,
+                                  y_label=False,
+                                  axes_fading=True
+                                  )
         shz(grid, 1)
-        E = sagemath.EllipticCurve([-2, 1])
-        curve2 = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        shz(curve2, 5)
-        curvepic2 = VGroup(grid, curve2)
+        rank_zero_E = sagemath.EllipticCurve([-2, 1])
+        eq_curve_rank_zero = smanim(rank_zero_E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(eq_curve_rank_zero, 5)
+        grid_and_curve_of_rank_zero = VGroup(grid, eq_curve_rank_zero)
         shift_grid = vec(2, 0)
-        curvepic2.shift(shift_grid)
-        self.add(curvepic2, stte)
+        grid_and_curve_of_rank_zero.shift(shift_grid)
+        self.add(grid_and_curve_of_rank_zero, stte)
         self.wait(1)
 
-        pointcolour = BLUE_B
-        pointradius = .07
+        point_colour = BLUE_B
+        point_radius = .07
         one_point_outside = VGroup(
-            dot_on_curve(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
+            dot_on_curve(vec(3.5, 3.6) + shift_grid, radius=point_radius, colour=point_colour),
             Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8, 3.9) + shift_grid)
             )
-        pts = [((0, 1), r"(0,1)", vec(.5, .4)),
+        points_up_to_10 = [((0, 1), r"(0,1)", vec(.5, .4)),
                ((0, -1), r"(0,-1)", vec(.55, -.4)),
                ((1, 0), r"(1,0)", vec(.7, .3)),
                ((100, 100), r"(X=0,Y=1,Z=0)", vec(0, 0))]
         all_pts_and_labels = VGroup()
         self.add(all_pts_and_labels)
-        for P, Pstr, sh in pts:
+        for P, Pstr, sh in points_up_to_10:
             P_centre = vec(P[0] * 1., P[1] * 1.) + shift_grid
-            P_label = MathTex(Pstr, color=YELLOW)
-            P_label.move_to(P_centre+sh)
+            eq_P_label = MathTex(Pstr, color=YELLOW)
+            eq_P_label.move_to(P_centre + sh)
             if P[0] > 7.111 or P[1] > 4:  # point outside screen
                 v = one_point_outside
-                P_label.move_to(ORIGIN).to_edge(UP).shift(1.7*RIGHT)
+                eq_P_label.move_to(ORIGIN).to_edge(UP).shift(1.7*RIGHT)
                 point_to_flash = vec(3.5, 3.6) + shift_grid
             else:
-                v = dot_on_curve(P_centre, colour=pointcolour, radius=pointradius, z_index=10)
+                v = dot_on_curve(P_centre, colour=point_colour, radius=point_radius, z_index=10)
                 point_to_flash = P_centre
-            all_pts_and_labels.add(v, P_label)
-            self.play(Indicate(P_label),
+            all_pts_and_labels.add(v, eq_P_label)
+            self.play(Indicate(eq_P_label),
                       Flash(point_to_flash),
                       runtime=.7)
             self.wait(.1)
 
         # Back to favourite curve
-        self.remove(ee2, all_pts_and_labels)
-        E = sagemath.EllipticCurve([-4, 1])
-        curve = smanim(E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        shz(curve, 5)
-        curvepic = VGroup(grid, curve)
+        self.remove(eq_curve_of_rank_0, all_pts_and_labels)
+        standard_E = sagemath.EllipticCurve([-4, 1])
+        standard_curve = smanim(standard_E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
+        shz(standard_curve, 5)
+        curvepic = VGroup(grid, standard_curve)
         curvepic.shift(shift_grid)
-        ee_affine = MathTex(r"{{y^2}}   = {{x}}^3- 4\, {{x}} +  {{1}}")
-        shz(ee_affine, 5)
-        ee_affine.to_corner(UL)
-        self.add(ee_affine)
-        self.play(Transform(curvepic2, curvepic),
+        eq_standard_curve = MathTex(r"{{y^2}}   = {{x}}^3- 4\, {{x}} +  {{1}}")
+        shz(eq_standard_curve, 5)
+        eq_standard_curve.to_corner(UL)
+        self.add(eq_standard_curve)
+        self.play(Transform(grid_and_curve_of_rank_zero, curvepic),
                   run_time=1
                   )
         self.wait(.5)
-        ee = MathTex(r"{{Y^2 Z}} = {{X}}^3- 4\,{{XZ^2}}+ {{Z^3}}")
-        shz(ee, 5)
-        ee.to_corner(UL)
-        self.play(TransformMatchingTex(ee_affine, ee))
-        self.play(ee.animate.move_to(vec(0, -3.2)))
+        eq_projective_standard_curve = MathTex(r"{{Y^2 Z}} = {{X}}^3- 4\,{{XZ^2}}+ {{Z^3}}")
+        shz(eq_projective_standard_curve, 5)
+        eq_projective_standard_curve.to_corner(UL)
+        self.play(TransformMatchingTex(eq_standard_curve, eq_projective_standard_curve))
+        self.play(eq_projective_standard_curve.animate.move_to(vec(0, -3.2)))
         self.wait(1)
 
         # list points of height < 10
-        v1, pts, indices = list_of_points(10)
-        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 10")
-        bdt.to_edge(UP)
-        bdt.shift(vec(-.7, 0))
-        self.play(FadeIn(v1),
-                  FadeIn(bdt),
+        table_up_to_10, points_up_to_10, indices = list_of_points(10)
+        eq_XYZ_less_10 = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 10")
+        eq_XYZ_less_10.to_edge(UP)
+        eq_XYZ_less_10.shift(vec(-.7, 0))
+        self.play(FadeIn(table_up_to_10),
+                  FadeIn(eq_XYZ_less_10),
                   run_time=1)
         self.wait(1)
-        pointcolour = BLUE_B
-        pointradius = .07
+        point_colour = BLUE_B
+        point_radius = .07
         point_outside = VGroup(
-            dot_on_curve(vec(3.5, 3.6) + shift_grid, radius=pointradius, colour=pointcolour),
-            dot_on_curve(vec(3.5, -3.6) + shift_grid, radius=pointradius, colour=pointcolour),
+            dot_on_curve(vec(3.5, 3.6) + shift_grid, radius=point_radius, colour=point_colour),
+            dot_on_curve(vec(3.5, -3.6) + shift_grid, radius=point_radius, colour=point_colour),
             Arrow(vec(3.7, 3.6) + shift_grid, vec(3.8, 3.9) + shift_grid),
             Arrow(vec(3.7, -3.6) + shift_grid, vec(3.8, -3.9) + shift_grid),
             )
         point_outside_shows = False
-        for i in range(1, len(pts)):
-            P = pts[i]
-            P_str = v1[0][indices[i]:indices[i+1]]
+        for i in range(1, len(points_up_to_10)):
+            P = points_up_to_10[i]
+            P_str = table_up_to_10[0][indices[i]:indices[i+1]]
             P_centre = vec(P[0]*1./P[2], P[1]*1./P[2]) + shift_grid
             minus_P_centre = vec(P[0]*1./P[2], - P[1]*1./P[2]) + shift_grid
             if P_centre[0] > 7.111 or P_centre[1] > 4:  # point outside screen
@@ -249,8 +241,8 @@ class ThirdScene(Scene):
                 point_to_flash = vec(3.5, 3.6) + shift_grid
                 minus_point_to_flash = vec(3.5, -3.6) + shift_grid
             else:
-                self.add(dot_on_curve(P_centre, colour=pointcolour, radius=pointradius),
-                         dot_on_curve(minus_P_centre, radius=pointradius, colour=pointcolour))
+                self.add(dot_on_curve(P_centre, colour=point_colour, radius=point_radius),
+                         dot_on_curve(minus_P_centre, radius=point_radius, colour=point_colour))
                 point_to_flash = P_centre
                 minus_point_to_flash = minus_P_centre
 
@@ -262,20 +254,20 @@ class ThirdScene(Scene):
             if point_outside_shows:
                 self.remove(point_outside)
 
-        self.play(FadeOut(v1, bdt))
+        self.play(FadeOut(table_up_to_10, eq_XYZ_less_10))
 
         # now list them of height < 100
-        v1, more_pts, indices = list_of_points(100)
-        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 100")
-        bdt.to_edge(UP)
-        bdt.shift(vec(-.7, 0))
-        self.play(FadeIn(v1),
-                  FadeIn(bdt),
+        table_up_to_100, points_up_to_100, indices = list_of_points(100)
+        eq_XYZ_less_100 = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 100")
+        eq_XYZ_less_100.to_edge(UP)
+        eq_XYZ_less_100.shift(vec(-.7, 0))
+        self.play(FadeIn(table_up_to_100),
+                  FadeIn(eq_XYZ_less_100),
                   run_time=1)
         self.wait()
-        for i in range(len(pts), len(more_pts)):
-            P = more_pts[i]
-            P_str = v1[0][indices[i]:indices[i+1]]
+        for i in range(len(points_up_to_10), len(points_up_to_100)):
+            P = points_up_to_100[i]
+            P_str = table_up_to_100[0][indices[i]:indices[i+1]]
             P_centre = vec(P[0]*1./P[2], P[1]*1./P[2]) + shift_grid
             minus_P_centre = vec(P[0]*1./P[2], - P[1]*1./P[2]) + shift_grid
             if P_centre[0] > 7.111 or P_centre[1] > 4:  # point outside screen
@@ -284,8 +276,8 @@ class ThirdScene(Scene):
                 point_to_flash = vec(3.5, 3.6) + shift_grid
                 minus_point_to_flash = vec(3.5, -3.6) + shift_grid
             else:
-                self.add(dot_on_curve(P_centre, colour=pointcolour, radius=pointradius, z_index=10),
-                         dot_on_curve(minus_P_centre, colour=pointcolour, radius=pointradius, z_index=10))
+                self.add(dot_on_curve(P_centre, colour=point_colour, radius=point_radius, z_index=10),
+                         dot_on_curve(minus_P_centre, colour=point_colour, radius=point_radius, z_index=10))
                 point_to_flash = P_centre
                 minus_point_to_flash = minus_P_centre
 
@@ -296,19 +288,19 @@ class ThirdScene(Scene):
             self.wait(.1)
             if point_outside_shows:
                 self.remove(point_outside)
-        self.play(FadeOut(v1, bdt))
+        self.play(FadeOut(table_up_to_10, eq_XYZ_less_10))
 
         # list up to height 1000
-        v1, even_more_pts, indices = list_of_points(1000)
-        bdt = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 1000")
-        bdt.to_edge(UP)
-        bdt.shift(vec(-.7, 0))
+        table_up_to_1000, points_up_to_1000, indices = list_of_points(1000)
+        eq_XYZ_less_1000 = MathTex(r"\lvert X\rvert,\, \lvert Y \rvert,\, \lvert Z\rvert < 1000")
+        eq_XYZ_less_1000.to_edge(UP)
+        eq_XYZ_less_1000.shift(vec(-.7, 0))
 
         # move up the list to reveal more points
         # opacity updater for new elements
         def op(i, tt):
-            s = i - len(more_pts)
-            n = len(even_more_pts) - len(more_pts)
+            s = i - len(points_up_to_100)
+            n = len(points_up_to_1000) - len(points_up_to_100)
             if tt < s/n:
                 return 0
             elif tt < (s+1)/n:
@@ -317,18 +309,18 @@ class ThirdScene(Scene):
                 return 1
 
         t = ValueTracker(0)
-        start_v1 = vec(v1.get_center()[0], v1.get_center()[1])
+        start_v1 = vec(table_up_to_1000.get_center()[0], table_up_to_1000.get_center()[1])
 
         def place_v1(tt):
             return start_v1 + tt * vec(0, 3)
 
-        v1.add_updater(lambda m: m.move_to(place_v1(t.get_value())))
-        for i in range(len(more_pts), len(even_more_pts)):
+        table_up_to_1000.add_updater(lambda m: m.move_to(place_v1(t.get_value())))
+        for i in range(len(points_up_to_100), len(points_up_to_1000)):
             for j in range(indices[i], indices[i+1]):
                 # in the following the "i=i" is there to avoid late binding
                 # otherwise all updaters will take the last value of i
-                v1[0][j].add_updater(lambda m, i=i: m.set_opacity(op(i, t.get_value())))
-        v1[0][-1].add_updater(lambda m, i=i: m.set_opacity(op(i, t.get_value())))
+                table_up_to_1000[0][j].add_updater(lambda m, i=i: m.set_opacity(op(i, t.get_value())))
+        table_up_to_1000[0][-1].add_updater(lambda m, i=i: m.set_opacity(op(i, t.get_value())))
         # this was used to print the value on screen,
         # leave here if needed later elsewhere
         # temporary_t = DecimalNumber(
@@ -341,8 +333,8 @@ class ThirdScene(Scene):
         # )
         # temporary_t.to_corner(UR)
         # self.add(temporary_t)
-        self.add(v1)
-        self.play(FadeIn(bdt),
+        self.add(table_up_to_1000)
+        self.play(FadeIn(eq_XYZ_less_1000),
                   t.animate.set_value(1), run_time=3, rate_func=linear)
 
         self.wait(1)
@@ -389,17 +381,17 @@ class ThirdScene(Scene):
         self.add(cloud_background(), stte)
 
         # Title comes in
-        tit = Text("Counting points modulo", color=YELLOW)
-        tit.shift(2*UP)
-        self.play(GrowFromCenter(tit))
+        title_counting_rational_points = Text("Counting points modulo", color=YELLOW)
+        title_counting_rational_points.shift(2*UP)
+        self.play(GrowFromCenter(title_counting_rational_points))
         self.wait(.5)
 
         # equation in centre goes modulo
-        ee = MathTex(r"{{y^2}} {{=}} {{x^3- 4\,x + 1}}", color=YELLOW)
-        self.add(ee)
+        eq_projective_standard_curve = MathTex(r"{{y^2}} {{=}} {{x^3- 4\,x + 1}}", color=YELLOW)
+        self.add(eq_projective_standard_curve)
         eemod = MathTex(r"{{y^2}} {{\equiv}} {{x^3- 4\,x +1}} \pmod{10}", color=YELLOW)
-        self.play(TransformMatchingTex(ee, eemod),
-                  FadeOut(tit, shift=UP, scale=1.5))
+        self.play(TransformMatchingTex(eq_projective_standard_curve, eemod),
+                  FadeOut(title_counting_rational_points, shift=UP, scale=1.5))
         self.wait()
         self.play(eemod.animate.move_to(vec(1.4, -3.219)))
         self.wait(.5)

@@ -19,7 +19,8 @@ def bsd_tex_template():
                        "\\usepackage{lmodern}\n" +
                        "\\usepackage{mathtools}\n" +
                        "\\usepackage{amssymb}\n" +
-                       "\\usepackage{mathrsfs}\n")
+                       "\\usepackage{mathrsfs}\n" +
+                       "\\usepackage{booktabs}\n")
 
     bsd_tex_preamble_0 = (common_preamble +
                           "\\usepackage{lmodern}\n")
