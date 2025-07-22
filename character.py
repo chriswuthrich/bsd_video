@@ -2,12 +2,13 @@ r"""
 Part of the bsd_video
 
 Creates dummy characters.
+They should be replaced in the final version.
 
+TODO : Not really needed, but currently there is a line behind the eyes not coloured.
 """
 
 from manim import *
-from manim.opengl import *
-from tools import shz
+from tools import shz, vec
 
 
 class StudentChar(VGroup):
@@ -136,6 +137,26 @@ class StudentChar(VGroup):
         self[-5].set_opacity(0)
 
 
+def two_characters_standing_next_to_each_other(to_corner=True, scale=1):
+    """
+    These are the two, student and teacher, standing next to each other
+
+    to_corner = True send it to the lower left corner otherwise it is centered.
+    """
+    st = StudentChar()
+    te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
+    st.scale(scale)
+    te.scale(scale)
+    shz(st, 10)
+    shz(te, 10)
+    v = VGroup(st, te)
+    v.arrange()
+    te.shift(vec(0, 0.06))  # aligned below
+    if to_corner:
+        v.to_corner(DL)
+    return v
+
+
 class MyChar(Scene):
     """
     A placeholder character for the student
@@ -170,7 +191,10 @@ class MyChar(Scene):
         self.wait(1)
         self.play(Wiggle(st2))
         self.play(Rotate(st4, PI/4, run_time=1))
-        self.wait(3)
+        self.wait(1)
+
+        self.add(two_characters_standing_next_to_each_other())
+        self.wait(1)
 
 
 if __name__ == "__main__":

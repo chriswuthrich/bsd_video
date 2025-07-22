@@ -22,7 +22,7 @@ from msage import smanim
 from tools import *
 
 
-def little_curve():
+def little_curve_icon():
     # the svg file is a simplified output from
     # sage modified with inkscape
     ellicon = SVGMobject("pics/ellicon3.svg",
@@ -34,7 +34,7 @@ def little_curve():
     v.scale(.5)
     return v
 
-def family_of_curve(tt):
+def family_of_curves(tt):
     if tt == .5:
         ttt = sagemath.RR(.49)
     else:
@@ -59,8 +59,8 @@ class FirstScene(Scene):
         ## 1.1 From real to maths world
 
         self.next_section("Walk on path")
-        bg_image = nature_background()
-        self.add(bg_image)
+        background_image = natural_initial_background()
+        self.add(background_image)
 
         # chars on stand on the path
         st = StudentChar()
@@ -102,7 +102,7 @@ class FirstScene(Scene):
         thoughts[1][2].shift(vec(2.1, 0.6))
 
         # the little elliptic curve appears
-        icon = little_curve()
+        icon = little_curve_icon()
         icon.move_to(cloud_centre+vec(1.3, 0))
         shz(icon, 5)
         self.play(FadeIn(icon))
@@ -173,8 +173,8 @@ class FirstScene(Scene):
         self.remove(zeta)
         thoughts.clear_updaters()
         icon.clear_updaters()
-        self.remove(thoughts, icon, tit, st, te, bg_image)
-        self.add(bg_image, thoughts, tit, icon, st, te)  # put in the correct order
+        self.remove(thoughts, icon, tit, st, te, background_image)
+        self.add(background_image, thoughts, tit, icon, st, te)  # put in the correct order
 
         t = ValueTracker(0)
         pa = lambda tt: vec(-6*tt**2, -2.5*tt)
@@ -227,7 +227,7 @@ class FirstScene(Scene):
                   rate_func=linear)
         self.wait(1)
 
-        self.remove(tit, icon, bg_image)
+        self.remove(tit, icon, background_image)
         self.clear()
         self.add(thoughts[0])
         self.add(st, te)
@@ -346,7 +346,7 @@ class FirstScene(Scene):
         # now run through a family of curves
         self.remove(curve, new_curve, old_curve)
         t = ValueTracker(0)
-        curve.add_updater(lambda m:m.become(family_of_curve(t.get_value())))
+        curve.add_updater(lambda m:m.become(family_of_curves(t.get_value())))
         self.add(curve)
         self.play(t.animate.set_value(1), run_time=10, rate_func=rate_functions.there_and_back)
 

@@ -7,9 +7,12 @@ useful for all parts
 """
 
 from manim import *
-from manim.opengl import *
+
 
 def vec(x, y, z=0):
+    """
+    short cur for numpy's array for 2-dimensional vectors
+    """
     return np.array([x, y, z])
 
 
@@ -21,9 +24,12 @@ def shz(m, z: float):
     this shifts by z/100
     Typically the background will be -10 and the most forefront +10
     """
-    return m.shift(np.array([0, 0, z/100]))
+    # This is the version for opengl
+    # return m.shift(np.array([0, 0, z/100]))
+    return m.set_z_index(z)
 
 
+# not used
 def subtitle(said):
     r"""
     This prints a text in small white at the bottom of the screen.
@@ -65,7 +71,7 @@ def my_background():
     return gradient_rect
 
 
-def nature_background():
+def natural_initial_background():
     r"""
     Background picture for the opening scene.
 
