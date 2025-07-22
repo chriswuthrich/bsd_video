@@ -11,6 +11,21 @@ from msage import smanim
 import sage.all as sagemath
 
 
+def bsd_tex_template():
+    bsd_tex_preamble = "\n\\usepackage[british]{babel}\n"\
+                   "\\usepackage[utf8]{inputenc}\n"\
+                   "\\usepackage[T1]{fontenc}\n"\
+                   "\\usepackage{lmodern}\n"\
+                   "\\usepackage{mathtools}\n"\
+                   "\\usepackage{amssymb}\n"\
+                   "\\usepackage{mathrsfs}\n"
+    return TexTemplate(preamble=bsd_tex_preamble)
+
+
+Text.set_default(font="Noto Sans")
+MathTex.set_default(tex_template=bsd_tex_template())
+
+
 def vec(x, y, z=0):
     """
     short cur for numpy's array for 2-dimensional vectors
@@ -351,7 +366,11 @@ class TestSome(Scene):
         self.clear()
         self.add(cloud_background())
         self.wait()
-
+        v = VGroup(Text("Good font?"),
+                   MathTex(r"\int_{\mathbb{R}} f(x) dx = \sum_{i=0}^{\infty} a_{i,j}", tex_template=bsd_tex_template()))
+        v.arrange(DOWN)
+        self.add(v)
+        self.wait(1)
 
         self.add(thought_bubble(ORIGIN, 1.3))
         # self.add(Arrow(tip_shape=CurvyPointyTip))

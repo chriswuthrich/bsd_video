@@ -7,12 +7,6 @@ elliptic curves with some 2d pictures.
 Many things are precalculated in
 basic_calculation_with_favourite_elliptic_curve.ipynb
 
-TODO:
-* The cloud should grow to a certain size and then this
-is the background in all other scenes including the 3D one.
-* Switch back to original curve and variation through
-examples is not done yet
-
 """
 
 from manim import *
@@ -33,6 +27,7 @@ def little_curve_icon():
     v.set_color(WHITE)
     v.scale(.5)
     return v
+
 
 def family_of_curves(tt):
     if tt == .5:
@@ -215,12 +210,12 @@ class FirstScene(Scene):
         icon.clear_updaters()  # not needed
         icon_start = icon.get_center()
 
-        def icon_movement(tt):
+        def icon_second_movement(tt):
             s = icon_start
             s += vec(0, np.sqrt(tt))
             return s
 
-        icon.add_updater(lambda m : m.move_to(icon_movement(t.get_value())))
+        icon.add_updater(lambda m : m.move_to(icon_second_movement(t.get_value())))
 
         # put in the correct order
         self.remove(thoughts, icon, title, stte, background_image)
@@ -322,9 +317,6 @@ class FirstScene(Scene):
         arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         arrow_2r = Arrow(vec(2.8, 3), vec(2.8, -3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
-        # self.play(Create(curve),
-        #          Create(eq_standard_curve),
-        #          run_time=.3)
         self.play(Create(arrow_1),
                   Create(arrow_1r),
                   FadeIn(arrow_2),
@@ -337,6 +329,5 @@ class FirstScene(Scene):
 
 # now render it
 if __name__ == "__main__":
-    with tempconfig({"renderer": "cairo", "quality": "medium_quality", "preview": True}):
-        scene = FirstScene()
-        scene.render()
+    scene = FirstScene()
+    scene.render()
