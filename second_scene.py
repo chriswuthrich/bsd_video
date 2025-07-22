@@ -9,6 +9,8 @@ The change of coordinates for the
 fake projective curve is done in
 calculation_for_fake_projective_curve.ipynb
 
+TODO : The 3-d scene at the end needs some work
+
 """
 
 from manim import *
