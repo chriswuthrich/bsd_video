@@ -20,6 +20,9 @@ def bsd_tex_template():
                        "\\usepackage{mathtools}\n" +
                        "\\usepackage{amssymb}\n" +
                        "\\usepackage{mathrsfs}\n")
+
+    bsd_tex_preamble_0 = (common_preamble +
+                          "\\usepackage{lmodern}\n")
     
     bsd_tex_preamble_1 = (common_preamble +
                           "\\usepackage[scaled]{helvet}\n" +
@@ -32,7 +35,7 @@ def bsd_tex_template():
                           "\\usepackage[LGRgreek,defaultmathsizes,italic]{mathastext}\n" +
                           "\\renewcommand{\\varphi}{\\phi}\n")
 
-    return TexTemplate(preamble=bsd_tex_preamble_2)
+    return TexTemplate(preamble=bsd_tex_preamble_0)
 
 
 Text.set_default(font="Noto Sans")
