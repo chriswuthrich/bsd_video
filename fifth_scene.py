@@ -9,11 +9,9 @@ create_data_for_plots_of_conjectured_limit.ipynb
 
 
 from manim import *
-from manim.opengl import *
 import sage.all as sagemath
-from character import StudentChar
+from character import two_characters_standing_next_to_each_other
 from msage import smanim
-from first_scene import subtitle
 from tools import *
 import json
 
@@ -25,14 +23,7 @@ class FifthScene(Scene):
         # 5 Rank and original conjecture
         # 5.1 Rank
         self.next_section("5.1 What is the rank")
-        st = StudentChar()
-        te = StudentChar(height=1.2, width=0.8, colour=GREEN, lid_colour=DARK_GRAY)
-        st.scale(1)
-        te.scale(1)
-        stte = VGroup(st, te)
-        stte.arrange()
-        stte.to_corner(DL)
-        shz(stte, 10)
+        stte = two_characters_standing_next_to_each_other()
         self.add(cloud_background(), stte)
 
         # state Theorem
@@ -41,9 +32,9 @@ class FifthScene(Scene):
 
 
 
+
 #  now render it
 if __name__ == "__main__":
-    with tempconfig({"renderer": "cairo", "quality": "medium_quality", "preview": True}):
-        scene = FifthScene()
-        scene.render()
+    scene = FifthScene()
+    scene.render()
 
