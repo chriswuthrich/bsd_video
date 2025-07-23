@@ -51,7 +51,7 @@ def fake_numberplane():
             vec(-30, y2),
             vec(30, y2),
             thickness=thickness,
-            color=colour2 if yy!=0 else WHITE))
+            color=colour2 if yy != 0 else WHITE))
 
     # lines x=const meeting at O
     nu1 = 100
@@ -223,10 +223,14 @@ class SecondScene(ThreeDScene):
         x_text = r"\tfrac{" + str(x_numerator) + r"}{" + str(x_denominator) + r"}"
         y_text = r"\tfrac{" + str(y_numerator) + r"}{" + str(y_denominator) + r"}"
         eq_pt6 = MathTex(r"(" + x_text + r", \pm" + y_text + r")")
-        P61 = dot_on_curve(vec(x_numerator * 1. / x_denominator, y_numerator * 1. / y_denominator), colour=point_colour,
-                  radius=point_radius, z_index=10)
-        P62 = dot_on_curve(vec(x_numerator * 1. / x_denominator, -y_numerator * 1. / y_denominator), colour=point_colour,
-                  radius=point_radius, z_index=10)
+        P61 = dot_on_curve(vec(x_numerator * 1. / x_denominator, y_numerator * 1. / y_denominator),
+                           colour=point_colour,
+                           radius=point_radius,
+                           z_index=10)
+        P62 = dot_on_curve(vec(x_numerator * 1. / x_denominator, -y_numerator * 1. / y_denominator),
+                           colour=point_colour,
+                           radius=point_radius,
+                           z_index=10)
 
         eq_pt6.next_to(eq_standard_curve, DOWN)
         eq_pt6.to_edge(LEFT)
@@ -259,7 +263,7 @@ class SecondScene(ThreeDScene):
 
         self.play(eq_standard_curve.animate(run_time=1).move_to(UP))
         eq_subsitute_frations = MathTex(r"\Bigl(\frac{Y}{Z}\Bigr)^2 = \Bigl(\frac{X}{Z}\Bigr)^3",
-                      r"- 4\,", r" \Bigl(\frac{X}{Z}\Bigr)", "+ 1")
+                                        r"- 4\,", r" \Bigl(\frac{X}{Z}\Bigr)", "+ 1")
         eq_subsitute_frations.next_to(eq_standard_curve, 2*DOWN)
         self.play(FadeIn(eq_subsitute_frations))
 

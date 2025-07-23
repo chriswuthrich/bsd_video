@@ -417,7 +417,7 @@ class ThirdScene(Scene):
         emod.move_to(eemod.get_center())
         equivmod = MathTex(r"(X,Y,Z)\sim \\ ({{3}}X, {{3}}Y, {{3}}Z)", color=YELLOW)
 
-        equivmod.move_to(vec(-5,0))
+        equivmod.move_to(vec(-5, 0))
 
         self.play(FadeOut(eemod),
                   FadeIn(emod))
@@ -446,7 +446,7 @@ class ThirdScene(Scene):
         self.add(cloud_background(), stte)
         mu = MathTex(r"\mathcal{M}(U) = \# E\bigl({}^{\mathbb{Z}}\!/\!{}_{U \mathbb{Z}}\bigr)")
         mu_text = MathTex(r"= \text{ number of solutions modulo }U.")
-        mu_group= VGroup(mu, mu_text).arrange(RIGHT)
+        mu_group = VGroup(mu, mu_text).arrange(RIGHT)
         mu_group.to_edge(UP)
         self.play(FadeIn(mu_group))
         self.wait(1)
@@ -458,9 +458,9 @@ class ThirdScene(Scene):
                     [27, 63], [28, 96], [29, 22], [30, 189]]
 
         mu_val = [m[1] for m in mu_graph]
-        mu_labels = [ str(m[0]) if m[0]%5==0 else "" for m in mu_graph]
+        mu_labels = [str(m[0]) if m[0] % 5 == 0 else "" for m in mu_graph]
         bc = BarChart(mu_val,
-                      bar_names = mu_labels,
+                      bar_names=mu_labels,
                       y_range=[0, 200, 50],
                       y_length=5,
                       tips=True,
@@ -470,7 +470,7 @@ class ThirdScene(Scene):
         bc.scale(.8)
         bc.shift(vec(1, 0))
         u_label = MathTex(r"U")
-        u_label.move_to(vec(6.4,-2.3))
+        u_label.move_to(vec(6.4, -2.3))
         self.add(u_label)
         self.play(Create(bc))
         self.wait()

@@ -20,8 +20,7 @@ def little_curve_icon():
     # the svg file is a simplified output from
     # sage modified with inkscape
     ellicon = SVGMobject("pics/ellicon3.svg",
-                        stroke_width=8
-                        )
+                         stroke_width=8)
     # part 0 and 1 are boxes
     v = ellicon[2]  # this is the curve
     v.set_color(WHITE)
@@ -35,13 +34,13 @@ def family_of_curves(tt):
     else:
         ttt = sagemath.RR(tt)
 
-    E = sagemath.EllipticCurve([2*ttt-4,2*ttt+1])
+    E = sagemath.EllipticCurve([2*ttt-4, 2*ttt+1])
     v = smanim(E.plot(color=rgb_to_color([255, 255*(1-tt), 0]),
-                                       thickness=2,
-                                       alpha=0.3,
-                                       xmax=7,
-                                       ymin=-5,
-                                       ymax=5))
+                      thickness=2,
+                      alpha=0.3,
+                      xmax=7,
+                      ymin=-5,
+                      ymax=5))
     shz(v, 5)
     return v
 
@@ -51,7 +50,7 @@ class FirstScene(Scene):
     def construct(self):
 
         # 1
-        ## 1.1 From real to maths world
+        # 1.1 From real to maths world
 
         self.next_section("Walk on path")
         background_image = natural_initial_background()
@@ -215,7 +214,7 @@ class FirstScene(Scene):
             s += vec(0, np.sqrt(tt))
             return s
 
-        icon.add_updater(lambda m : m.move_to(icon_second_movement(t.get_value())))
+        icon.add_updater(lambda m: m.move_to(icon_second_movement(t.get_value())))
 
         # put in the correct order
         self.remove(thoughts, icon, title, stte, background_image)
@@ -284,7 +283,7 @@ class FirstScene(Scene):
                   Transform(eq_standard_curve, eq_second_curve),
                   run_time=2,
                   rate_func=rate_functions.there_and_back_with_pause
-        )
+                  )
         self.wait(1)
         self.remove(framebox1, framebox2)
 
@@ -299,7 +298,7 @@ class FirstScene(Scene):
 
         # run through a family of curves
         t = ValueTracker(0)
-        curve.add_updater(lambda m:m.become(family_of_curves(t.get_value())))
+        curve.add_updater(lambda m: m.become(family_of_curves(t.get_value())))
         self.add(curve)
         self.play(t.animate.set_value(1),
                   run_time=10,
@@ -313,7 +312,7 @@ class FirstScene(Scene):
         eq_symmetric.to_corner(UL)
         self.add(eq_symmetric)
         # text_elliptic_curve.next_to(eq_standard_curve, DOWN)
-        arrow_1 = Arrow(vec(-1, -1.8), vec(-1,1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
+        arrow_1 = Arrow(vec(-1, -1.8), vec(-1, 1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         arrow_1r = Arrow(vec(-1, 1.8), vec(-1, -1.8), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         arrow_2 = Arrow(vec(2.8, -3), vec(2.8, 3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)
         arrow_2r = Arrow(vec(2.8, 3), vec(2.8, -3), stroke_width=3, buff=0, tip_shape=CurvyPointyTip)

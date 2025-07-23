@@ -43,7 +43,7 @@ Text.set_default(font="Noto Sans")
 MathTex.set_default(tex_template=bsd_tex_template())
 
 
-def vec(x, y, z=0):
+def vec(x, y, z=0.):
     """
     short cur for numpy's array for 2-dimensional vectors
     """
@@ -191,7 +191,7 @@ def fading_numberplane(x_tip=True,
     y_axis_colour = GRAY if axes_fading else WHITE
     y_axis = Line(vec(0, -4),
                   vec(0, 4),
-                  color = y_axis_colour,
+                  color=y_axis_colour,
                   stroke_width=stroke_width)
     v.add(y_axis)
 
@@ -246,7 +246,7 @@ def fading_numberplane(x_tip=True,
         label_x.move_to(vec(6.5, -0.4))
         v.add(label_x)
 
-    shz(v,1)
+    shz(v, 1)
     return v
 
 
@@ -277,7 +277,7 @@ class MySurroundingRectangle(RoundedRectangle):
         *mobjects,
         color,
         buff,
-        corner_radius = 0.0,
+        corner_radius=0.0,
         **kwargs
     ) -> None:
         from manim.mobject.mobject import Group
@@ -339,12 +339,12 @@ class CurvyPointyTip(ArrowTip):
     ):
         self.start_angle = start_angle  # doesn't seem to change anything
 
-        tip = vec(length,0)
+        tip = vec(length, 0)
         upper_corner = vec(0, width/2)
         lower_corner = vec(0, -width/2)
 
         # Control points to curve the left and right sides inwards
-        cp1 = vec(length,0)
+        cp1 = vec(length, 0)
         cp2 = upper_corner + length/3 * vec(np.sin(side_angle), -np.cos(side_angle))
         cp3 = lower_corner + length/3 * vec(np.sin(side_angle), np.cos(side_angle))
         cp4 = vec(length, 0)
@@ -386,9 +386,9 @@ class TestSome(Scene):
         self.add(w2, w3, w6)
         self.wait()
         self.clear()
-        for j in range(-12,12):
+        for j in range(-12, 12):
             i = j/4
-            self.play(FadeIn(Arrow(vec(-5, i), vec(i,4*i/3), tip_shape=CurvyPointyTip, buff =0)),
+            self.play(FadeIn(Arrow(vec(-5, i), vec(i, 4*i/3), tip_shape=CurvyPointyTip, buff=0)),
                       run_time=.1)
         self.wait(1)
         self.clear()

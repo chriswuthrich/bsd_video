@@ -104,7 +104,7 @@ def shorter_family_of_curves(tt):
     shz(v, 5)
     return v
 
-#
+# ---------------------------------
 
 class FourthScene(Scene):
 
@@ -198,8 +198,12 @@ class FourthScene(Scene):
 
         # move the M(T!) to the fraction
         eq_m_t_factorial_in_limit = complete_limit_formula[1][2]  # M(T!) target
-        eq_m_t_factorial_source = VGroup(mu_hash_solutions_modulo_u[0][0], eq_t_factorial_again, mu_hash_solutions_modulo_u[0][2]).copy()
-        path_mt = ArcBetweenPoints(eq_m_t_factorial_source.get_center(), eq_m_t_factorial_in_limit.get_center(), angle=- PI / 5)
+        eq_m_t_factorial_source = VGroup(mu_hash_solutions_modulo_u[0][0],
+                                         eq_t_factorial_again,
+                                         mu_hash_solutions_modulo_u[0][2]).copy()
+        path_mt = ArcBetweenPoints(eq_m_t_factorial_source.get_center(),
+                                   eq_m_t_factorial_in_limit.get_center(),
+                                   angle=- PI / 5)
 
         def mt_updater(m, alpha):
             point = path_mt.point_from_proportion(alpha)
@@ -217,8 +221,8 @@ class FourthScene(Scene):
         self.wait(1)
 
         # centre the fraction and hide the definition
-        self.play( FadeOut(mu_hash_solutions_modulo_u, eq_u_t_factorial, nt_hash_bounded_rational_solutions))
-        self.play(complete_limit_formula.animate.move_to(vec(2,1)), run_time=1)
+        self.play(FadeOut(mu_hash_solutions_modulo_u, eq_u_t_factorial, nt_hash_bounded_rational_solutions))
+        self.play(complete_limit_formula.animate.move_to(vec(2, 1)), run_time=1)
         self.wait(1)
 
         conjecture = Text("Conjecture:", color=YELLOW)
@@ -392,7 +396,7 @@ class FourthScene(Scene):
                                         color=WHITE,
                                         dash_length=.1)
         height_jump_point_1 = MathTex(r"137\,593", color=WHITE)
-        height_jump_point_1.scale(.5).move_to(axes_for_log_plot.c2p(np.log10(137593), 0) + vec(.45,.25))
+        height_jump_point_1.scale(.5).move_to(axes_for_log_plot.c2p(np.log10(137593), 0) + vec(.45, .25))
         height_jump_point_2 = MathTex(r"3\,241\,792", color=WHITE)
         height_jump_point_2.scale(.5).move_to(axes_for_log_plot.c2p(np.log10(3241792), 0) + vec(.55, .25))
 
@@ -400,13 +404,15 @@ class FourthScene(Scene):
                              FadeIn(dashed_line_down_1),
                              FadeIn(height_jump_point_1),
                              FadeIn(eq_jump_point_1)),
-                  run_time=1 )
+                  run_time=1
+                  )
         self.wait(.5)
         self.play(Succession(FadeIn(point_out_pt2),
                              FadeIn(dashed_line_down_2),
                              FadeIn(height_jump_point_2),
                              FadeIn(eq_jump_point_2)),
-                  run_time=2 )
+                  run_time=2
+                  )
 
         self.wait()
 
@@ -473,7 +479,7 @@ class FourthScene(Scene):
         # first draw the usual curve
         li = load_list(f"data/singular_plot_points.json")
         log_graph = VMobject(color=YELLOW)
-        log_graph.set_points_as_corners([axes_for_log_plot.c2p(x, y) for x, y in li if x>10])
+        log_graph.set_points_as_corners([axes_for_log_plot.c2p(x, y) for x, y in li if x > 10])
         log_graph.set_style(stroke_width=2)
 
         eq_changing_curve = MathTex(r"y^2 = x^3 - 3\,x + 2 ")
@@ -507,7 +513,7 @@ class FourthScene(Scene):
         # first draw the usual curve
         li = load_list(f"data/singular_plot_points.json")
         log_graph = VMobject(color=YELLOW)
-        log_graph.set_points_as_corners([axes_for_log_plot.c2p(x, np.log(y)/np.log(10)/5 + 8) for x, y in li if x>10])
+        log_graph.set_points_as_corners([axes_for_log_plot.c2p(x, np.log(y)/np.log(10)/5 + 8) for x, y in li if x > 10])
         log_graph.set_style(stroke_width=2)
 
         eq_changing_curve = MathTex(r"y^2 = x^3 - 3\,x + 2 ")
