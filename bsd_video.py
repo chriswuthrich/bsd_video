@@ -11,19 +11,19 @@ from fourth_scene import FourthScene
 from fifth_scene import FifthScene
 
 
-class BSDVideo(Scene):
+class BSDVideo(ThreeDScene):
     def construct(self):
 
-        FirstScene.construct()
+        FirstScene.construct(self)
         # self.clear()
 
-        SecondScene.construct()
+        SecondScene.construct(self)
 
-        ThirdScene.construct()
+        ThirdScene.construct(self)
 
-        FourthScene.construct()
+        FourthScene.construct(self)
 
-        FifthScene.construct()
+        FifthScene.construct(self)
 
 
 
