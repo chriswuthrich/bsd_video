@@ -19,11 +19,11 @@ class BSDVideo(ThreeDScene):
 
         SecondScene.construct(self)
 
-        ThirdScene.construct(self)
+        # ThirdScene.construct(self)
 
-        FourthScene.construct(self)
+        # FourthScene.construct(self)
 
-        FifthScene.construct(self)
+        # FifthScene.construct(self)
 
 
 
