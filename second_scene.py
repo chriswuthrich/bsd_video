@@ -342,7 +342,8 @@ class SecondScene(ThreeDScene):
 
         self.move_camera(phi=PI/2,
                          frame_center=(0, -10, 5),
-                         run_time=5)  # will be slower later
+                         run_time=10,
+                         rate_func=rate_functions.there_and_back_with_pause)  # will be slower later
         self.wait(3)
 
 

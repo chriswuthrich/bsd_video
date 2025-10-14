@@ -1,4 +1,5 @@
 r"""
+
 File that calls all scenes and makes one video
 
 """
@@ -15,7 +16,6 @@ class BSDVideo(ThreeDScene):
     def construct(self):
 
         FirstScene.construct(self)
-        # self.clear()
 
         SecondScene.construct(self)
 
