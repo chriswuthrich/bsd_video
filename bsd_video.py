@@ -18,13 +18,13 @@ class BSDVideo(ThreeDScene):
         FirstScene.construct(self)
 
         SecondScene.construct(self)
-        #
+
         # ThirdScene.construct(self)
-        #
+
         # FourthScene.construct(self)
-        #
+
         # FifthScene.construct(self)
-        #
+
 
 
 # now render it
