@@ -194,13 +194,13 @@ class FirstScene(Scene):
 
         # characters move
         stte_target_position = two_characters_standing_next_to_each_other(to_corner=True).get_center()
+        stte_x_move = stte_target_position[0] - stte_start[0]
+        stte_y_move = stte_target_position[1] - stte_start[1]
+        print(stte_start, stte_target_position, stte_x_move, stte_y_move)
 
         def stte_movement(tt):
-            s = stte_start
-            s += vec(0, 0, 10/100)
-            a = stte_target_position[0] - stte_start[0]
-            b = stte_target_position[1] - stte_start[1]
-            s += vec(a * tt ** 2, b * tt)
+            s = stte_start + vec(0, 0, 10/100)
+            s += vec(stte_x_move * tt ** 2, stte_y_move * tt)
             return s
 
         stte.add_updater(lambda m: m.move_to(stte_movement(t.get_value())))
@@ -235,7 +235,7 @@ class FirstScene(Scene):
         thoughts.clear_updaters()
         stte.clear_updaters()
         background = cloud_background()
-        shz(background, -1)
+        shz(background, -2)
         self.add(background, stte)
         self.wait(.2)
 
@@ -321,9 +321,9 @@ class FirstScene(Scene):
                   FadeIn(arrow_2),
                   FadeIn(arrow_2r),
                   run_time=1)
+
         self.wait(2)
-
-
+        self.clear()
 #
 
 # now render it
