@@ -246,7 +246,7 @@ def fading_numberplane(x_tip=True,
         label_x.move_to(vec(6.5, -0.4))
         v.add(label_x)
 
-    shz(v, 1)
+    shz(v, -1)
     return v
 
 

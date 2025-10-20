@@ -166,16 +166,16 @@ class SecondScene(ThreeDScene):
         shz(P12, 3)
         eq_pt2 = MathTex(r"(-1,\pm 2),")
         P21 = dot_on_curve(vec(-1, 2, .05), colour=point_colour, radius=point_radius, z_index=10)
-        P22 = dot_on_curve(vec(-1, -2, .02), colour=point_colour, radius=point_radius, z_index=10)
+        P22 = dot_on_curve(vec(-1, -2, .1), colour=point_colour, radius=point_radius, z_index=10)
         eq_pt3 = MathTex(r"(-2,\pm 1)")
-        P31 = dot_on_curve(vec(-2, 1), colour=point_colour, radius=point_radius, z_index=10)
-        P32 = dot_on_curve(vec(-2, -1), colour=point_colour, radius=point_radius, z_index=10)
+        P31 = dot_on_curve(vec(-2, 1, .1), colour=point_colour, radius=point_radius, z_index=10)
+        P32 = dot_on_curve(vec(-2, -1, .1), colour=point_colour, radius=point_radius, z_index=10)
         eq_pt4 = MathTex(r"(\tfrac{1}{4}, \pm\tfrac{1}{8}),")
-        P41 = dot_on_curve(vec(.25, .125), colour=point_colour, radius=point_radius, z_index=10)
-        P42 = dot_on_curve(vec(.25, -.125), colour=point_colour, radius=point_radius, z_index=10)
+        P41 = dot_on_curve(vec(.25, .125,.1), colour=point_colour, radius=point_radius, z_index=10)
+        P42 = dot_on_curve(vec(.25, -.125,.1), colour=point_colour, radius=point_radius, z_index=10)
         eq_pt5 = MathTex(r"(-\tfrac{7}{4}, \pm\tfrac{13}{8})")
-        P51 = dot_on_curve(vec(-7./4, 13./8), colour=point_colour, radius=point_radius, z_index=10)
-        P52 = dot_on_curve(vec(-7./4, -13/8.), colour=point_colour, radius=point_radius, z_index=10)
+        P51 = dot_on_curve(vec(-7./4, 13./8,.1), colour=point_colour, radius=point_radius, z_index=10)
+        P52 = dot_on_curve(vec(-7./4, -13/8.,.1), colour=point_colour, radius=point_radius, z_index=10)
 
         eq_pt0.next_to(eq_standard_curve, DOWN)
         eq_pt0.to_edge(LEFT)
@@ -223,11 +223,11 @@ class SecondScene(ThreeDScene):
         x_text = r"\tfrac{" + str(x_numerator) + r"}{" + str(x_denominator) + r"}"
         y_text = r"\tfrac{" + str(y_numerator) + r"}{" + str(y_denominator) + r"}"
         eq_pt6 = MathTex(r"(" + x_text + r", \pm" + y_text + r")")
-        P61 = dot_on_curve(vec(x_numerator * 1. / x_denominator, y_numerator * 1. / y_denominator),
+        P61 = dot_on_curve(vec(x_numerator * 1. / x_denominator, y_numerator * 1. / y_denominator, .1),
                            colour=point_colour,
                            radius=point_radius,
                            z_index=10)
-        P62 = dot_on_curve(vec(x_numerator * 1. / x_denominator, -y_numerator * 1. / y_denominator),
+        P62 = dot_on_curve(vec(x_numerator * 1. / x_denominator, -y_numerator * 1. / y_denominator, .1),
                            colour=point_colour,
                            radius=point_radius,
                            z_index=10)
@@ -328,17 +328,23 @@ class SecondScene(ThreeDScene):
         # TODO : point at infinity + label, cloud shaped background, grid on top
         self.add(background)
         numberplane_for_3d = fake_numberplane()
-        shz(numberplane_for_3d, 1)
+        shz(numberplane_for_3d, 0)
+        shz(background, -2)
+        shz(stte, 1)
         self.add(numberplane_for_3d, stte)
-        self.add(fake_curve())
+        projective_curve = fake_curve()
+        shz(projective_curve, +2)
+        self.add(projective_curve)
 
         # transform points to the 3d picture in fake coordinates
         for P in [P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62]:
             xP = P.get_center()[0]
             yP = P.get_center()[1]
-            P.move_to(vec(96*xP/(96+yP), 100*yP/(96+yP)))
+            P.move_to(vec(96*xP/(96+yP), 100*yP/(96+yP), .1))
             self.add(P)
-        self.add(Dot3D(vec(0, 100, .1), radius=.3, color=YELLOW))
+        # TODO : should be different points
+        self.add(Dot3D(vec(0, 100, .1), radius=3, colour=ORANGE))
+        self.add(MathTex("O=(0,1,0)"))
 
         self.move_camera(phi=PI/2,
                          frame_center=(0, -10, 5),
