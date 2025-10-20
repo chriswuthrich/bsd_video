@@ -343,7 +343,7 @@ class SecondScene(ThreeDScene):
             P.move_to(vec(96*xP/(96+yP), 100*yP/(96+yP), .1))
             self.add(P)
         # TODO : should be different points
-        self.add(Dot3D(vec(0, 100, .1), radius=3, colour=ORANGE))
+        self.add(Dot3D(vec(0, 100, .1), radius=3, color=ORANGE))
         self.add(MathTex("O=(0,1,0)"))
 
         self.move_camera(phi=PI/2,
