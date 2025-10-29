@@ -9,6 +9,10 @@ basic_calculation_with_favourite_elliptic_curve.ipynb
 
 """
 
+# TODO:
+# currently the characters move out of the picture, but I can't see what is wrong with stte_movement
+# One might add a bag of coins and 1000000 $ later
+
 from manim import *
 import sage.all as sagemath
 from character import two_characters_standing_next_to_each_other
@@ -196,12 +200,11 @@ class FirstScene(Scene):
         stte_target_position = two_characters_standing_next_to_each_other(to_corner=True).get_center()
         stte_x_move = stte_target_position[0] - stte_start[0]
         stte_y_move = stte_target_position[1] - stte_start[1]
-        print(stte_start, stte_target_position, stte_x_move, stte_y_move)
 
         def stte_movement(tt):
-            s = stte_start + vec(0, 0, 10/100)
-            s += vec(stte_x_move * tt ** 2, stte_y_move * tt)
-            return s
+            return stte_start + vec(stte_x_move * tt ** 2, stte_y_move * tt, 10/100)
+
+        print(stte_start, stte_target_position, stte_x_move, stte_y_move, stte_movement(1.))
 
         stte.add_updater(lambda m: m.move_to(stte_movement(t.get_value())))
 

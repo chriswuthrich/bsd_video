@@ -162,7 +162,7 @@ class SecondScene(ThreeDScene):
         eq_pt1 = MathTex(r"(2,\pm 1)")
         P11 = dot_on_curve(vec(2, 1, .1), colour=point_colour, radius=point_radius, z_index=10)
         shz(P11, 10)
-        P12 = dot_on_curve(vec(2, -1, .2), colour=point_colour, radius=point_radius, z_index=10)  # not on top?
+        P12 = dot_on_curve(vec(2, -1, .2), colour=point_colour, radius=point_radius, z_index=20)  # not on top?
         shz(P12, 3)
         eq_pt2 = MathTex(r"(-1,\pm 2),")
         P21 = dot_on_curve(vec(-1, 2, .05), colour=point_colour, radius=point_radius, z_index=10)
@@ -242,7 +242,8 @@ class SecondScene(ThreeDScene):
         # 2.2
         # Passage from affine to projective
         self.next_section("2.2 Passage to projective equation")
-        self.clear()
+        # self.clear()
+        self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=.2)
         eq_standard_curve.move_to(ORIGIN)
         self.add(background, eq_standard_curve, stte)
 
@@ -324,6 +325,7 @@ class SecondScene(ThreeDScene):
         # self.renderer.camera.phi=0,
         # self.renderer.camera.theta=-1.5707963267948966,
         # self.renderer.camera.frame_center=array([0., 0., 0.])
+        self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=.2)
         self.clear()
         # TODO : point at infinity + label, cloud shaped background, grid on top
         self.add(background)
@@ -340,16 +342,27 @@ class SecondScene(ThreeDScene):
         for P in [P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62]:
             xP = P.get_center()[0]
             yP = P.get_center()[1]
-            P.move_to(vec(96*xP/(96+yP), 100*yP/(96+yP), .1))
-            self.add(P)
+            self.add(dot_on_3dcurve(vec(96*xP/(96+yP), 100*yP/(96+yP), 0), YELLOW, 0.1))
         # TODO : should be different points
-        self.add(Dot3D(vec(0, 100, .1), radius=3, color=ORANGE))
-        self.add(MathTex("O=(0,1,0)"))
+        self.add(dot_on_3dcurve(vec(0, 100, .1), radius=.5, colour=ORANGE))
+        point_at_inf_text = MathTex("O=(0,1,0)")
+        #self.add_fixed_in_frame_mobjects(point_at_inf_text)
+        point_at_inf_text.move_to(vec(2, 2))
 
-        self.move_camera(phi=PI/2,
-                         frame_center=(0, -10, 5),
-                         run_time=10,
-                         rate_func=rate_functions.there_and_back_with_pause)  # will be slower later
+        camera_movement = self.move_camera(phi=PI/2,
+                                           frame_center=(0, -10, 5),
+                                           run_time=10,
+                                           rate_func=rate_functions.there_and_back_with_pause)
+        self.play(AnimationGroup(
+            camera_movement,
+            Succession(
+                Wait(3),
+                FadeIn(point_at_inf_text, run_time=1),
+                Wait(2),
+                FadeOut(point_at_inf_text, run_time=1)
+                ),
+            lag_ratio=0))
+
         self.wait(3)
 
 

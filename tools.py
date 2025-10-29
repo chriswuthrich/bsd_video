@@ -311,12 +311,19 @@ def standard_curve():
 
 def dot_on_curve(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
     """
-    replacement for Dot3D(minus_P_centre, color=pointcolour, radius=pointradius, z_index=10))
+    replacement for Dot3D(centre, color=pointcolour, radius=pointradius, z_index=10))
     """
     v1 = Circle(radius, stroke_width=0, fill_color=colour, fill_opacity=1, stroke_color=colour, z_index=z_index)
     v2 = Circle(radius/3, stroke_width=0, fill_color=BLACK, fill_opacity=1, stroke_color=BLACK, z_index=z_index+.1)
     v = VGroup(v1, v2)
     v.move_to(centre)
+    return v
+
+def dot_on_3dcurve(centre=ORIGIN, colour=YELLOW, radius=0.1):
+    """
+    version of dot_on_curve but for the fake 3d curve
+    """
+    v = Dot3D(centre, color=colour, radius=radius, z_index=10)
     return v
 
 
