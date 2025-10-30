@@ -58,9 +58,14 @@ def shz(m, z: float):
     this shifts by z/100
     Typically the background will be -10 and the most forefront +10
     """
-    # This is the version for opengl
-    m.shift(np.array([0, 0, z/100]))
-    return m.set_z_index(z)
+    if not isinstance(m, list):
+        ms = [m]
+    else:
+        ms = m
+    for mo in ms:
+        mo.shift(np.array([0, 0, z/100]))
+        mo.set_z_index(z)
+    return ms
 
 
 # not used
@@ -311,7 +316,7 @@ def standard_curve():
 
 def dot_on_curve(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
     """
-    replacement for Dot3D(centre, color=pointcolour, radius=pointradius, z_index=10))
+    dot that appears as a ring on the curve to show rational points
     """
     v1 = Circle(radius, stroke_width=0, fill_color=colour, fill_opacity=1, stroke_color=colour, z_index=z_index)
     v2 = Circle(radius/3, stroke_width=0, fill_color=BLACK, fill_opacity=1, stroke_color=BLACK, z_index=z_index+.1)
@@ -319,11 +324,11 @@ def dot_on_curve(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
     v.move_to(centre)
     return v
 
-def dot_on_3dcurve(centre=ORIGIN, colour=YELLOW, radius=0.1):
+def dot_on_3dcurve(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
     """
     version of dot_on_curve but for the fake 3d curve
     """
-    v = Dot3D(centre, color=colour, radius=radius, z_index=10)
+    v = Dot3D(centre, color=colour, radius=radius, z_index=z_index)
     return v
 
 

@@ -39,7 +39,7 @@ def fake_numberplane():
         vec(-50, yy), vec(50, yy), vec(100, 100), vec(-100, 100),
         stroke_width=0,
         fill_color=colour,
-        fill_opacity=.9,
+        fill_opacity=.8,
         color=colour)
     shz(p, -1)
     v.add(p)
@@ -121,14 +121,13 @@ class SecondScene(ThreeDScene):
                                   x_label=True,
                                   y_label=True,
                                   axes_fading=False)
-        shz(grid, 1)
+        shz(grid, 0)
 
         standard_E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(standard_E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        shz(curve, 5)
         eq_standard_curve = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
         eq_standard_curve.to_corner(UL)
-        shz(eq_standard_curve, 5)
+        shz([curve, stte, eq_standard_curve], 2)
         self.add(background, grid,  stte, eq_standard_curve, curve)
 
         # 2.1 Rational points
@@ -136,12 +135,14 @@ class SecondScene(ThreeDScene):
         # finds one rational point
         eq_xy_in_Q = MathTex(r"x,y\in\mathbb{Q}", color=YELLOW)
         eq_xy_in_Q.next_to(eq_standard_curve, DOWN)
+        shz(eq_xy_in_Q, 2)
         self.play(FadeIn(eq_xy_in_Q))
         self.wait()
 
         eq_xy_in_Q.set_color(WHITE)
         eq_x_0_y_pm_1 = MathTex(r"x=0,\ y=\pm 1")
         eq_x_0_y_pm_1.next_to(eq_xy_in_Q, DOWN)
+        shz(eq_x_0_y_pm_1, 2)
         point_colour = BLUE_B
         point_radius = .07
         P01 = dot_on_curve(vec(0, -1), colour=point_colour, radius=point_radius, z_index=10)
@@ -162,8 +163,8 @@ class SecondScene(ThreeDScene):
         eq_pt1 = MathTex(r"(2,\pm 1)")
         P11 = dot_on_curve(vec(2, 1, .1), colour=point_colour, radius=point_radius, z_index=10)
         shz(P11, 10)
-        P12 = dot_on_curve(vec(2, -1, .2), colour=point_colour, radius=point_radius, z_index=20)  # not on top?
-        shz(P12, 3)
+        P12 = dot_on_curve(vec(2, -1, .1), colour=point_colour, radius=point_radius, z_index=10)  # not on top?
+        shz(P12, 10)
         eq_pt2 = MathTex(r"(-1,\pm 2),")
         P21 = dot_on_curve(vec(-1, 2, .05), colour=point_colour, radius=point_radius, z_index=10)
         P22 = dot_on_curve(vec(-1, -2, .1), colour=point_colour, radius=point_radius, z_index=10)
@@ -234,6 +235,7 @@ class SecondScene(ThreeDScene):
 
         eq_pt6.next_to(eq_standard_curve, DOWN)
         eq_pt6.to_edge(LEFT)
+        shz(eq_pt6, 2)
         self.add(eq_pt6, P61, P62)
         self.play(Flash(P61.get_center()),
                   Flash(P62.get_center()),
@@ -326,12 +328,14 @@ class SecondScene(ThreeDScene):
         # self.renderer.camera.theta=-1.5707963267948966,
         # self.renderer.camera.frame_center=array([0., 0., 0.])
         self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=.2)
+        # build up everything
         self.clear()
-        # TODO : point at infinity + label, cloud shaped background, grid on top
+        background = cloud_background()
+        shz(background, -2)
         self.add(background)
         numberplane_for_3d = fake_numberplane()
-        shz(numberplane_for_3d, 0)
-        shz(background, -2)
+        shz(numberplane_for_3d, 1)
+        stte = two_characters_standing_next_to_each_other()
         shz(stte, 1)
         self.add(numberplane_for_3d, stte)
         projective_curve = fake_curve()
@@ -342,24 +346,38 @@ class SecondScene(ThreeDScene):
         for P in [P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62]:
             xP = P.get_center()[0]
             yP = P.get_center()[1]
-            self.add(dot_on_3dcurve(vec(96*xP/(96+yP), 100*yP/(96+yP), 0), YELLOW, 0.1))
-        # TODO : should be different points
-        self.add(dot_on_3dcurve(vec(0, 100, .1), radius=.5, colour=ORANGE))
-        point_at_inf_text = MathTex("O=(0,1,0)")
-        #self.add_fixed_in_frame_mobjects(point_at_inf_text)
-        point_at_inf_text.move_to(vec(2, 2))
+            this_pt = dot_on_3dcurve(vec(96*xP/(96+yP), 100*yP/(96+yP), 0.1), point_colour, 0.05)
+            shz(this_pt, 3)
+            self.add(this_pt)
 
-        what_happens_during_the_camera_move = Succession(
-            Wait(3),
-            FadeIn(point_at_inf_text, run_time=1),
-            Wait(2),
-            FadeOut(point_at_inf_text, run_time=1)
-        )
+        # point at infinity
+        pt_at_inf = dot_on_3dcurve(vec(0, 98, .1), radius=.25, colour=YELLOW)
+
+        text_at_inf = MathTex("(X=0,Y=1,Z=0)")
+        text_at_inf.rotate(PI/2, axis=RIGHT)
+        text_at_inf.move_to(vec(1, 1.8, 0))
+
+        arrow_at_inf = Arrow3D(vec(.5, .5, 8), vec(1,1.5,8), color=WHITE)
+        pointing_at_inf = VGroup(text_at_inf, arrow_at_inf)
+
+        total_time_of_camera_move = 10.
+        time_it_stands_still = 4.
+
+        # what_happens_during_the_camera_move = Succession(
+        #     Wait((total_time_of_camera_move-time_it_stands_still)/2),
+        #     Add(pt_at_inf),
+        #     FadeIn(pointing_at_inf, run_time=.05*total_time_of_camera_move),
+        #     Wait(.9*time_it_stands_still),
+        #     FadeOut(pointing_at_inf, run_time=.05*total_time_of_camera_move)
+        # )
+        what_happens_during_the_camera_move = Add(pt_at_inf, pointing_at_inf)
+
+        my_there_and_back_with_pause = lambda tt : rate_functions.there_and_back_with_pause(tt, pause_ratio=time_it_stands_still/total_time_of_camera_move)
 
         self.move_camera(phi=PI/2,
                          frame_center=(0, -10, 5),
-                         run_time=10,
-                         rate_func=rate_functions.there_and_back_with_pause,
+                         run_time=total_time_of_camera_move,
+                         rate_func=my_there_and_back_with_pause,
                          added_anims=[what_happens_during_the_camera_move])
 
         self.wait(3)
