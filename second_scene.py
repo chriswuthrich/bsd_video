@@ -349,19 +349,18 @@ class SecondScene(ThreeDScene):
         #self.add_fixed_in_frame_mobjects(point_at_inf_text)
         point_at_inf_text.move_to(vec(2, 2))
 
-        camera_movement = self.move_camera(phi=PI/2,
-                                           frame_center=(0, -10, 5),
-                                           run_time=10,
-                                           rate_func=rate_functions.there_and_back_with_pause)
-        self.play(AnimationGroup(
-            camera_movement,
-            Succession(
-                Wait(3),
-                FadeIn(point_at_inf_text, run_time=1),
-                Wait(2),
-                FadeOut(point_at_inf_text, run_time=1)
-                ),
-            lag_ratio=0))
+        what_happens_during_the_camera_move = Succession(
+            Wait(3),
+            FadeIn(point_at_inf_text, run_time=1),
+            Wait(2),
+            FadeOut(point_at_inf_text, run_time=1)
+        )
+
+        self.move_camera(phi=PI/2,
+                         frame_center=(0, -10, 5),
+                         run_time=10,
+                         rate_func=rate_functions.there_and_back_with_pause,
+                         added_anims=[what_happens_during_the_camera_move])
 
         self.wait(3)
 
