@@ -351,13 +351,14 @@ class SecondScene(ThreeDScene):
             self.add(this_pt)
 
         # point at infinity
-        pt_at_inf = dot_on_3dcurve(vec(0, 98, .1), radius=.25, colour=YELLOW)
+        pt_at_inf = dot_on_3dcurve(vec(0, 95, .1), radius=.35, colour=YELLOW)
+        shz(pt_at_inf,3)
 
-        text_at_inf = MathTex("(X=0,Y=1,Z=0)")
+        text_at_inf = MathTex(r"(X=0,\,Y=1,\,Z=0)")
         text_at_inf.rotate(PI/2, axis=RIGHT)
-        text_at_inf.move_to(vec(1, 1.8, 0))
+        text_at_inf.move_to(vec(1, 1, 6))
 
-        arrow_at_inf = Arrow3D(vec(.5, .5, 8), vec(1,1.5,8), color=WHITE)
+        arrow_at_inf = Arrow3D(vec(1, 1, 5.5), vec(.1, 1, 4.5), color=WHITE)
         pointing_at_inf = VGroup(text_at_inf, arrow_at_inf)
 
         total_time_of_camera_move = 10.
