@@ -358,7 +358,7 @@ class SecondScene(ThreeDScene):
         text_at_inf.rotate(PI/2, axis=RIGHT)
         text_at_inf.move_to(vec(1, 1, 6))
 
-        arrow_at_inf = Arrow3D(vec(1, 1, 5.5), vec(.1, 1, 4.5), color=WHITE)
+        arrow_at_inf = Arrow3D(vec(1, 1, 5.5), vec(.1, 1, 4.1), color=WHITE)
         pointing_at_inf = VGroup(text_at_inf, arrow_at_inf)
 
         total_time_of_camera_move = 10.
