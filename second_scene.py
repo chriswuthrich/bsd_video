@@ -361,27 +361,29 @@ class SecondScene(ThreeDScene):
         arrow_at_inf = Arrow3D(vec(1, 1, 5.5), vec(.1, 1, 4.1), color=WHITE)
         pointing_at_inf = VGroup(text_at_inf, arrow_at_inf)
 
+        # timings for the 3d move
         total_time_of_camera_move = 10.
         time_it_stands_still = 4.
+        time_to_increase = 0.5
 
         t = ValueTracker(0)
 
         def onf(tt):
-            time_to_increase = 0.1
-            if tt < (total_time_of_camera_move-time_it_stands_still)/2 - time_to_increase:
+            if tt < (total_time_of_camera_move-time_it_stands_still)/2:
                 return 0
-            elif tt < (total_time_of_camera_move-time_it_stands_still)/2:
-                ss = tt - (total_time_of_camera_move-time_it_stands_still)/2 + time_to_increase
+            elif tt < (total_time_of_camera_move-time_it_stands_still)/2 + time_to_increase:
+                ss = tt - (total_time_of_camera_move-time_it_stands_still)/2
                 ss *= 1/time_to_increase
                 return ss**2 * (2-ss)
-            elif tt < (time_it_stands_still + total_time_of_camera_move)/2:
+            elif tt < (time_it_stands_still + total_time_of_camera_move)/2 - time_to_increase:
                 return 1
-            elif tt < (time_it_stands_still + total_time_of_camera_move)/2 + time_to_increase:
-                ss = (time_it_stands_still + total_time_of_camera_move)/2 + time_to_increase - tt
+            elif tt < (time_it_stands_still + total_time_of_camera_move)/2:
+                ss = (time_it_stands_still + total_time_of_camera_move)/2 - tt
                 ss *= 1/time_to_increase
                 return ss**2 * (2-ss)
             else:
                 return 0
+
         pointing_at_inf.add_updater(lambda m : m.set_opacity(onf(t.get_value())))
         self.add(pointing_at_inf)
 
@@ -392,17 +394,11 @@ class SecondScene(ThreeDScene):
         self.play(t.animate.set_value(total_time_of_camera_move),
                   self.camera.phi_tracker.animate(rate_func=my_there_and_back_with_pause).set_value(PI/2),
                   self.camera._frame_center.animate(rate_func=my_there_and_back_with_pause).move_to(frame_centre),
-                  #self.move_camera(phi=PI/2, frame_center=frame_centre, rate_func=myf))
                   run_time=total_time_of_camera_move)
-
+        # this is copied from ThreeDScene.move_camera. See there.
         self.remove(self.camera._frame_center)
-        # self.move_camera(phi=PI/2,
-        #                  frame_center=(0, -10, 5),
-        #                  run_time=total_time_of_camera_move,
-        #                  rate_func=my_there_and_back_with_pause,
-        #                  added_anims=[what_happens_during_the_camera_move])
 
-        self.wait(3)
+        self.wait(1)
 
 
 #
