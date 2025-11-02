@@ -125,6 +125,7 @@ class ThirdScene(Scene):
 
         # 3.1 Count global points
         self.next_section("3.1 Count global points")
+        self.clear()
         self.add(cloud_background())
         stte = two_characters_standing_next_to_each_other()
         self.add(stte)
