@@ -114,6 +114,7 @@ class FourthScene(Scene):
         # 4.1 State the conjecture
         self.next_section("4.1 State the conjecture")
         # recreate background
+        self.clear()
         self.add(cloud_background())
         stte = two_characters_standing_next_to_each_other()
         self.add(stte)
@@ -221,8 +222,10 @@ class FourthScene(Scene):
         self.wait(1)
 
         # centre the fraction and hide the definition
-        self.play(FadeOut(mu_hash_solutions_modulo_u, eq_u_t_factorial, nt_hash_bounded_rational_solutions))
-        self.play(complete_limit_formula.animate.move_to(vec(2, 1)), run_time=1)
+        complete_limit_formula_centre = vec(-0.36759177,  0.8828125 )
+        self.play(FadeOut(mu_hash_solutions_modulo_u, eq_u_t_factorial, nt_hash_bounded_rational_solutions),
+                  complete_limit_formula.animate.move_to(complete_limit_formula_centre),
+                  run_time=1)
         self.wait(1)
 
         conjecture = Text("Conjecture:", color=YELLOW)
@@ -236,6 +239,9 @@ class FourthScene(Scene):
         positive_real_number.shift(.5*DOWN)
         self.add(incomplete_conjecture)
         self.wait(2)
+        self.play(*[FadeOut(mob) for mob in self.mobjects], run_time=.2)
+        # print("*********************************", complete_limit_formula.get_center())
+        # [-0.36759177  0.8828125   0.        ] was used above
 
         # 4.2
         # Evidence shown in graphs of the limit
@@ -537,7 +543,7 @@ class FourthScene(Scene):
         eq_discriminant.shift(vec(0, .04))
         text_comma_then.shift(vec(0, .03))
         self.add(text_if, eq_discriminant, text_comma_then)
-        self.wait(1)
+        self.wait(3)
 
 
 
