@@ -364,22 +364,43 @@ class SecondScene(ThreeDScene):
         total_time_of_camera_move = 10.
         time_it_stands_still = 4.
 
-        # what_happens_during_the_camera_move = Succession(
-        #     Wait((total_time_of_camera_move-time_it_stands_still)/2),
-        #     Add(pt_at_inf),
-        #     FadeIn(pointing_at_inf, run_time=.05*total_time_of_camera_move),
-        #     Wait(.9*time_it_stands_still),
-        #     FadeOut(pointing_at_inf, run_time=.05*total_time_of_camera_move)
-        # )
-        what_happens_during_the_camera_move = Add(pt_at_inf, pointing_at_inf)
+        t = ValueTracker(0)
+
+        def onf(tt):
+            time_to_increase = 0.1
+            if tt < (total_time_of_camera_move-time_it_stands_still)/2 - time_to_increase:
+                return 0
+            elif tt < (total_time_of_camera_move-time_it_stands_still)/2:
+                ss = tt - (total_time_of_camera_move-time_it_stands_still)/2 + time_to_increase
+                ss *= 1/time_to_increase
+                return ss**2 * (2-ss)
+            elif tt < (time_it_stands_still + total_time_of_camera_move)/2:
+                return 1
+            elif tt < (time_it_stands_still + total_time_of_camera_move)/2 + time_to_increase:
+                ss = (time_it_stands_still + total_time_of_camera_move)/2 + time_to_increase - tt
+                ss *= 1/time_to_increase
+                return ss**2 * (2-ss)
+            else:
+                return 0
+        pointing_at_inf.add_updater(lambda m : m.set_opacity(onf(t.get_value())))
+        self.add(pointing_at_inf)
 
         my_there_and_back_with_pause = lambda tt : rate_functions.there_and_back_with_pause(tt, pause_ratio=time_it_stands_still/total_time_of_camera_move)
 
-        self.move_camera(phi=PI/2,
-                         frame_center=(0, -10, 5),
-                         run_time=total_time_of_camera_move,
-                         rate_func=my_there_and_back_with_pause,
-                         added_anims=[what_happens_during_the_camera_move])
+        frame_centre = vec(0, -10, 5)
+
+        self.play(t.animate.set_value(total_time_of_camera_move),
+                  self.camera.phi_tracker.animate(rate_func=my_there_and_back_with_pause).set_value(PI/2),
+                  self.camera._frame_center.animate(rate_func=my_there_and_back_with_pause).move_to(frame_centre),
+                  #self.move_camera(phi=PI/2, frame_center=frame_centre, rate_func=myf))
+                  run_time=total_time_of_camera_move)
+
+        self.remove(self.camera._frame_center)
+        # self.move_camera(phi=PI/2,
+        #                  frame_center=(0, -10, 5),
+        #                  run_time=total_time_of_camera_move,
+        #                  rate_func=my_there_and_back_with_pause,
+        #                  added_anims=[what_happens_during_the_camera_move])
 
         self.wait(3)
 
