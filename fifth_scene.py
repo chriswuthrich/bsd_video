@@ -23,6 +23,7 @@ class FifthScene(Scene):
         # 5 Rank and original conjecture
         # 5.1 Rank
         self.next_section("5.1 What is the rank")
+        self.clear()
         stte = two_characters_standing_next_to_each_other()
         self.add(cloud_background(), stte)
 
