@@ -23,117 +23,132 @@
 
 
 \begin{document}
-  \title{Script for the BSD Video}
-  \author{cw}
-  \maketitle
 
+\title{Script for the BSD Video}
+\author{cw}
+\maketitle
+
+% =========================================================
 \section{Elliptic Curves}
 \subsection{Te will explain BSD}
+% Title: The Birch and Swinnerton–Dyer Conjecture
 
 \begin{enumerate}
   \item st+te centred on background
-  \item st: I have heard about the Riemann hypothesis (bubbles with $\zeta(s)$)
+  \item st: I have heard about the Riemann hypothesis (bubbles with $\zeta(s)$).
   You are a number theorist. Are you working on this?
   \item te: Not directly. My research concerns another important conjecture,
-  also worth a million dollars (bubble $\zeta(s)$ is kicked out for an elliptic curve)
+  also worth a million dollars (bubble $\zeta(s)$ is kicked out for an elliptic curve).
   \item st: What is it?
-  \item te: The Birch and Swinnerton-Dyer conjecture.
+  \item te: The Birch and Swinnerton–Dyer conjecture. (Title appears on screen)
   \item st: Can you explain?
-  \item te: Sure. (Bubble increases, characters stay in the bubble, until the whole screen is in the bubble. Characters also move to the left lower corner.)
+  \item te: Sure. (Bubble increases, characters stay in the bubble until the whole screen is in the bubble. Characters also move to the lower-left corner.)
 \end{enumerate}
 
+% ---------------------------------------------------------
 \subsection{Define elliptic curves}
+% Title: Elliptic curves
  \begin{enumerate}
    \item te: It deals with equations like $y^2=x^3-4x+1$, called elliptic curves (centred).
    \item st: What do they look like?
-   \item te: Here (Equation moves up left, picture appears.)
+   \item te: Here. (Equation moves up left, curve appears.)
    \item st: What are other examples?
-   \item te: We need $y^2=x^3+$ integer $x+$ integers. (Equation and picture show other curves with coefficients framed)
-   \item Go through a family of curve whose discriminant switches sign
-   \item st: They are all symmetric ? (Back to $E$)
-   \item te: Yes as $y$ only appears as an even power ($(-y)^2 = y^2 = \dots$)
- \end{enumerate}
+   \item te:  We need $y^2 = x^3 +$ some integer times $x$ plus another integer. (Equation and picture show other curves with coefficients framed.)
+  \item te: Some are formed of two pieces, some only one piece (goes through a family of curves whose discriminant switches sign).
+  \item st: They are all symmetric? (Back to $E$, symmetry shows.)
+  \item te: Yes, as $y$ only appears as an even power ($(-y)^2 = y^2 = \dots$).
+\end{enumerate}
 
  \section{Rational points on projective curve}
  \subsection{Rational points}
+% Title: Rational points
  \begin{enumerate}
    \item st: What you study about them?
    \item te: I count solutions to the equation with both $x$ and $y$ rational. ($x,y\in\QQ$ appears)
-   \item st: Hmm, if $x=0$ and $y$ \dots $y=1$ or $y=-1$.
+   \item st: Hmm (thinks), if $x=0$ and $y$ \dots $y=1$ or $y=-1$. (Highlight these points.)
    \item te: Yep. I chose an example with a lot of solutions (Points are highlighted successively, including one really complicated example)
-   \item te: Some other elliptic curves have very few.
+   \item te: Some lie outside the screen. Some other elliptic curves have very few rational points.
+   \item st: Looks hard to find them.
  \end{enumerate}
 
  \subsection{Projective curve}
+% Title: Projective curve
  \begin{enumerate}
-   \item te: We can write $x=X/Z$ and $y=Y/Z$ with integers where $Z$ is the least positive common denominator.
-   \item (The equation transforms to substitute, move power).
+   \item te: We can write $x=X/Z$ and $y=Y/Z$ with integers where $Z$ is the least positive common denominator. (The equation transforms to substitute, move power).
    \item te: Multiply by $Z^3$. (Get to the projective equation $Y^2Z= X^3-4XZ^2+Z^3$)
    \item st: I know this is a projective curve.
    \item te: Indeed. We can now study integer solution $X$, $Y$, $Z$ to this equation instead.
    \item te: But if we, do we get extra solution, like when $Z$ is negative.
    We need to identify solutions when they are just scalar multiples of each other. ($(X,Y,Z) = (-X,-Y,-Z) = (2X,2Y,2Z)$ as $x = \frac{X}{Z} = \frac{-X}{-Z} = \frac{2X}{2Y}$)
    \item te: And we have added accidentality a new point, the one with $Z=0$ and $X=0$ and $Y=1$.
-   \item te: To visual it as a point infinitely far away, we should move to see this. (Turn to the 3d Scene, where the usual plane flips down)
+   \item te:  To visualize it as a point infinitely far away, we should have a look at the horizon.
+  (Turn to 3D scene where the usual plane flips down.)
    \item st: Wow. (2D flat characters stay in plane)
-   \item te: No worries. Now we see the unique point at infinity and -- look -- the horizon is a tangent to our curve.
+   \item te: No worries. Now we see the unique point at infinity and -- look -- the horizon is a tangent to our curve. (Point to $O$.)
    \item (Undo the flip back to 2D.)
  \end{enumerate}
 
 
 
 \section{Count points}
-\subsection{Counting global points}
+\subsection{Counting rational points}
+% Title: Counting rational points
 \begin{enumerate}
   \item te: The conjecture is about counting rational solutions
-  \item st: There are only finitely many?
-  \item te: No! For some curves like $y^2=x^3-4x-2$ there are only four points. (plot them)
+  \item st: There are only finitely many? (surprised)
+  \item te: No! (reassuring) Well, for some curves like $y^2=x^3-4x-2$ there are only four points. (Plot the curve and point out the four points.)
   \item te: But for our example $E$ there are infinitely many solutions.
-  \item te: We count them by size of the integers involved.
-  \item te: For instance there are 15 solutions with $\lvert X\rvert, \lvert Y\rvert , \lvert Z\rvert <10$ and 27 smaller than $100$. (give definition of $\mathcal{N}(T)$ and a list of values)
-  \item st: I see, these are the first solutions we would find if we search for them with a computer
-  \item te: Yep. Searching in a box.
+  \item te: We count them by the size of the integers involved.
+  \item te: For instance, there are 15 solutions with $\lvert X\rvert, \lvert Y\rvert, \lvert Z\rvert < 10$ (list them) and 27 smaller than $100$ (list those).
+ \item te: We call $\mathcal{N}(T)$ the number of points with integer coordinates below $T$. (Definition of $\mathcal{N}(T)$ appears.)
+  \item st: I see, these are the first solutions we would find if we search for them with a computer.
+  \item te: Yep. Searching in a box, I’d call it.
 \end{enumerate}
 
 \subsection{Counting modulo}
+% Title: Counting points modulo
 \begin{enumerate}
  \item te: This counting will be compared to counting modulo.
- \item te: We look for integers such that the two sides have the same remainder when dividing by -- say -- 10.
+ \item te: We look for integers such that the two sides have the same remainder when dividing by -- say -- 10. (Affine point coordinates appear.)
  \item st: You solve $y^2 = x^3-4x+1$ modulo $10$.
  \item te: Ehmm, yes, but also the points at infinity as there might be more than 1.
  (projective equation modulo 10)
- \item te: There are 27 solutions modulo 10 of which 11 are at infinity. (list them)
- \item te: Here we again put equal solutions $(X,Y,Z)$ that were scaled by $3$, $7$ or $9$, the invertible elements in $\ZZ/10\ZZ$.
- \item te: As $U$ increases the number of solutions modulo $U$ grows.
+ \item te: There are 27 solutions modulo 10 of which 11 are at infinity. (The additional projective points appear.)
+ \item te: Again, we identify solutions $(X,Y,Z)$ that were scaled by $3$, $7$ or $9$, the invertible elements in $\ZZ/10\ZZ$.
+ \item te: We define $\mathcal{M}(U)$ as the number of solutions modulo an integer $U$. (Definition of $\mathcal{M}(U)$ appears.)
+\item te: As $U$ increases, the number of solutions modulo $U$ grows. (Bar chart of values of $\mathcal{M}(U)$.)
 \end{enumerate}
 
 \section{Conjecture}
 \subsection{State conjecture}
+% Title: The conjecture
 \begin{enumerate}
-  \item te: Recall $\mathcal{N}$ and $\mathcal{M}$ on the right half
-  \item te: Pick $U=T!$
+  \item te: Recall $\mathcal{N}$ and $\mathcal{M}$ on the right half. (Their definitions appear on the right half.)
+  \item te: Pick $T$ large and set $U$ to be $T!$. (Shows up and transforms.)
   \item st: If $T$ is biiig, $T!$ is huuuuge.
-  \item te: Put $\mathcal{N}(T)$ on top of a fraction, and square it.
-  \item te: We compare to $\mathcal{M}(T!)$ by putting it in the denominator.
-  \item te: Balance with $T!$ on top and consider what happens if $T\to \infty$.
-  \item te: This is the conjecture. This converges to a positive real number.
+  \item te: Put $\mathcal{N}(T)$ on top of a fraction, and square it. (Copy to fraction and add square.)
+  \item te: We compare to $\mathcal{M}(T!)$ by putting it in the denominator. (Copy to fraction.)
+  \item te: Balance with $T!$ on top and consider what happens if $T\to \infty$. (Add $T!$ on top, limit appears.)
+  \item te: This is the conjecture: It converges to a positive real number.
 \end{enumerate}
 
 \subsection{Evidence}
+% Title: Evidence
 \begin{enumerate}
-  \item te: Here is a plot for our curve of this fraction up to $1000$. Not clear yet. (Plot to $T$ up to $1000$, then increase.)
-  \item st: Does it converge? It seems bounded and well above $0$.
+  \item te: Here is a plot of the fraction for our curve up to $T = 1000$. Not clear yet. (Plot to $T$ up to 1000, then increase.)
+  \item st: Does it converge? It seems bounded and well above $0$. (Plots all the way to $10^9$ and slows down.)
   \item te: We can plot the fraction for a few other curves, including the one that has only finitely many solutions. (plot several curves in one graph, with the previous ones fading)
-  \item st: This last one has these strange jumps (highlight them).
+  \item st: Still not very convincing, but they do behave in a similar way. Oh, this last one has strange jumps. (Point to them.)
   \item te: Well spotted. That is due to a single pair of rational points.
   Here $\mathcal{N}(T)$ jumps from $9$ to $11$ and then to $13$.
-  \item te: The thing is $\mathcal{N}(T)$ grows actually slowly.
+  \item te: The thing is, $\mathcal{N}(T)$ grows actually slowly. The other terms grow super fast.
   \item st: And proving that conjecture wins you a million?
-  \item te: Yes, there is one thing I forgot.
+  \item te: Yess. Oh, there is one thing I forgot.
   \item st: What?
   \item te: We have to exclude some curves. Those like this, they are singular. (Show family again but highlight singular curve.)
-  \item st: What is the graph for those curves? (Show graph)
-  \item te: In general, we need to add one condition (Show conjecture with $\Delta \neq 0$.)
+  \item st: What is the graph for those curves? Show graph up to $T=1000$.)
+  \item st: Logarithmic scale, please. (Changes to logarithmic scale.) Agree, this converges clearly to $0$.
+  \item te: In general, we need to add one condition. (Show conjecture with $\Delta \neq 0$.)
 \end{enumerate}
 
 % up to here
