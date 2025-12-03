@@ -170,7 +170,8 @@ def fading_numberplane(x_tip=True,
                        x_label=False,
                        y_label=False,
                        axes_fading=True,
-                       stroke_width=2):
+                       stroke_width=2,
+                       colours=[GRAY, WHITE]):
     r"""
     A version of NumberPlane, where the lines fade out to the left.
 
@@ -189,11 +190,11 @@ def fading_numberplane(x_tip=True,
         li = Line(vec(i, -4),
                   vec(i, 4),
                   stroke_width=stroke_width,
-                  color=GRAY)
+                  color=colours[0])
         v.add(li)
 
     # y-axis
-    y_axis_colour = GRAY if axes_fading else WHITE
+    y_axis_colour = colours[0] if axes_fading else colours[1]
     y_axis = Line(vec(0, -4),
                   vec(0, 4),
                   color=y_axis_colour,
@@ -220,28 +221,28 @@ def fading_numberplane(x_tip=True,
                   vec(-i, 4),
                   stroke_opacity=(7 - i) / 7,
                   stroke_width=stroke_width,
-                  color=GRAY)
+                  color=colours[0])
         v.add(li)
 
     # lines y=i for non-zero i
     for i in [-3, -2, -1, 1, 2, 3]:
-        li = fading_line(i, stroke_width=stroke_width, color=GRAY)
+        li = fading_line(i, stroke_width=stroke_width, color=colours[0])
         v.add(li)
 
     # x-axis
     if axes_fading:
-        x_axis = fading_line(0, stroke_width=stroke_width, color=WHITE)
+        x_axis = fading_line(0, stroke_width=stroke_width, color=colours[1])
     else:
         x_axis = Line(vec(-7, 0, .1),
                       vec(7, 0, .1),
-                      color=WHITE,
+                      color=colours[1],
                       stroke_width=2)
     v.add(x_axis)
 
     if x_tip:
         x_arrow_tip = CurvyPointyTip(length=.35,
                                      stroke_width=stroke_width,
-                                     color=WHITE)
+                                     color=colours[1])
         x_arrow_tip.move_to(vec(6.4, 0))
         v.add(x_arrow_tip)
 
