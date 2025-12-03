@@ -247,7 +247,7 @@ def fading_numberplane(x_tip=True,
         v.add(x_arrow_tip)
 
     if x_label:
-        label_x = MathTex(r"x")
+        label_x = MathTex(r"x",color=colours[1])
         label_x.scale(.8)
         label_x.move_to(vec(6.5, -0.4))
         v.add(label_x)

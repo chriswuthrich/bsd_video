@@ -39,7 +39,7 @@ def forth_back_stop(tt):
 
 class Family(Scene):
     def construct(self):
-        #self.camera.background_color = WHITE  # transparent
+        self.camera.background_color = WHITE
 
         bk = fading_numberplane(x_tip=True,
                                 y_tip=True,
@@ -93,6 +93,5 @@ class Family(Scene):
 
 #  now render it
 if __name__ == "__main__":
-
     scene = Family()
     scene.render()
