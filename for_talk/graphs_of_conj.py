@@ -81,7 +81,7 @@ class Conj(Scene):
             self.add(eq_changing_curve)
             self.play(Create(log_graph),
                       FadeOut(previous_log_graph, rate_func=rate_functions.ease_out_circ),
-                      Indicate(eq_changing_curve,color=BLUE),
+                      Indicate(eq_changing_curve,color=BLACK),
                       run_time=3)
             self.remove(eq_changing_curve)
             previous_log_graph = log_graph
