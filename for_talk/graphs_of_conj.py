@@ -55,7 +55,7 @@ class Conj(Scene):
         log_graph.set_points_as_corners([axes_for_log_plot.c2p(np.log10(x), y) for x, y in li if x > 1000])
         log_graph.set_style(stroke_width=2)
         eq_changing_curve = MathTex(r"y^2 = x^3 - 4\,x + 1 ", color=BLACK)
-        eq_changing_curve.to_edge(DOWN)
+        eq_changing_curve.to_edge(UP)
         self.add(log_graph, eq_changing_curve)
         previous_log_graph = log_graph
         self.wait(2)
@@ -77,16 +77,16 @@ class Conj(Scene):
                 eq_changing_curve = MathTex(r"y^2 = x^3 \ + x + 1 ", color=BLACK)
             else:
                 eq_changing_curve = MathTex(f"y^2 = x^3 + {aa} \\,x + 1 ", color=BLACK)
-            eq_changing_curve.to_edge(DOWN)
+            eq_changing_curve.to_edge(UP)
             self.add(eq_changing_curve)
             self.play(Create(log_graph),
                       FadeOut(previous_log_graph, rate_func=rate_functions.ease_out_circ),
                       Indicate(eq_changing_curve,color=BLUE),
-                      run_time=2)
+                      run_time=3)
             self.remove(eq_changing_curve)
             previous_log_graph = log_graph
 
-        self.wait(1)
+        self.wait(10)
 
 
 #  now render it
