@@ -5,130 +5,224 @@
 
 ---
 
-## Elliptic Curves
+## Introduction
 
-### Te will explain BSD
+The purpose of this part is to introduce the two characters and to delve into
+the thought bubble.
+The title only appears in the middle.
 
-1. **st + te** centred on background
-2. **st:** I have heard about the Riemann hypothesis (bubbles with `$\zeta(s)$`).
-   You are a number theorist. Are you working on this?
-3. **te:** Not directly. My research concerns another important conjecture,
-   also worth a million dollars (bubble `$\zeta(s)$` is kicked out for an elliptic curve).
-4. **st:** What is it?
-5. **te:** The Birch and Swinnerton-Dyer conjecture. (**Title** The Birch and Swinnerton-Dyer conjecture)
-6. **st:** Can you explain?
-7. **te:** Sure. (Bubble increases, characters stay in the bubble until the whole screen is in the bubble. Characters also move to the lower-left corner.)
+1. **st + te** centred, walking through a natural background towards the
+   lower-left corner.
+2. **st:** "I have heard about the Riemann hypothesis." 
+   Thought bubble with `$\zeta(s)$`.
+   "You are a number theorist. Are you working on this?"
+3. **te:** "Not directly. My research concerns another important conjecture,
+   also worth a million dollars." 
+   In the bubble `$\zeta(s)$` is kicked out for an elliptic curve, the bubble
+   grows slowly. A bag of gold coins could also appear together with the
+   typical money/till sound. 
+4. **st:** "Which conjecture?"
+5. **te:** "The Birch and Swinnerton-Dyer conjecture."
+   The **Title** The Birch and Swinnerton-Dyer conjecture
+   appears within the growing bubble.
+6. **st:** "Can you explain?"
+7. **te:** "Sure." 
+8. Bubble increases to take over the complete background. 
+   The two characters have reached the lower left corner; they stay in (above)
+   the bubble until the whole screen is in the bubble. 
 
 ---
 
-### Define elliptic curves
+## Elliptic curves
 (**Title** Elliptic curves)
 
-1. **te:** It deals with equations like `$y^2 = x^3 - 4x + 1$`, called elliptic curves (centred).
-2. **st:** What do they look like?
-3. **te:** Here. (Equation moves up left, curve appears.)
-4. **st:** What are other examples?
-5. **te:** We need `$y^2 = x^3 +$` some integer times `$x$` plus another integer.` (Equation and picture show other curves with coefficients framed.)
-6. **te:** Some are formed of two pieces some only are only one piece (Goes through a family of curves whose discriminant switches sign.)
-7. **st:** They are all symmetric? (Back to `$E$`, symmetry shows)
-8. **te:** Yes, as `$y$` only appears as an even power (`$(-y)^2 = y^2 = \dots$`).
+Now we learn what an elliptic curve as a picture.
+
+1. **te:** "It deals with equations like, `$y^2 = x^3 - 4x + 1$`, called
+   elliptic curves"
+   Reads "y squared equals x cubed minus 4 x plus 1", small pauses before and
+   after.
+   The equation appears centered.
+2. **st:** "What do they look like?"
+3. **te:** "Here is a picture." 
+   Equation moves up left, curve appears.
+4. **st:** "What are other examples?"
+5. **te:** "We need, y squared equals x cubed plus some integer times x plus
+   another integer."
+   Equation and picture show other curves with coefficients framed.
+6. **te:** "Some are formed of two pieces some only are only one piece"
+   In the picture the curve goes through a family of curves with one piece
+   detaching and then back.
+7. **st:** "Are they all symmetric?"
+   The picture is back to the original curve and arrows appear that indicate
+   the symmetry.
+8. **te:** "Yes, as y only appears as an even power".
+   The equation highlights this.
 
 ---
-
-## Rational Points on Projective Curve
-
-### Rational points
+   
+## Rational Points 
 (**Title** Rational points)
 
-1. **st:** What do you study about them?
-2. **te:** I count solutions to the equation with both `$x$` and `$y$` rational (`$x,y \in \mathbb{Q}$` appears).
-3. **st:** Hmm (thinks), like when `$x=0$` then `$y=1$`. Or `$y=-1$`. (Highlight these points)
-4. **te:** Yep. I chose an example with a lot of solutions. (Points are highlighted successively, including one really complicated example.)
-5. **te:** Some lie outside the screen (?). Some other elliptic curves have very few rational points.
-6. **st:** Looks hard to find them.
+Here we draw the focus on points with rational coordinates. This involves also
+looking at the point infinitely far away.
+
+1. **st:** "What do you study about them?"
+2. **te:** "I count solutions to the equation with both x and y rational."
+   `$x,y \in \mathbb{Q}$` appears.
+3. **st:** "Hmm" (thinks), "like when x is zero then y is 1." (little gap)
+   "Or y is minus 1."
+   These two points highlight with sparks around them.
+4. **te:** "Yep. I chose an example with a lot of solutions. Some lie outside
+   the screen. Some have very complicated coordinates."
+   Points are highlighted successively, including one really complicated
+   example.
+5. **st:** reacts surprised to the large numbers. (?)
+6. x=X/Z and y=Y/Z appear.
+   **te:** "We can write little x equals big X over big Z and  little y equals
+   big Y over big Z. 
+   We can take big Z to be the least common denominator."
+   The equation moves up and y us substituted by Y/Z etc.
+7. **te:** "Multiply by Z cubed".
+   The equation becomes `$Y^2Z = X^3 - 4XZ^2 + Z^3$`.
+8. **st:** "I know this is a projective curve."
+9. **te:** "Indeed. We can now study integer solutions big X, big Y, big Z to
+   this equation instead of rational little x, little y."
+10. **te:** "But if we do, do we get extra solutions — like when Z is
+   negative?  We need to identify solutions when they are scalar multiples of each other. 
+   (X,Y,Z) ~ (-X,-Y,-Z) ~ (2X,2Y,2Z) etc appears.
+11. **te:** "And we have accidentally added a new point — the one with Z equals
+   zero, X equals 0, and Y equals 1."
+12. **te:** "We should visualize it as a point infinitely far away."
+   "It is at the horizon."
+   This turn to 3D scene where the usual plane flips down.
+   (This graphical part will need improvement.)
+13. **st:** "Wow." (surprise) 
+   (The character could either stay in the 2D plane and be lifted down and
+   become "flat". Or We could leave them in the front and the are just
+   surprised that the ground is taken underneath their feet.
+14. **te:** "No worries. Now we see the unique point at infinity and — look —
+   the horizon is a tangent to our curve."
+   The point at infinity gets pointed out. Then we flip back to the 2D world.
+
 
 ---
 
-### Projective curve
-(**Title** ?)
 
-1. **te:** We can write `$x = X/Z$` and `$y = Y/Z$` with integers where `$Z$` is the least positive common denominator. (The equation transforms to substitute, move power.)
-3. **te:** Multiply by `$Z^3$`. (Get to the projective equation `$Y^2Z = X^3 - 4XZ^2 + Z^3$`.)
-4. **st:** I know this is a projective curve.
-5. **te:** Indeed. We can now study integer solutions `$X, Y, Z$` to this equation instead.
-6. **te:** But if we do, do we get extra solutions — like when `$Z$` is negative?
-   We need to identify solutions when they are scalar multiples of each other (`$(X,Y,Z) = (-X,-Y,-Z) = (2X,2Y,2Z)$` since `$x = X/Z = -X / -Z = 2X / 2Z$`).
-7. **te:** And we have accidentally added a new point — the one with `$Z=0, X=0, Y=1$`.
-8. **te:** To visualize it as a point infinitely far away, we should have a look at the horizon. (Turn to 3D scene where the usual plane flips down.)
-9. **st:** Wow. (surprise) (2D flat characters stay in plane / What if they are 3D?)
-10. **te:** No worries. Now we see the unique point at infinity and — look — the horizon is a tangent to our curve. (Point to `$O$`)
-11. (Undo the flip back to 2D.)
-
----
-
-## Count Points
-
-### Counting rational points
+## Counting rational points
 (**Title** Counting rational points)
 
-1. **te:** The conjecture is about counting rational solutions.
-2. **st:** There are only finitely many? (surprised)
-3. **te:** No! (reassuring) Well, for some curves like `$y^2 = x^3 - 4x - 2$` there are only four points. (Plot the curve a point out the 4 points.)
-4. **te:** But for our example `$E$` there are infinitely many solutions.
-5. **te:** We count them by the size of the integers involved.
-6. **te:** For instance, there are 15 solutions with `|X|, |Y|, |Z| < 10` (list them) and 27 smaller than 100 (list those).
-7. **te:** We call `$N(T)$` the number of points with integer coordinates below $T$   (Definition of `$\mathcal{N}(T)$` appears .)
-7. **st:** I see, these are the first solutions we would find if we search for them with a computer.
-8. **te:** Yep. Searching in a box I'd call it.
+The main point is to define the quantity N(T) and to plot a graph of it.
+
+1. **te:** "The conjecture is about counting rational solutions."
+2. **st:** "There are only finitely many?" (surprised, not believing it)
+3. **te:** "No!" (reassuring) "Well, for some curves like y squared equals x
+   cubed minus 4 x minus 2" (the minus 2 should be emphasised) "there are only
+   four points." 
+   The equation `$y^2 = x^3 - 4x - 2$` appears and that curve is drawn and all 
+   four points are highlighted.
+4. **te:** "But for our first example, there are infinitely many solutions."
+5. **te:** "We count them by the size of the integers involved."
+6. **te:** "For instance, there are 15 solutions with big X, big Y and big Z
+   all smaller than 10..."
+   The condition `|X|, |Y|, |Z| < 10` appears with the list of all 15 points.
+   They are quickly highlighted.
+7. **te:** "... and 27 smaller than 100 and even more smaller than 1000."
+   Lists with more points appear.
+8. **te:** We call, N of T, the number of points with integer coordinates below
+   T."
+   The definition of `$\mathcal{N}(T)$` appears on top.
+9. **st:** "I see, these are the first solutions we would find if we search for
+   them with a computer."
+10. **te:** "Yep. Searching in a box, I'd call it."
+11. **te:** "This gives a function with a graph that looks like a staircase."
+   Graph plots increasingly.
 
 ---
 
-### Counting modulo
+### Counting points modulo
 (**Title** Counting points modulo)
 
-1. **te:** This counting will be compared to counting modulo.
-2. **te:** We look for integers such that both sides have the same remainder when dividing by — say — 10. (Affine points coordinates appear)
-3. **st:** You solve `$y^2 = x^3 - 4x + 1$` modulo 10.
-4. **te:** Ehmm, yes, but also the points at infinity as there might be more than one. (Projective equation modulo 10.)
-5. **te:** There are 27 solutions modulo 10, of which 11 are at infinity. (The additional projective points appear.)
-6. **te:** Again, we identify solutions `$(X,Y,Z)$` that were scaled by 3, 7, or 9 — the invertible elements in `$\mathbb{Z}/10\mathbb{Z}$`.
-7. **te:** We define `$M(U)$` as the number of solutions modulo an integer `$U$`. (Definition of `$\mathcal{M}(U)$` appears)
-8. **te:** As `$U$` increases, the number of solutions modulo `$U$` grows. (Bar chart of values of `$\mathcal{M}(U)$`)
+This introduces M(T) and shows a bar chart picture of that function.
+
+1. **te:** "This counting will be compared to counting modulo."
+   The equality sign is replaced by a congruence sign and it moves down.
+2. **te:** "We look for integers such that both sides have the same remainder
+   when dividing by — say — 10."
+   The points appear scattered over the "plane" modulo 10.
+3. **st:** "You just solve, y square equals x cubed minus 4 x plus 1, 
+   modulo 10 ?"
+4. **te:** "Ehmm", (embarrassed) "yes, but I shouldn't work with small x, y
+   but with big X Y Z to get what is at infinity."
+   The equation changes to Y^2...
+5. **te:** "I still have to remember to identify equal points when scaling.
+   One can scale with 3, 7 or 9; the invertibles modulo 10."
+   The scaling by 3 appears on the left.
+6. **te:** "Strangely, there is more than one. In total we get 27 solutions
+   modulo 10, of which 11 are at infinity."
+   The additional points appear and all change to triples.
+7. **te:** "We define M of U as the number of solutions modulo an integer U."     
+   The definition of `$\mathcal{M}(U)$` appears
+8. **te:** "As U increases, the number of solutions modulo U grows."
+   Bar chart of values of `$\mathcal{M}(U)$`
+9. **st:** "But not continuously at all."
+10. **st:** Common, what is the conjecture now?"
 
 ---
 
-## Conjecture
-
-### State conjecture
+## The conjecture
 (**Title** The conjecture)
 
-1. **te:** Recall `$\mathcal{N}$` and `$\mathcal{M}$`. (Their defintions appear on the right half).
-2. **te:** Pick `$T$` large and set `$U$` to be `$T$` factorial. (Shows up and $U$ transforms to `$T!$)
-3. **st:** If `$T$` is biiig, `$T!$` is huuuuge.
-4. **te:** Put `$\mathcal{N}(T)$` on top of a fraction, and square it. (Copy over to fraction and add suare)
-5. **te:** We compare to `$\mathcal{M}(T!)$` by putting it in the denominator. (Copy over to fraction)
-6. **te:** Balance with `$T!$` on top and consider what happens if `$T \to \infty$`. (Add `$T!$` on top. Limit appears in front)
-7. **te:** This is the conjecture: It converges to a positive real number.
+We put the two together and present evidence for the conjecture.
 
----
+1. **te:** "Recall the functions N and M."" 
+   Their defintions appear on the right half.
+2. **te:** "Pick T large and set U to be T factorial."
+   Shows up and U transforms to T!
+3. **st:** "If T is biiig, T factorial is huuuuge."
+4. **te:** "Put N of T on top of a fraction, and square it."
+   Copy over to fraction and add square to the formula.
+5. **te:** "We compare it to M of T factorial by putting that in the
+   denominator."
+   Copy over to denominator of the fraction.
+6. **te:** "Finally, balance it with T factorial on top. Consider what
+   happens if T goes to infinity."
+   Adds `$T!$` on top and the limit appears in front.
+7. **te:** "This is the conjecture: It converges to a positive real number."
 
-### Evidence
-(**Title** Evidence)
-
-1. **te:** Here is a plot of the fraction for our curve up to `$T=1000$`. Not clear yet. (Plot to `$T$` up to 1000, then increase.)
-2. **st:** Does it converge? (doubtful) It seems bounded and well above 0 (assertive). (Plots all the way to `$10^9$` and slows down.)
-3. **te:** We can plot the fraction for a few other curves, including the one that has only finitely many solutions. (Plot several curves in one graph, fade previous ones.)
-4. **st:** Still not very convincing, but they do behave in a similar way. Oh, this last one has strange jumps (point to them).
-5. **te:** Well spotted. That is due to a single pair of rational points. (Print the point coordinates)
-   Here `$\mathcal{N}(T)$` jumps from 9 to 11 and then to 13.
-6. **te:** The thing is, `$\mathcal{N}(T)$` grows actually slowly. The other terms grow super fast. (pause?)
-7. **st:** And proving that conjecture wins you a million?
-8. **te:** Yes. Oh, there’s one thing I forgot.
-9. **st:** What?
-10. **te:** We have to exclude some curves — those like this, they are singular. (Show family again but highlight singular curve.)
-11. **st:** What is the graph for those curves? (Show graph up to `$T=1000$`.)
-12. **st:** Logarithmic scale, please. (Changes to logarithmic scale) Agree, this converges clearly to `$0$`.
-12. **te:** In general, we need to add one condition. (Show conjecture with `$\Delta \neq 0$`.)
+8. **te:** "Here is a plot of that fraction for our curve up to T equal 1000."      
+   Plot to T up to 1000 appears and starts increasing.
+9. **st:** "Not clear yet. Does it converge?" (doubtful) 
+   "It seems bounded and well above 0." (assertive).
+   Plots all the way to 10^9 and slows down.
+10. **te:** "We can plot the fraction for a few other curves, including the one
+   that has only finitely many solutions."
+   Plot several curves in one graph, fade previous ones.
+11. **st:** "Still not very convincing, but they do behave in a similar way.
+   Oh, this last one has strange jumps"
+   An arrow pointing to a jump appears.
+12. **te:** "Well spotted. That is due to a single pair of rational points."
+   Print the point coordinates.
+   "Here N of T jumps from 9 to 11 and then to 13."
+13. **te:** "The thing is, N of T grows slowly. The other terms grow super
+   fast." (pause?)
+14. **st:** "And proving that conjecture wins you a million?"
+15. **te:** "Yes. Oh, there’s one thing I forgot." (appologetic)
+16. **st:** "What?"
+17. **te:** "We have to exclude some curves. Remember what they can look like.
+   This one here which crosses itself is no good."
+   Shows the family again but highlight singular curve.
+18. **te:** "The equation factors with a square on the right. This happens
+   when 4 A cubed plus 27 B square is zero. Those we have to exclude."
+   The formula for the discriminant appears on the top left.
+19. **st:** "What is the graph for those curves?"
+   Show graph up to `$T=1000$` going down quickly.
+20. **st:** "Logarithmic scale, please."
+   Changes to logarithmic scale.
+21. **st:** " Agree, this converges clearly to zero".
+22. **te:** "If we add this one condition, we get the correct statement of the
+   conjecture".
+   Show conjecture again with extra condition at the start. (Money bag again?)
 
 ---
 
@@ -171,5 +265,3 @@
 5. **st:** Oh, two millions! (Walking out of the clouds again, `$\zeta$` and `$L$` together.)
 
 ---
-
-Would you like me to render this as **HTML** (e.g. for a website or video script tool) or as **Markdown with math support** (e.g. for GitHub/Obsidian)?
