@@ -140,7 +140,7 @@ The main point is to define the quantity N(T) and to plot a graph of it.
 
 ---
 
-### Counting points modulo
+## Counting points modulo
 (**Title** Counting points modulo)
 
 This introduces M(T) and shows a bar chart picture of that function.
@@ -224,44 +224,48 @@ We put the two together and present evidence for the conjecture.
    conjecture".
    Show conjecture again with extra condition at the start. (Money bag again?)
 
----
 
-(Rest is not done yet)
-
-## Rank and Original Formulation
-
-### The rank
-
-1. **st:** How slow exactly?
-2. **te:** That part we know very well, in fact.
-3. **te:** Here is a theorem. (Show `$N(T) \sim \log(T)^{r/2}$`.)
-4. **te:** This number `$r$` is called the *rank* of `$E$`.
-5. (Show plots of three curves.)
-6. **st:** We can replace `$N(T)^2$` with `$\log(T)$` in the conjecture.
-7. **te:** Yep. (Show new conjecture.)
-8. **st:** Are the graphs now more convincing?
-9. (Show new graphs.)
+(Rest is not done yet coded)
+ 
+26. **st:** "Is it known what the limit is?"
+27. **te:** "Yes, but I am not sure you want to see the huge formula."
+    The formula appears, shy hidden and goes away before one can read it.
 
 ---
 
-### History
 
-1. **te:** That is actually equivalent to the original first formulation of the conjecture found by two British mathematicians.
-2. **te:** Bryan Birch and Peter Swinnerton-Dyer. (Show pictures.)
-3. **te:** Swinnerton-Dyer was actually working in Cambridge on one of the first computers.
-4. **te:** They ended up reformulating the conjecture using what we call *L-functions*, after André Weil suggested it. (Show Weil.)
-5. **te:** Now the conjecture looks like this (show rank part).
-6. **st:** What is `$L(E,s)$`?
-7. **te:** An analytic function that encodes the number of points modulo `$U$` in a more convenient way.
+## Origin
+(**Title** Origin)
+
+1. **st:** "What was the name of the conjecture again?"
+2. **te:** "It is named after Bryan Birch and Peter Swinnerton-Dyer. Here a 
+   picture from 20**. Swinnerton-Dyer on the right passed away in ."
+   Show picture of the two.
+3. **st:** "How old is the conjecture?"
+4. **te:** "They discovered it in the fifties. At the time Swinnerton-Dyer was 
+   working on one of the first computers, so he was really one of the first
+   programmers. It was calculated a bit differently than what I showed you."
+   The bubble slowly shrinks back, we could add a picture of the computer in
+   question.
+5. **te:** "The two met André Weil who pointed them to L functions. The modern
+   version of the conjecture is in terms of that function."
+   Picture of Weil?
+6. **st:** "What are L functions? What is the new formulation."
+   L(E,s) appears in the bubble.
+7. **te:** "The L function of an elliptic curve packages the point count modulo
+   U in a better way. The new conjecture says the growth of N of T is encoded
+   in the way this L function behaves at s equals 1"
+   Conjecture with ord appears.
+8. **st:** "…and the two conjectures are equivalent?"
+9. **te:** "Nah, not actually. The conjecture that I explained implies the
+   modern formulation. And even better — it implies the version of the Riemann
+   hypothesis for the L function."
+10. **st:** "Oh, two millions!"
+   Now both zeta L and the elliptic curve are left in the bubble that vanishes.
+   Two bags of gold and two money sounds.
 
 ---
 
-### End
-
-1. **st:** …and the two conjectures are equivalent.
-2. **te:** Nah, not actually. The first one given here is better.
-3. **te:** Our conjecture implies the modern formulation.
-4. **te:** And even better — it implies the version of the Riemann hypothesis for the function `$L(E,s)$`.
-5. **st:** Oh, two millions! (Walking out of the clouds again, `$\zeta$` and `$L$` together.)
+Thanks and credits.
 
 ---
