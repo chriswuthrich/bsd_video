@@ -145,6 +145,17 @@ def cloud_background():
     return thought_bubble(ORIGIN, size=7.48)
 
 
+def little_curve_icon():
+    # the svg file is a simplified output from
+    # sage modified with inkscape
+    ellicon = SVGMobject("pics/ellicon3.svg",
+                         stroke_width=8)
+    # part 0 and 1 are boxes
+    v = ellicon[2]  # this is the curve
+    v.set_color(WHITE)
+    v.scale(.5)
+    return v
+
 def fading_line(y, stroke_width=4, **kwargs):
     """
     helper for my_fading_number_plane

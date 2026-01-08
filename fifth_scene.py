@@ -24,14 +24,64 @@ class FifthScene(Scene):
         # 5.1 Origin
         self.next_section("5.1 Origin")
         self.clear()
+        bg = natural_initial_background()
         stte = two_characters_standing_next_to_each_other()
-        self.add(cloud_background(), stte)
+        shz(stte,5)
+        bu =  thought_bubble(ORIGIN, size=7.48)  # usual background
+        shz(bu, 1)
+        self.add(bg, bu, stte)
 
-        img = ImageMobject("bandsd.jpg")
-        img.scale(.1)
-        img.move_to(ORIGIN)
+        img = ImageMobject("pics/bandsd.jpg")
+        img.scale(.3)
+        img.shift(UP)
+        img.shift(RIGHT)
+        shz(img, 5)
+
+        caption1 = Text("Bryan Birch")
+        caption2 = Text("and")
+        caption2.next_to(caption1, DR)
+        caption3 = Text("Sir Peter Swinnerton-Dyer")
+        caption3.next_to(caption2, DOWN)
+        caption = VGroup(caption1, caption2, caption3)
+        shz(caption, 5)
+        caption.next_to(img, DOWN)
+        self.add(caption)
         self.add(img)
+
         self.wait(2)
+        self.remove(img, caption)
+
+        cloud_centre = vec(-1, 2.6)
+        original_cloud = thought_bubble(cloud_centre, 0.85)[0]
+        shz(original_cloud, 1)
+
+        t = ValueTracker()
+        initial_scale = 7.48
+        final_scale = 1
+
+        def scale_cloud_updater(m):
+            scale_factor = initial_scale + t.get_value()*(final_scale - initial_scale)
+            mo = original_cloud.copy().scale(scale_factor)
+            m.become(mo)
+
+        def cloud_movement(tt):
+            s = (1-tt) * cloud_centre
+            s += vec(0, 0, 1/100)
+            return s
+
+        bu.add_updater(lambda m: m.move_to(cloud_movement(t.get_value())))
+        bu.add_updater(scale_cloud_updater)
+
+        lfunction = MathTex(r"L(E,s)")
+        conj_lfunction = MathTex(r"\operatorname{ord}_{s=1} L(E,s) = \operatorname{rank} (\mathbb{Q})")
+        zeta = MathTex(r"\zeta(s)", font_size=72)
+        icon = little_curve_icon()
+
+        self.add(icon, zeta, conj_lfunction)
+
+        self.play(t.animate.set_value(1),
+                  run_time=20,
+                  rate_func=rate_functions.ease_in_out_sine)
 
 
 

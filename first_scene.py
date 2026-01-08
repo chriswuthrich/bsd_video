@@ -20,16 +20,6 @@ from msage import smanim
 from tools import *
 
 
-def little_curve_icon():
-    # the svg file is a simplified output from
-    # sage modified with inkscape
-    ellicon = SVGMobject("pics/ellicon3.svg",
-                         stroke_width=8)
-    # part 0 and 1 are boxes
-    v = ellicon[2]  # this is the curve
-    v.set_color(WHITE)
-    v.scale(.5)
-    return v
 
 
 def family_of_curves(tt):
