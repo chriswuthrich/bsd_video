@@ -76,6 +76,7 @@ class FifthScene(Scene):
         conj_lfunction.shift(2*UP+LEFT)
         shz(conj_lfunction, 10)
         lfunction = VGroup(conj_lfunction[6:11]) # MathTex(r"L(E,s)")
+        just_conj = VGroup(conj_lfunction[:5], conj_lfunction[12:])
         zeta = MathTex(r"\zeta(s)", font_size=72)
         zeta.move_to(cloud_centre)
         zeta.shift(.4*UP)
@@ -101,12 +102,12 @@ class FifthScene(Scene):
         conj_visible = lambda tt : bump(tt, .3, .5)
         zeta_visible = lambda tt : bump(tt, .4,.9)
         icon_visible = lambda tt : bump(tt, .6, .9)
-        conj_lfunction.add_updater(lambda m: m.set_opacity(conj_visible(t.get_value())))
+        just_conj.add_updater(lambda m: m.set_opacity(conj_visible(t.get_value())))
         lfunction.add_updater(lambda m: m.set_opacity(lfunction_visible(t.get_value())))
         zeta.add_updater(lambda m: m.set_opacity(zeta_visible(t.get_value())))
         icon.add_updater(lambda m: m.set_opacity(icon_visible(t.get_value())))
 
-        self.add(icon, zeta, conj_lfunction)
+        self.add(icon, zeta, lfunction, just_conj)
 
         # TODO : Icon doesn't draw correctly and L on its own doesn' t show.
 
