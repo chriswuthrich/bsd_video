@@ -36,7 +36,12 @@ def bsd_tex_template():
                           "\\usepackage[LGRgreek,defaultmathsizes,italic]{mathastext}\n" +
                           "\\renewcommand{\\varphi}{\\phi}\n")
 
-    return TexTemplate(preamble=bsd_tex_preamble_0)
+    sha_preamble = (bsd_tex_preamble_0 +
+                    r"\DeclareFontFamily{U}{wncy}{} \DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{} " +
+                    r"\DeclareSymbolFont{mcy}{U}{wncy}{m}{n} " +
+                    r'\DeclareMathSymbol{\Sha}{\mathord}{mcy}{"58} ')
+
+    return TexTemplate(preamble=sha_preamble)
 
 
 Text.set_default(font="Noto Sans")

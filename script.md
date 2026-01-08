@@ -239,7 +239,7 @@ We put the two together and present evidence for the conjecture.
 
 1. **st:** "What was the name of the conjecture again?"
 2. **te:** "It is named after Bryan Birch and Peter Swinnerton-Dyer. Here a 
-   picture from 20**. Swinnerton-Dyer on the right passed away in ."
+   picture from 2011. Swinnerton-Dyer on the right passed away in 2018."
    Show picture of the two.
 3. **st:** "How old is the conjecture?"
 4. **te:** "They discovered it in the fifties. At the time Swinnerton-Dyer was 

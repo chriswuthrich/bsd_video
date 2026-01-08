@@ -543,8 +543,49 @@ class FourthScene(Scene):
         eq_discriminant.shift(vec(0, .04))
         text_comma_then.shift(vec(0, .03))
         self.add(text_if, eq_discriminant, text_comma_then)
-        self.wait(3)
+        self.wait(1)
 
+        conj_string = r"\Bigl(\frac{3e^{\gamma}}{2\pi}\Bigr)^r\cdot " +\
+                      r"\frac{\Omega^+_E\,\lvert \Sha(E/\mathbb{Q})\rvert}{\sqrt{2}\,(r/2)!^2}"
+
+        limit_formula = MathTex(conj_string, color=YELLOW).scale(.8)
+
+        t = ValueTracker()
+
+        def cubic_loop(tt, h=0., c=0., d=-1., la=1.):
+            """ parametrises a nodal cubic with node at (c,h) and
+             tangent slopes +- sqrt(la) and going through (d,h) at t=0
+             t = +-sqrt(la(c-d)) at the node"""
+            xx = tt**2/la + d
+            yy = h + tt*(xx-c)
+            return vec(xx, yy)
+
+        def cubic_loop1(tt):
+            c = 9; d = 6; h =1; la =1; # loop looking a little inside on the right
+            uu = np.sqrt(la*(c-d)) + 1
+            ss = -uu + 2*tt*uu
+            return cubic_loop(ss,h,c,d,la)
+
+        limit_formula.add_updater(lambda m: m.move_to(cubic_loop1(t.get_value())))
+        self.add(limit_formula)
+        self.play(t.animate.set_value(1),
+                  run_time=3)
+
+        limit_formula.clear_updaters()
+        t = ValueTracker()
+
+        def cubic_loop2(tt):
+            c = 9; d = 3; h =-1; la =.3; # loop looking more inside on the right
+            uu = np.sqrt(la*(c-d))+1
+            ss = -uu + 2*tt*uu
+            return cubic_loop(ss,h,c,d,la)
+
+
+        limit_formula.add_updater(lambda m: m.move_to(cubic_loop2(t.get_value())))
+        self.play(t.animate.set_value(1),
+                  run_time=5)
+
+        self.wait(3)
 
 
 #

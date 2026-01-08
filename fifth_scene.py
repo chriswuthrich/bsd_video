@@ -20,17 +20,18 @@ class FifthScene(Scene):
 
     def construct(self):
 
-        # 5 Rank and original conjecture
-        # 5.1 Rank
-        self.next_section("5.1 What is the rank")
+        # 5 Origin
+        # 5.1 Origin
+        self.next_section("5.1 Origin")
         self.clear()
         stte = two_characters_standing_next_to_each_other()
         self.add(cloud_background(), stte)
 
-        # state Theorem
-        thm_tit = Text("Theorem:", color=YELLOW)
-
-
+        img = ImageMobject("bandsd.jpg")
+        img.scale(.1)
+        img.move_to(ORIGIN)
+        self.add(img)
+        self.wait(2)
 
 
 
