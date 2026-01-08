@@ -72,17 +72,50 @@ class FifthScene(Scene):
         bu.add_updater(lambda m: m.move_to(cloud_movement(t.get_value())))
         bu.add_updater(scale_cloud_updater)
 
-        lfunction = MathTex(r"L(E,s)")
         conj_lfunction = MathTex(r"\operatorname{ord}_{s=1} L(E,s) = \operatorname{rank} (\mathbb{Q})")
+        conj_lfunction.shift(2*UP+LEFT)
+        shz(conj_lfunction, 10)
+        lfunction = VGroup(conj_lfunction[6:11]) # MathTex(r"L(E,s)")
         zeta = MathTex(r"\zeta(s)", font_size=72)
+        zeta.move_to(cloud_centre)
+        zeta.shift(.4*UP)
+        shz(zeta, 10)
         icon = little_curve_icon()
+        icon.next_to(zeta, DOWN)
+        shz(icon, 10)
+
+        def bump(tt, a, b):
+            epsilon = .05
+            if tt<a-epsilon:
+                return 0
+            elif tt<a:
+                return rate_functions.smooth((tt-a+epsilon)/epsilon)
+            elif tt<b:
+                return 1
+            elif tt<b+epsilon:
+                return rate_functions.smooth((epsilon+b-tt)/epsilon)
+            else:
+                return 0
+
+        lfunction_visible = lambda tt : bump(tt, .1, .5)
+        conj_visible = lambda tt : bump(tt, .3, .5)
+        zeta_visible = lambda tt : bump(tt, .4,.9)
+        icon_visible = lambda tt : bump(tt, .6, .9)
+        conj_lfunction.add_updater(lambda m: m.set_opacity(conj_visible(t.get_value())))
+        lfunction.add_updater(lambda m: m.set_opacity(lfunction_visible(t.get_value())))
+        zeta.add_updater(lambda m: m.set_opacity(zeta_visible(t.get_value())))
+        icon.add_updater(lambda m: m.set_opacity(icon_visible(t.get_value())))
 
         self.add(icon, zeta, conj_lfunction)
+
+        # TODO : Icon doesn't draw correctly and L on its own doesn' t show.
 
         self.play(t.animate.set_value(1),
                   run_time=20,
                   rate_func=rate_functions.ease_in_out_sine)
-
+        self.remove(zeta, icon)
+        self.play(FadeOut(bu), run_time=1)
+        self.wait(3)
 
 
 #  now render it
