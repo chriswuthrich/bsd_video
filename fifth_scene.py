@@ -90,6 +90,8 @@ class FifthScene(Scene):
         bu.add_updater(lambda m: m.move_to(cloud_movement(t.get_value())))
         bu.add_updater(scale_cloud_updater)
 
+        # TODO : Why does the conjecture string appear from the start, icon and zeta don't ???
+
         self.play(
                 t.animate.set_value(1),
                 Succession(Wait(2),
