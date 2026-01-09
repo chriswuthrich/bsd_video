@@ -434,6 +434,19 @@ class TestSome(Scene):
         self.wait()
 
 
+        #
+        # def bump(tt, a, b):
+        #     epsilon = .05
+        #     if tt<a-epsilon:
+        #         return 0
+        #     elif tt<a:
+        #         return rate_functions.smooth((tt-a+epsilon)/epsilon)
+        #     elif tt<b:
+        #         return 1
+        #     elif tt<b+epsilon:
+        #         return rate_functions.smooth((epsilon+b-tt)/epsilon)
+        #     else:
+        #         return 0
 #
 
 if __name__ == "__main__":
