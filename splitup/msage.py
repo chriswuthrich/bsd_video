@@ -1,6 +1,8 @@
 r"""
 Part of the bsd_video
 
+Version for split up
+
 File to implement conversion of sage plots to
 manim objects
 

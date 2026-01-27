@@ -1,6 +1,8 @@
 r"""
 Part of the bsd_video
 
+Version for split up
+
 Common commands
 useful for all parts
 
@@ -103,7 +105,7 @@ def natural_initial_background():
 
     This is a placeholder.
     """
-    bg_image = ImageMobject("pics/path.jpg")
+    bg_image = ImageMobject("../pics/path.jpg")
     bg_image.scale_to_fit_height(config.frame_height)
     bg_image.scale_to_fit_width(config.frame_width)
     bg_image.move_to(ORIGIN)
@@ -117,7 +119,7 @@ def thought_bubble(centre, size=1.):
     A cloud shape together with little dots below.
     Text is given to MathTex so its raw TeX.
     """
-    bubble = SVGMobject("pics/cloud.svg",
+    bubble = SVGMobject("../pics/cloud.svg",
                         color=WHITE,
                         stroke_width=8
                         )
@@ -148,7 +150,7 @@ def cloud_background():
 def little_curve_icon():
     # the svg file is a simplified output from
     # sage modified with inkscape
-    ellicon = SVGMobject("pics/ellicon3.svg",
+    ellicon = SVGMobject("../pics/ellicon3.svg",
                          stroke_width=8)
     # part 0 and 1 are boxes
     v = ellicon[2]  # this is the curve
