@@ -2,6 +2,7 @@ r"""
 split scene
 1.2, 1.3
 cloud that grows containing zeta and elliptic curve
+about 16 s.
 """
 
 from manim import *
@@ -11,9 +12,6 @@ from tools import thought_bubble, vec, shz, little_curve_icon
 class CloudGrowsScene1(Scene):
 
     def construct(self):
-
-        # 1
-        # 1.1 From real to maths world
 
         # st thinks of zeta(s)
         cloud_centre = vec(-1, 2.6)
@@ -30,7 +28,7 @@ class CloudGrowsScene1(Scene):
         zeta.move_to(cloud_centre)
         shz(zeta, 5)
         self.add(thoughts, zeta)
-        self.wait(1)
+        self.wait(4)
 
         # te thinks of an elliptic curve
         # small bubbles move to teacher
@@ -42,8 +40,8 @@ class CloudGrowsScene1(Scene):
         icon = little_curve_icon()
         icon.move_to(cloud_centre + vec(1.3, 0))
         shz(icon, 5)
-        self.play(FadeIn(icon))
-        self.wait(.3)
+        self.play(FadeIn(icon), run_time=2)
+        self.wait(1)
 
         # and the curve kicks out the zeta
         t = ValueTracker(0)
@@ -89,9 +87,9 @@ class CloudGrowsScene1(Scene):
                                              - vec(zeta_movement(t.get_value()), 0)))
         zeta.add_updater(lambda m: m.set_opacity(zeta_opacity(t.get_value())))
 
-        self.play(t.animate.set_value(1), run_time=2, rate_func=linear)
-        self.play(icon.animate.move_to(cloud_centre), run_time=0.3)
-        self.wait(.7)
+        self.play(t.animate.set_value(1), run_time=3, rate_func=linear)
+        self.play(icon.animate.move_to(cloud_centre), run_time=1)
+        self.wait(.5)
         self.remove(zeta)
 
         # bubble grows, title appears, and characters move to the lower left corner
@@ -118,6 +116,27 @@ class CloudGrowsScene1(Scene):
 
         thoughts.add_updater(lambda m: m.move_to(cloud_movement(t.get_value())))
         thoughts.add_updater(scale_cloud_updater)
+
+        icon.clear_updaters()  # not needed
+        icon_start = icon.get_center()
+
+        def icon_second_movement(tt):
+            s = icon_start
+            s += vec(0, np.sqrt(tt))
+            return s
+
+        icon.add_updater(lambda m: m.move_to(icon_second_movement(t.get_value())))
+
+        # put in the correct order
+        self.remove(thoughts, icon)
+        self.add(thoughts, icon)
+
+        self.play(t.animate.set_value(1),
+                  FadeOut(icon),
+                  run_time=6,
+                  rate_func=rate_functions.ease_in_out_sine)
+        self.remove(icon)
+        self.wait(1)
 
 
 # now render it
