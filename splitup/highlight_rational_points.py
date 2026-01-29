@@ -146,5 +146,13 @@ class HighlightRationalPoints(Scene):
 
 # now render it
 if __name__ == "__main__":
+    config.renderer = "cairo"
+    config.format = "mov"
+    config.transparent = True
+    config.write_to_movie = True
+
+    # Optional but recommended
+    config.background_color = None
+
     scene = HighlightRationalPoints()
     scene.render()

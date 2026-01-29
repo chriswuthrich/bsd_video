@@ -141,5 +141,18 @@ class CloudGrowsScene1(Scene):
 
 # now render it
 if __name__ == "__main__":
+    config.renderer = "cairo"
+    config.format = "png"
+    config.transparent = True
+    config.write_to_movie = False
+
+    # Optional but recommended
+    config.background_color = None
+
     scene = CloudGrowsScene1()
     scene.render()
+# ffmpeg -framerate 60 \
+#   -i NameOfScene%04d.png \
+#   -c:v prores_ks -profile:v 4 \
+#   -pix_fmt yuva444p10le \
+#   output.mov
