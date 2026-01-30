@@ -122,9 +122,9 @@ class EllipticCurves2_with_text(Scene):
 # now render it
 if __name__ == "__main__":
     config.renderer = "cairo"
-    config.format = "mov"
+    config.format = "png"
     config.transparent = True
-    config.write_to_movie = True
+    config.write_to_movie = False
 
     # Optional but recommended
     config.background_color = None
