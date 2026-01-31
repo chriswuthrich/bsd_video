@@ -151,8 +151,5 @@ if __name__ == "__main__":
 
     scene = CloudGrowsScene1()
     scene.render()
-# ffmpeg -framerate 60 \
-#   -i NameOfScene%04d.png \
-#   -c:v prores_ks -profile:v 4 \
-#   -pix_fmt yuva444p10le \
-#   output.mov
+
+# ffmpeg -framerate 60 -i NameOfScene%04d.png -c:v prores_ks -profile:v 4 -pix_fmt yuva444p10le output.mov
