@@ -1,6 +1,6 @@
 r"""
 split scene
-4
+5
 
 """
 
@@ -8,7 +8,6 @@ from manim import *
 import sage.all as sagemath
 from tools import vec, CurvyPointyTip
 from msage import smanim
-import json
 
 
 class CountingModulo5(Scene):
