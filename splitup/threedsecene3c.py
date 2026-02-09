@@ -109,7 +109,7 @@ class Horizon3c(ThreeDScene):
         self.add(projective_curve)
 
         point_colour = BLUE_B
-        point_radius = .07
+        point_radius = .04
         point_z_index = 3
         P01 = dot_on_curve(vec(0, -1))
         P02 = dot_on_curve(vec(0, 1))
@@ -135,7 +135,9 @@ class Horizon3c(ThreeDScene):
         for P in [P01, P02, P11, P12, P21, P22, P31, P32, P41, P42, P51, P52, P61, P62]:
             xP = P.get_center()[0]
             yP = P.get_center()[1]
-            this_pt = dot_on_3dcurve(vec(96 * xP / (96 + yP), 100 * yP / (96 + yP), 0.1), point_colour, 0.04)
+            this_pt = dot_on_3dcurve(vec(96 * xP / (96 + yP), 100 * yP / (96 + yP), 0.03),
+                                     point_colour,
+                                     point_radius)
             shz(this_pt, point_z_index)
             self.add(this_pt)
 
