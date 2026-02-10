@@ -8,9 +8,16 @@ split scene
 
 from manim import *
 import sage.all as sagemath
-from tools import vec, shz, dot_on_curve, dot_on_3dcurve
+from tools import vec, shz, dot_on_curve
 from msage import smanim
 
+
+def dot_on_3dcurve(centre=ORIGIN, colour=YELLOW, radius=0.1, z_index=10):
+    """
+    version of dot_on_curve but for the fake 3d curve
+    """
+    v = Dot3D(centre, color=colour, radius=radius, z_index=z_index)
+    return v
 
 def fake_numberplane():
     """
@@ -25,7 +32,7 @@ def fake_numberplane():
     ymin = -10  # don't draw behind the camera.
 
     # filled rectangle at the horizon
-    nu2 = 80
+    nu2 = 100
     yy = 100 * nu2 / (nu2 + 96)
     p = Polygon(
         vec(-50, yy), vec(50, yy), vec(100, 100), vec(-100, 100),
@@ -102,14 +109,14 @@ class Horizon3c(ThreeDScene):
 
     def construct(self):
         numberplane_for_3d = fake_numberplane()
-        #shz(numberplane_for_3d, 1)
+        shz(numberplane_for_3d, 1)
         self.add(numberplane_for_3d)
         projective_curve = fake_curve()
         shz(projective_curve, +2)
         self.add(projective_curve)
 
         point_colour = BLUE_B
-        point_radius = .04
+        point_radius = .08
         point_z_index = 3
         P01 = dot_on_curve(vec(0, -1))
         P02 = dot_on_curve(vec(0, 1))
@@ -138,7 +145,7 @@ class Horizon3c(ThreeDScene):
             this_pt = dot_on_3dcurve(vec(96 * xP / (96 + yP), 100 * yP / (96 + yP), 0.03),
                                      point_colour,
                                      point_radius)
-            shz(this_pt, point_z_index)
+            #shz(this_pt, point_z_index)
             self.add(this_pt)
 
         # point at infinity
@@ -195,6 +202,7 @@ class Horizon3c(ThreeDScene):
 # now render it
 if __name__ == "__main__":
     config.renderer = "cairo"
+    config.quality = "medium_quality"
     #config.format = "png"
     #config.transparent = True
     #config.write_to_movie = False
