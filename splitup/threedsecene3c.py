@@ -202,11 +202,10 @@ class Horizon3c(ThreeDScene):
 # now render it
 if __name__ == "__main__":
     config.renderer = "cairo"
-    config.quality = "medium_quality"
-    #config.format = "png"
-    #config.transparent = True
-    #config.write_to_movie = False
-    config.preview = True
+    config.format = "png"
+    config.transparent = True
+    config.write_to_movie = False
+    #config.preview = True
 
     # Optional but recommended
     config.background_color = None
