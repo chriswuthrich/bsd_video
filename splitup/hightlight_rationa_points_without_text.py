@@ -12,7 +12,7 @@ from msage import smanim
 
 
 
-class HighlightRationalPoints(Scene):
+class HighlightRationalPointsWithoutText(Scene):
 
     def construct(self):
 
@@ -25,34 +25,34 @@ class HighlightRationalPoints(Scene):
 
         standard_E = sagemath.EllipticCurve([-4, 1])
         curve = smanim(standard_E.plot(color="yellow", thickness=2, alpha=0.3, xmax=7, ymin=-5, ymax=5))
-        eq_standard_curve = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
-        eq_standard_curve.to_corner(UL)
-        shz([curve, eq_standard_curve], 2)
-        self.add(grid, eq_standard_curve, curve)
+        #eq_standard_curve = MathTex(r"y^2 = x^3", r"- 4\,", " x ", "+ 1")
+        #eq_standard_curve.to_corner(UL)
+        #shz([curve, eq_standard_curve], 2)
+        #self.add(grid, eq_standard_curve, curve)
 
         # 2.1 Rational points
         self.next_section("2.1 Rational points")
         # finds one rational point
-        eq_xy_in_Q = MathTex(r"x,y\in\mathbb{Q}", color=YELLOW)
-        eq_xy_in_Q.next_to(eq_standard_curve, DOWN)
-        shz(eq_xy_in_Q, 2)
-        self.play(FadeIn(eq_xy_in_Q), run_time=.3)
+        #eq_xy_in_Q = MathTex(r"x,y\in\mathbb{Q}", color=YELLOW)
+        #eq_xy_in_Q.next_to(eq_standard_curve, DOWN)
+        #shz(eq_xy_in_Q, 2)
+        #self.play(FadeIn(eq_xy_in_Q), run_time=.3)
         self.wait(3)
 
-        eq_xy_in_Q.set_color(WHITE)
-        eq_x_0_y_pm_1 = MathTex(r"x=0,\ y=\pm 1")
-        eq_x_0_y_pm_1.next_to(eq_xy_in_Q, DOWN)
-        shz(eq_x_0_y_pm_1, 2)
+        #eq_xy_in_Q.set_color(WHITE)
+        #eq_x_0_y_pm_1 = MathTex(r"x=0,\ y=\pm 1")
+        #eq_x_0_y_pm_1.next_to(eq_xy_in_Q, DOWN)
+        #shz(eq_x_0_y_pm_1, 2)
         point_colour = BLUE_B
         point_radius = .07
         P01 = dot_on_curve(vec(0, -1), colour=point_colour, radius=point_radius, z_index=10)
         P02 = dot_on_curve(vec(0, 1), colour=point_colour, radius=point_radius, z_index=10)
-        self.add(eq_x_0_y_pm_1)
+        #self.add(eq_x_0_y_pm_1)
         self.play(Create(P01),
                   FadeIn(P02),
                   run_time=1)
         self.wait(1)
-        self.play(Indicate(eq_x_0_y_pm_1),
+        self.play(#Indicate(eq_x_0_y_pm_1),
                   Flash(P02.get_center()),
                   Flash(P01.get_center()),
                   run_time=1)
@@ -147,12 +147,12 @@ class HighlightRationalPoints(Scene):
 # now render it
 if __name__ == "__main__":
     config.renderer = "cairo"
-    config.format = "mp4"
-    #config.transparent = True
-    #config.write_to_movie = False
+    config.format = "png"
+    config.transparent = True
+    config.write_to_movie = False
 
     # Optional but recommended
-    config.background_color = BLACK
+    config.background_color = None
 
-    scene = HighlightRationalPoints()
+    scene = HighlightRationalPointsWithoutText()
     scene.render()

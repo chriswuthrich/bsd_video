@@ -578,13 +578,13 @@ class Conjecture6(Scene):
 # now render it
 if __name__ == "__main__":
     config.renderer = "cairo"
-    config.format = "png"
-    config.transparent = True
-    config.write_to_movie = False
-    #config.preview = True
+    config.format = "mp4"
+    #config.transparent = True
+    #config.write_to_movie = False
+    config.preview = True
 
     # Optional but recommended
-    config.background_color = None
+    config.background_color = BLACK
 
     scene = Conjecture6()
     scene.render()
