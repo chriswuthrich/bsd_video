@@ -105,7 +105,7 @@ def fake_curve():
 
 
 
-class Horizon3c(ThreeDScene):
+class Horizon3cWithoutText(ThreeDScene):
 
     def construct(self):
         numberplane_for_3d = fake_numberplane()
@@ -152,12 +152,12 @@ class Horizon3c(ThreeDScene):
         pt_at_inf = dot_on_3dcurve(vec(0, 95, .1), radius=.45, colour=YELLOW)
         #shz(pt_at_inf, point_z_index)
 
-        text_at_inf = MathTex(r"(X=0,\,Y=1,\,Z=0)")
-        text_at_inf.rotate(PI / 2, axis=RIGHT)
-        text_at_inf.move_to(vec(1, 1, 6))
+        #text_at_inf = MathTex(r"(X=0,\,Y=1,\,Z=0)")
+        #text_at_inf.rotate(PI / 2, axis=RIGHT)
+        #text_at_inf.move_to(vec(1, 1, 6))
 
-        arrow_at_inf = Arrow3D(vec(1, 1, 5.5), vec(.1, 1, 4.1), color=WHITE)
-        pointing_at_inf = VGroup(text_at_inf, arrow_at_inf)
+        #arrow_at_inf = Arrow3D(vec(1, 1, 5.5), vec(.1, 1, 4.1), color=WHITE)
+        #pointing_at_inf = VGroup(text_at_inf, arrow_at_inf)
 
         # timings for the 3d move
         total_time_of_camera_move = 16.
@@ -182,8 +182,8 @@ class Horizon3c(ThreeDScene):
             else:
                 return 0
 
-        pointing_at_inf.add_updater(lambda m: m.set_opacity(onf(t.get_value())))
-        self.add(pointing_at_inf)
+        #pointing_at_inf.add_updater(lambda m: m.set_opacity(onf(t.get_value())))
+        #self.add(pointing_at_inf)
 
         my_there_and_back_with_pause = lambda tt: rate_functions.there_and_back_with_pause(tt,
                                                                                            pause_ratio=time_it_stands_still / total_time_of_camera_move)
@@ -210,5 +210,5 @@ if __name__ == "__main__":
     # Optional but recommended
     config.background_color = BLACK
 
-    scene = Horizon3c()
+    scene = Horizon3cWithoutText()
     scene.render()
