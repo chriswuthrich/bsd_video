@@ -3,6 +3,8 @@ split scene
 3.1 - 3.4
 version with the text
 
+no formulae either
+
 """
 
 from manim import *
