@@ -433,19 +433,19 @@ class ConjectureWithoutText6(Scene):
         t = ValueTracker(0)
 
         # equation with changing coefficients with 2 digits
-        eq_changing_curve = always_redraw(
-            lambda: MathTex(
-                f"y^2 = x^3 - {4-t.get_value():.2f}x + {t.get_value()+1:.2f}",
-                color=YELLOW
-            ).to_corner(UL)
-        )
+        # eq_changing_curve = always_redraw(
+        #     lambda: MathTex(
+        #         f"y^2 = x^3 - {4-t.get_value():.2f}x + {t.get_value()+1:.2f}",
+        #         color=YELLOW
+        #     ).to_corner(UL)
+        # )
 
-        shz(eq_changing_curve, 5)
-        standard_curve.add_updater(lambda m: m.become(shorter_family_of_curves(t.get_value())))
-        self.add(standard_curve, eq_changing_curve)
+        # shz(eq_changing_curve, 5)
+        # standard_curve.add_updater(lambda m: m.become(shorter_family_of_curves(t.get_value())))
+        self.add(standard_curve) #, eq_changing_curve)
 
         self.play(t.animate.set_value(1), run_time=2, rate_func=rate_functions.ease_in_out_sine)
-        self.remove_updater(eq_changing_curve)
+        #self.remove_updater(eq_changing_curve)
         #eq_singular_curve = MathTex(r"y^2 = x^3 - 3\,x + 2 ", color=YELLOW)
         # eq_singular_curve.to_corner(UL)
         # self.play(FadeOut(eq_changing_curve), FadeIn(eq_singular_curve))
@@ -481,7 +481,7 @@ class ConjectureWithoutText6(Scene):
         log_graph.set_style(stroke_width=2)
 
         # eq_changing_curve = MathTex(r"y^2 = x^3 - 3\,x + 2 ")
-        eq_changing_curve.to_edge(DOWN)
+        #eq_changing_curve.to_edge(DOWN)
         self.play(FadeIn(log_graph),
                   #FadeIn(eq_changing_curve)
                   )
